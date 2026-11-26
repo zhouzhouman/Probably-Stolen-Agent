@@ -42,3 +42,8 @@ bridge/_deploy/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# ---- 重构过程中的临时备份与废弃目录 ----
+*.bak
+*.bak-*
+spacepawn/
