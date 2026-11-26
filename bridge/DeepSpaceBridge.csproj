@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>DeepSpaceBridge</AssemblyName>
+    <RootNamespace>DeepSpaceBridge</RootNamespace>
+    <Version>2.1.0</Version>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- BepInEx 安装的游戏目录（可用 -p:BepInExDir=... 覆盖） -->
+    <BepInExDir Condition="'$(BepInExDir)' == ''">D:\SteamLibrary\steamapps\common\Probably Stolen Demo</BepInExDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="BepInEx.Core">
+      <HintPath>$(BepInExDir)\BepInEx\core\BepInEx.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="BepInEx.Unity.IL2CPP">
+      <HintPath>$(BepInExDir)\BepInEx\core\BepInEx.Unity.IL2CPP.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Il2CppInterop.Runtime">
+      <HintPath>$(BepInExDir)\BepInEx\core\Il2CppInterop.Runtime.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Il2Cppmscorlib">
+      <HintPath>$(BepInExDir)\BepInEx\interop\Il2Cppmscorlib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Il2CppSystem">
+      <HintPath>$(BepInExDir)\BepInEx\interop\Il2CppSystem.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(BepInExDir)\BepInEx\interop\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(BepInExDir)\BepInEx\interop\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(BepInExDir)\BepInEx\interop\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>$(BepInExDir)\BepInEx\interop\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(BepInExDir)\BepInEx\interop\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(BepInExDir)\BepInEx\interop\UnityEngine.UI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>$(BepInExDir)\BepInEx\interop\UnityEngine.UIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>$(BepInExDir)\BepInEx\interop\Unity.TextMeshPro.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(BepInExDir)\BepInEx\interop\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
