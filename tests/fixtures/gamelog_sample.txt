@@ -1,0 +1,260 @@
+[09:16:34] [Log] LetterboxManager: disabling PixelPerfectCamera on 'Emporium_camera' (letterbox active)
+[09:16:34] [Log] Starting EmporiumEntry...
+[09:16:34] [Log] A new PlayerStore has been created
+[09:16:34] [Warning] Sprite name 'play_d' in atlas 'Window/elements_inner' was not found. Loading dummy sprite.
+[09:16:34] [Log] Loaded save slot: 15
+[09:16:34] [Log] Loaded Skip True
+[09:16:34] [Log] 204 audio clip was loaded successfully for AudioManager
+[09:16:34] [Log] Loaded Module Bay Upgrade 0
+[09:16:34] [Log] Loaded Module Bay Upgrade 0
+[09:16:34] [Log] Loaded Module Bay Upgrade 0
+[09:16:34] [Log] Loaded Module Bay Upgrade 0
+[09:16:34] [Log] Loaded Module Bay Upgrade 0
+[09:16:34] [Log] Loaded Module Bay Upgrade 1
+[09:16:34] [Log] Load upgrade stage 1
+[09:16:34] [Log] Loaded Module Bay Upgrade 1
+[09:16:34] [Log] Load upgrade stage 1
+[09:16:34] [Log] Loaded Module Bay Upgrade 1
+[09:16:34] [Log] Load upgrade stage 1
+[09:16:34] [Log] Loaded Module Bay Upgrade 1
+[09:16:34] [Log] Load upgrade stage 1
+[09:16:35] [Warning] Sprite name 'play_d' in atlas 'Window/elements_inner' was not found. Loading dummy sprite.
+[09:16:35] [Log] activated barter count 7
+[09:16:35] [Log] Loaded save slot: 15
+[09:16:35] [Log] UI scale for game area 2560x1440: 2.67
+[09:16:35] [Log] Setting locale to: zh
+[09:16:35] [Log] Monitor Aspect Ratio: 1.6, Is 16:9: False
+[09:16:35] [Log] 2560x1600
+[09:16:35] [Log] UI scale for game area 2560x1440: 2.67
+[09:16:35] [Log] UI scale for game area 2560x1440: 2.67
+[09:16:35] [Log] UI scale for game area 2560x1440: 2.67
+[09:16:35] [Log] Setting Applied in store scene
+[09:16:35] [Log] Option Saved
+[09:16:35] [Log] [EmporiumEntry.Start] TOTAL load time: 800ms
+[09:16:35] [Log] [EmporiumEntry.Start] Scene transition (LoadScene call -> first frame rendered): 3026ms
+[09:17:31] [Log] Wanted Client Queued
+[09:17:31] [Log] Shopper Client Type STORAGE
+[09:17:31] [Log] Showcase Type it :STORAGE
+[09:17:31] [Log] CreateClientByStockType was not able to find a suitable customer
+[09:17:31] [Log] <color=yellow>Removed duplicate client: thief</color>
+[09:17:31] [Log] Future Client Queue: wanted4Normal/ In 1
+[09:17:31] [Log] thief, shadyMerchant, wanted2, pettyThief, lowerLevelChemist, 
+[09:17:31] [Log] UI scale for game area 2560x1440: 2.67
+[09:17:31] [Log] Arriving
+[09:17:31] [Log] <color=orange>ClientFlagUp</color>
+[09:17:31] [Log] Displaying Client
+[09:17:31] [Log] Approching Store
+[09:17:33] [Log] Client Arrived
+[09:17:33] [Log] <color=green>ClientFlagDown</color>
+[09:17:33] [Log] thief SELL
+[09:17:36] [Log] <color=blue>Conversation Ended!</color>
+[09:17:37] [Log] End Action Executed!
+[09:17:37] [Warning] Could not find CombatAbilityEffect identifier 'smelling_salt_stun_remove' when attempting to create CombatAbilityEffect! Creating dummy CombatAbilityEffect instead...
+[09:17:37] [Warning] Could not find CombatAbilityEffect identifier 'null' when attempting to create CombatAbilityEffect! Creating dummy CombatAbilityEffect instead...
+[09:17:47] [Log] Start Action Executed!
+[09:17:47] [Log] Business Not Done
+[09:17:49] [Log] <color=blue>Conversation Ended!</color>
+[09:18:05] [Log] Leaving
+[09:18:05] [Log] <color=orange>ClientFlagUp</color>
+[09:18:05] [Log] Current Dialog Removed
+[09:18:05] [Log] Dialog Correctly Ended thanks to Stop coroutine Function
+[09:18:07] [Log] Client Left
+[09:18:07] [Log] <color=green>ClientFlagDown</color>
+[09:18:07] [Log] Hiding Client
+[09:18:07] [Log] <color=orange>ClientFlagUp</color>
+[09:18:08] [Log] Arriving
+[09:18:08] [Log] <color=orange>ClientFlagUp</color>
+[09:18:08] [Log] Displaying Client
+[09:18:08] [Log] Approching Store
+[09:18:08] [Log] <color=green>ClientFlagDown</color>
+[09:18:10] [Log] Client Arrived
+[09:18:10] [Log] <color=green>ClientFlagDown</color>
+[09:18:10] [Log] shadyMerchant BUY
+[09:18:17] [Log] <color=blue>Conversation Ended!</color>
+[09:18:18] [Log] End Action Executed!
+[09:18:36] [Log] tracked price: 101
+[09:18:36] [Log] tracked price: 24
+[09:18:36] [Log] Start Action Executed!
+[09:18:36] [Log] Business Not Done
+[09:18:38] [Log] <color=blue>Conversation Ended!</color>
+[09:18:44] [Log] tracked price: 18
+[09:18:44] [Log] tracked price: 18
+[09:18:44] [Log] tracked price: 35
+[09:18:44] [Log] Business Not Done
+[09:18:45] [Log] <color=blue>Conversation Ended!</color>
+[09:18:52] [Log] tracked price: 7
+[09:18:52] [Log] tracked price: 45
+[09:18:52] [Log] Business Not Done
+[09:18:53] [Log] <color=blue>Conversation Ended!</color>
+[09:18:57] [Log] tracked price: 24
+[09:18:57] [Log] Business Not Done
+[09:18:59] [Log] <color=blue>Conversation Ended!</color>
+[09:19:07] [Log] Leaving
+[09:19:07] [Log] <color=orange>ClientFlagUp</color>
+[09:19:07] [Log] Current Dialog Removed
+[09:19:07] [Log] Dialog Correctly Ended thanks to Stop coroutine Function
+[09:19:09] [Log] Client Left
+[09:19:09] [Log] <color=green>ClientFlagDown</color>
+[09:19:09] [Log] Hiding Client
+[09:19:09] [Log] <color=orange>ClientFlagUp</color>
+[09:19:10] [Log] Arriving
+[09:19:10] [Log] <color=orange>ClientFlagUp</color>
+[09:19:10] [Log] Displaying Client
+[09:19:10] [Log] Approching Store
+[09:19:10] [Log] <color=green>ClientFlagDown</color>
+[09:19:12] [Log] Client Arrived
+[09:19:12] [Log] <color=green>ClientFlagDown</color>
+[09:19:12] [Log] wanted2 SELL
+[09:19:17] [Log] <color=blue>Conversation Ended!</color>
+[09:19:17] [Log] End Action Executed!
+[09:19:35] [Log] Audio finished, function executed!
+[09:19:44] [Log] Start Action Executed!
+[09:19:44] [Log] Business Not Done
+[09:19:47] [Log] <color=blue>Conversation Ended!</color>
+[09:19:48] [Log] Glass Toggled
+[09:19:48] [Log] Current Dialog Removed
+[09:19:48] [Log] Dialog Correctly Ended thanks to Stop coroutine Function
+[09:19:48] [Log] Correct Report of Wanted Customers
+[09:19:48] [Log] <color=orange>ClientFlagUp</color>
+[09:19:48] [Log] <color=orange>ClientFlagUp</color>
+[09:19:50] [Log] <color=blue>Conversation Ended!</color>
+[09:19:51] [Log] Current Dialog Removed
+[09:19:51] [Log] Dialog Correctly Ended thanks to Stop coroutine Function
+[09:19:51] [Log] Starting Arrest Dialogue
+[09:19:54] [Log] <color=blue>Conversation Ended!</color>
+[09:19:54] [Log] End Action Executed!
+[09:19:54] [Log] Leaving
+[09:19:54] [Log] <color=orange>ClientFlagUp</color>
+[09:19:54] [Log] Current Dialog Removed
+[09:19:54] [Log] Dialog Correctly Ended thanks to Stop coroutine Function
+[09:19:54] [Log] Cleaned up non owned items
+[09:19:56] [Log] Client Left
+[09:19:56] [Log] <color=green>ClientFlagDown</color>
+[09:19:56] [Log] Hiding Client
+[09:19:57] [Log] <color=green>ClientFlagDown</color>
+[09:19:57] [Log] <color=green>ClientFlagDown</color>
+[09:19:57] [Log] Glass Toggled
+[09:19:57] [Log] Executing onSecAlarmLeftAction
+[09:20:27] [Log] Arriving
+[09:20:27] [Log] <color=orange>ClientFlagUp</color>
+[09:20:27] [Log] Displaying Client
+[09:20:27] [Log] Approching Store
+[09:20:29] [Log] Client Arrived
+[09:20:29] [Log] <color=green>ClientFlagDown</color>
+[09:20:29] [Log] pettyThief SELL
+[09:20:32] [Log] <color=blue>Conversation Ended!</color>
+[09:20:32] [Log] End Action Executed!
+[09:20:41] [Log] Leaving
+[09:20:41] [Log] <color=orange>ClientFlagUp</color>
+[09:20:41] [Log] Current Dialog Removed
+[09:20:41] [Log] Dialog Correctly Ended thanks to Stop coroutine Function
+[09:20:43] [Log] Client Left
+[09:20:43] [Log] <color=green>ClientFlagDown</color>
+[09:20:43] [Log] Hiding Client
+[09:20:43] [Log] <color=orange>ClientFlagUp</color>
+[09:20:43] [Log] Arriving
+[09:20:43] [Log] <color=orange>ClientFlagUp</color>
+[09:20:43] [Log] Displaying Client
+[09:20:43] [Log] Approching Store
+[09:20:43] [Log] <color=green>ClientFlagDown</color>
+[09:20:45] [Log] Client Arrived
+[09:20:45] [Log] <color=green>ClientFlagDown</color>
+[09:20:45] [Log] lowerLevelChemist SELLNBUY
+[09:20:51] [Log] <color=blue>Conversation Ended!</color>
+[09:20:51] [Log] End Action Executed!
+[09:20:58] [Log] Start Action Executed!
+[09:20:58] [Log] Business Not Done
+[09:20:59] [Log] <color=blue>Conversation Ended!</color>
+[09:21:02] [Log] Leaving
+[09:21:02] [Log] <color=orange>ClientFlagUp</color>
+[09:21:02] [Log] Current Dialog Removed
+[09:21:02] [Log] Dialog Correctly Ended thanks to Stop coroutine Function
+[09:21:04] [Log] Client Left
+[09:21:04] [Log] <color=green>ClientFlagDown</color>
+[09:21:04] [Log] Hiding Client
+[09:21:04] [Log] <color=orange>ClientFlagUp</color>
+[09:21:04] [Log] <color=green>ClientFlagDown</color>
+[09:21:07] [Log] Current Dialog Removed
+[09:21:07] [Log] Ending Day
+[09:21:11] [Log] Hiding Client
+[09:21:44] [Log] HandlingExchange
+[09:21:44] [Log] sec_crate_barter Exchange Accepted
+[09:21:44] [Log] 1 barter(s) accepted
+[09:21:44] [Log] Handling Operation
+[09:21:44] [Log] No Available Operation to Queue
+[09:21:44] [Log] No Available Operation to Queue
+[09:21:44] [Log] No Available Operation to Queue
+[09:21:44] [Log] No Available Operation to Queue
+[09:21:44] [Log] Machine actioned, activating module effects.
+[09:21:44] [Log] Machine actioned, activating module effects.
+[09:21:44] [Log] Machine actioned, activating module effects.
+[09:21:44] [Log] Machine actioned, activating module effects.
+[09:21:44] [Log] Machine actioned, activating module effects.
+[09:21:44] [Log] Current progress: 80 Target progress: 150
+[09:21:44] [Log] Machine actioned, activating module effects.
+[09:21:44] [Log] Machine actioned, activating module effects.
+[09:21:44] [Log] Machine actioned, activating module effects.
+[09:21:44] [Log] Machine actioned, activating module effects.
+[09:21:44] [Log] Activating Event: 营养果收成惨淡
+[09:21:44] [Log] Restocking FOOD with a mult of -2
+[09:21:44] [Log] Game Saved in Slot: 15
+[09:21:45] [Log] OnEndDayButtonClick took 1633 ms
+[09:21:50] [Log] Shopper Client Type STORAGE
+[09:21:50] [Log] Showcase Type it :STORAGE
+[09:21:50] [Log] CreateClientByStockType was not able to find a suitable customer
+[09:21:50] [Log] Future Client Queue: wanted4Normal/ In 0
+[09:21:50] [Log] foodBuyer, inventorStorage, thief, mercenaryBuyer, scavCrate, spacerFood, lowerLevelChemist, wanted4Normal, 
+[09:21:50] [Log] UI scale for game area 2560x1440: 2.67
+[09:21:50] [Log] Arriving
+[09:21:50] [Log] <color=orange>ClientFlagUp</color>
+[09:21:50] [Log] Displaying Client
+[09:21:50] [Log] Approching Store
+[09:21:52] [Log] Client Arrived
+[09:21:52] [Log] <color=green>ClientFlagDown</color>
+[09:21:52] [Log] foodBuyer BUY
+[09:21:56] [Log] <color=blue>Conversation Ended!</color>
+[09:21:56] [Log] End Action Executed!
+[09:22:00] [Log] tracked price: 23
+[09:22:00] [Log] tracked price: 32
+[09:22:00] [Log] Start Action Executed!
+[09:22:00] [Log] Business Not Done
+[09:22:02] [Log] Audio finished, function executed!
+[09:22:03] [Log] <color=blue>Conversation Ended!</color>
+[09:22:26] [Log] Leaving
+[09:22:26] [Log] <color=orange>ClientFlagUp</color>
+[09:22:26] [Log] Current Dialog Removed
+[09:22:26] [Log] Dialog Correctly Ended thanks to Stop coroutine Function
+[09:22:28] [Log] Client Left
+[09:22:28] [Log] <color=green>ClientFlagDown</color>
+[09:22:28] [Log] Hiding Client
+[09:22:28] [Log] <color=orange>ClientFlagUp</color>
+[09:22:29] [Log] Arriving
+[09:22:29] [Log] <color=orange>ClientFlagUp</color>
+[09:22:29] [Log] Displaying Client
+[09:22:29] [Log] Approching Store
+[09:22:29] [Log] <color=green>ClientFlagDown</color>
+[09:22:31] [Log] Client Arrived
+[09:22:31] [Log] <color=green>ClientFlagDown</color>
+[09:22:31] [Log] inventorStorage SELL
+[09:22:38] [Log] <color=blue>Conversation Ended!</color>
+[09:22:42] [Log] Business Not Done
+[09:22:43] [Log] <color=blue>Conversation Ended!</color>
+[09:22:48] [Log] Leaving
+[09:22:48] [Log] <color=orange>ClientFlagUp</color>
+[09:22:48] [Log] Current Dialog Removed
+[09:22:48] [Log] Dialog Correctly Ended thanks to Stop coroutine Function
+[09:22:50] [Log] Client Left
+[09:22:50] [Log] <color=green>ClientFlagDown</color>
+[09:22:50] [Log] Hiding Client
+[09:22:50] [Log] <color=orange>ClientFlagUp</color>
+[09:22:51] [Log] Arriving
+[09:22:51] [Log] <color=orange>ClientFlagUp</color>
+[09:22:51] [Log] Displaying Client
+[09:22:51] [Log] Approching Store
+[09:22:51] [Log] <color=green>ClientFlagDown</color>
+[09:22:53] [Log] Client Arrived
+[09:22:53] [Log] <color=green>ClientFlagDown</color>
+[09:22:53] [Log] thief SELL
+[09:22:56] [Log] <color=blue>Conversation Ended!</color>
+[09:22:56] [Log] End Action Executed!
+[09:23:03] [Log] Start Action Executed!
