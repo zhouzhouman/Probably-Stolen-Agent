@@ -1,0 +1,44 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- 敏感信息 ----
+# .env 内含 API Key，永不入库
+.env
+.env.*
+!.env.example
+
+# ---- 运行产物 ----
+artifacts/
+*.log
+
+# ---- 第三方逆向工具与游戏反编译内容 ----
+# Il2CppDumper / BepInEx 等第三方工具与由游戏程序集反编译出的源码，
+# 体积大且含版权内容，不随项目分发。使用者需自行下载工具并在本地反编译。
+tools/Il2CppDumper/
+tools/Il2CppDumper.zip
+tools/BepInEx-IL2CPP/
+tools/BepInEx-IL2CPP-win-x64.zip
+tools/decompile_full/
+tools/interop_api/
+tools/refmods/
+
+# ---- 编译产物 ----
+mod/bin/
+mod/obj/
+bridge/bin/
+bridge/obj/
+bridge/_deploy/
+
+# ---- 系统 ----
+.DS_Store
+Thumbs.db
+desktop.ini

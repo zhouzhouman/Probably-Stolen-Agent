@@ -1,0 +1,97 @@
+name: CI
+
+# X03 测试治理：最小门禁。
+# 目的是把「测试数量」变成「测试可信度」——收集数不再因为同名类被静默覆盖而缩水，
+# 契约三表（动作表 / 参数表 / 签名表）不再各自为政。
+#
+# 注意：本仓库当前不是 git 仓库（改造期以 artifacts/ 快照 + .bak 回滚）。
+# 这份工作流是为将来入 git 准备的文件，本地等价命令写在下方注释里，可直接跑。
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  pytest:
+    name: pytest（全量）
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      # 本地等价：python -m pytest -q
+      # pyproject.toml 的 testpaths=["tests"] + norecursedirs 已把 artifacts/ 排除，
+      # 所以裸跑与 `pytest tests` 结果必须完全一致（回归点在 X03 报告里有实测）。
+      - name: 全量测试
+        run: python -m pytest -q
+
+      # 收集数守卫（动态下限）：同名类重复定义会让 pytest 静默丢掉前一批 test_*，
+      # 单看 passed 数是发现不了的（被覆盖的那批根本没被收集）。
+      # 不写死数字——下限现场由 AST 数出「模块级 test_* + 类内 test_*」的总数，
+      # 再与 `--collect-only` 对账；加测试不用改 CI，覆盖丢失立刻变红。
+      - name: 收集数守卫（动态下限）
+        run: python -m pytest -q tests/test_collection_floor.py
+
+  contracts:
+    name: 契约一致性（三表同源）
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      # 本地等价：python -m game_agent.contracts
+      # 校验 game_agent/contracts.py 与 C# 源码 / agent_loop 手工副本 / brain.schema
+      # 三方是否仍然一致。X01 把三表收敛到 contracts.py 后，这里是唯一的漂移兜底。
+      - name: contracts.selfcheck
+        run: python -m game_agent.contracts
+
+      # 本地等价：python -m pytest -q tests/test_contracts.py tests/test_contracts_gap.py
+      - name: 契约与缺口补测
+        run: python -m pytest -q tests/test_contracts.py tests/test_contracts_gap.py
+
+      # 同名重复定义守卫（AST 扫描，不执行被扫文件）
+      - name: 无重复定义守卫
+        run: python -m pytest -q tests/test_no_duplicate_test_classes.py
+
+  payload:
+    name: 桥接编码与部署载荷（实机事故回归）
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: 安装依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      # 2026-11-14 实机两起拒载事故的回归防线：
+      #  1) ExtractValue 只剥反斜杠不还原 \uXXXX → 全部中文参数失效（按钮点不动）
+      #  2) 改名 DLL 留在 mod 目录 → payload-file 判定 → 整包拒载
+      # 本地等价：python -m pytest -q tests/test_bridge_payload_encoding.py tests/test_deploy_payload_guard.py
+      - name: 编码与载荷防线
+        run: python -m pytest -q tests/test_bridge_payload_encoding.py tests/test_deploy_payload_guard.py

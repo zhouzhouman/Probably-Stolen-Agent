@@ -1,0 +1,91 @@
+{
+  "game": {
+    "window_title_keywords": [
+      "深空当铺",
+      "Probably Stolen",
+      "ProbablyStolen"
+    ],
+    "exclude_title_keywords": [
+      "Steam",
+      "wiki",
+      "Wiki",
+      "Chrome",
+      "Edge",
+      "Firefox",
+      "浏览器",
+      "个人",
+      "BepInEx"
+    ],
+    "min_window_size": [
+      400,
+      300
+    ]
+  },
+  "vision": {
+    "provider": "openai_compat",
+    "base_url": "",
+    "model": "",
+    "api_key_env": "VISION_API_KEY",
+    "timeout_seconds": 60,
+    "max_tokens": 2000,
+    "temperature": 0.2,
+    "json_response_format": false,
+    "max_image_side": 2048,
+    "extra_payload": {}
+  },
+  "brain": {
+    "provider": "openai_compat",
+    "base_url": "",
+    "model": "",
+    "api_key_env": "BRAIN_API_KEY",
+    "timeout_seconds": 60,
+    "max_tokens": 6000,
+    "temperature": 0.7,
+    "history_size": 3,
+    "extra_payload": {}
+  },
+  "goal": {
+    "enabled": true,
+    "label": "净赚目标（金额与天数见 target_profit / days）",
+    "target_profit": 3000,
+    "days": 30,
+    "start_day": null,
+    "start_cash": null,
+    "start_stock": null,
+    "start_equity": null
+  },
+  "control": {
+    "move_duration": 0.35,
+    "after_action_delay": 0.5
+  },
+  "action_gate": {
+    "enabled": true,
+    "settle_timeout_seconds": 10.0,
+    "poll_interval_seconds": 0.3,
+    "window_seconds": 8.0,
+    "state_probe_interval_seconds": 0.25,
+    "state_stable_reads": 2
+  },
+  "statewatch": {
+    "data_dir": "",
+    "poll_interval": 0.5,
+    "max_events": 500
+  },
+  "bridge": {
+    "base_url": "http://127.0.0.1:8965",
+    "timeout_seconds": 20
+  },
+  "paths": {
+    "artifacts_dir": "artifacts"
+  },
+  "knowledge": {
+    "enabled": true,
+    "dir": "knowledge/mechanics",
+    "max_cards": 4,
+    "max_chars": 2200,
+    "min_score": 3.0
+  },
+  "experience": {
+    "enabled": true
+  }
+}

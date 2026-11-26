@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deepspace-agent"
+version = "2.1.0"
+description = "Computer-use AI Agent：自主游玩 Steam 游戏《深空当铺：可能是偷得》(Probably Stolen)"
+requires-python = ">=3.12"
+dependencies = [
+    "Pillow>=10.0",
+    "requests>=2.31",
+    "pywin32>=306; sys_platform == 'win32'",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+include = ["game_agent*"]
+
+[tool.pytest.ini_options]
+# X03 测试治理：把测试根钉死在 tests/，否则仓库根裸跑 pytest 会把 artifacts/ 下的
+# 快照与备份目录一并递归收集，造成 40 个 collection error：
+#   - artifacts/pre_refactor_snapshot/tests/*.py 与真实 tests/ 同名 → import file mismatch
+#   - artifacts/pre_refactor_snapshot/scripts/bridge_test.py / toggle_overlay_test.py 同上
+#   - artifacts/_x03_backup/test_agent_hub.py 里的 `from agent_hub import ...` 依赖
+#     tests/conftest.py 注入的 sys.path，离开 tests/ 就 ModuleNotFoundError
+# 这是改造本身（建快照/备份目录）引入的副作用，不是历史遗留缺陷。
+testpaths = ["tests"]
+# 双保险：testpaths 只在「未显式给路径」时生效，显式跑 `pytest artifacts/` 仍会撞。
+norecursedirs = ["artifacts", ".git", "__pycache__", "*.egg-info", ".pytest_cache", "spacepawn"]
+# 无效转义（invalid escape sequence）是 SyntaxWarning——X03 已清掉 tests/ 下全部 2 条，
+# 这里提升为 error，防止再写回 `"\P"` / `"\D"` 这类 docstring。
+filterwarnings = [
+    "error::SyntaxWarning",
+    "error::DeprecationWarning:tests.*",
+]
