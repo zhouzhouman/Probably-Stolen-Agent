@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>DeepSpaceBridge</AssemblyName>
+    <RootNamespace>DeepSpaceBridge</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <!-- 游戏里 IMod / Assembly-CSharp 的类型都在托管程序集里，不做任何打包 -->
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <!-- 游戏安装目录（可用 -p:GameDir=... 覆盖） -->
+    <GameDir Condition="'$(GameDir)' == ''">D:\SteamLibrary\steamapps\common\Probably Stolen</GameDir>
+    <GameManaged>$(GameDir)\Probably Stolen_Data\Managed</GameManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="src\*.cs" />
+  </ItemGroup>
+
+  <!--
+    全部引用游戏自带的托管程序集。排除 System*.dll：
+    那份目录里的 System.* 与 netstandard2.1 的引用程序集重复，会触发 CS0433 类型冲突。
+  -->
+  <ItemGroup>
+    <Reference Include="$(GameManaged)\*.dll"
+               Exclude="$(GameManaged)\System*.dll;$(GameManaged)\mscorlib.dll;$(GameManaged)\netstandard.dll;$(GameManaged)\Mono.Security.dll">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

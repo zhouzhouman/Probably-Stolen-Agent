@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModManifest>
+  <ID>deepspace.bridge</ID>
+  <Name>DeepSpace Bridge（AI 玩家桥接）</Name>
+  <Author>deepspace-agent</Author>
+  <ModVersion>3.10.0</ModVersion>
+  <Description>把游戏状态以 HTTP(127.0.0.1:8965) 暴露给外部 AI 玩家，并接受动作指令；附带游戏内决策展示浮层（Ctrl+F10 显隐）。仅本机回环，不对外联网。</Description>
+  <GameVersions>
+    <!--
+      【2026-11-13 T01 平台合规改造】双声明，旧值不删。取舍理由（皆有官方依据）：
+
+      1) 正式版起 GameVersions 改成真实点分版本（major.minor.patch.revision），
+         界面上那句 "100-Rev14" 就等于 1.0.0.14（1 个 major 拆成 100/100 段）。
+         匹配规则里 "1.0.0" 覆盖 1.0.0 的全部 revision，1.0 覆盖 1.0 前缀全部，
+         无上限写法（"1.0.*" 之外的通配、"1.0 - *"、"1.0+"）官方明确不接受。
+         因此写 "1.0.0" 是官方推荐的默认写法（ModdingGuide.md:1402-1428
+         「Write `1.0.0` unless you have a reason not to.」）。
+      2) "0.46D" 是发售前遗留值。官方原话：1.0 之前的条目
+         「are shown without a colour and never warn」（不着色、永不警告），
+         并且「版本不匹配永不阻止加载」。保留它 ⇒ 零风险；
+         删掉它 ⇒ 万一以后要回退到旧构建就少一个合法门禁 ⇒ 只有兼容风险。
+         故保留旧值、追加新值（多条声明官方允许：「Several entries are fine,
+         and one that covers the game is enough.」）。
+
+      版本门禁比的是 Unity 的 Application.version（PlayerSettings.bundleVersion，
+      存在 globalgamemanagers 里 = "0.46D"），不是界面上那句写死的
+      "VERSION 100-Rev12"（那是 PlayerStore.VERSION_NUMBER 常量）。
+      现有三个 Workshop mod 也都写 0.46D。
+      核对来源：ModdingGuide.md「Game Versions」节 + APIChanges.md「November 2026:
+      100-Rev14」节，核对日期 2026-11-13。
+    -->
+    <Version>1.0.0</Version>
+    <Version>0.46D</Version>
+  </GameVersions>
+  <Prerequisites />
+  <Assemblies>
+    <Assembly>DeepSpaceBridge.dll</Assembly>
+  </Assemblies>
+  <!--
+    按扫描器实测结果申明（不多不少）：
+    network : 监听 127.0.0.1:8965 供本机 AI 客户端连接（必需）。
+    files   : v3.7 起确实有文件读写——model_config.ini（游戏内模型面板）、
+              agent.request / agent.status.json（与外部启动器 agent_hub.py 通信）、
+              agent_run.log。v3.7 之前只用 Stream 读 HTTP 请求体，确实用不到，
+              故曾去掉；现在必须申明，否则会被拒绝启用。
+
+    ⚠️ `process-start` 是**硬拦截**（ModScanner.Hard），不是可申明的能力：
+    DLL 里只要出现 Process.Start，整个 mod 直接拒绝加载（v3.8.0 实测踩过）。
+    因此游戏内「启动 Agent」按钮改为写信号文件，由外部 scripts/agent_hub.py 执行，
+    mod 侧绝不碰 Process。
+
+    【2026-11-13 T01 平台合规改造】已删除 `reflection-external` 声明，理由：
+    该能力自正式版起标为 deprecated，2026-12-10 的游戏更新会**直接拒绝**
+    仍然声明或仍然使用它的 mod（ModdingGuide.md:1457、:1494、:1820
+    「Activation is refused: declares capabilities mods can no longer use」）。
+    留着它 ⇒ 12-10 后必定无法加载；删掉它 ⇒ 必须保证代码侧不再「检得出来」。
+
+    为什么判定为可删：桥接反射的**目标**全是游戏自身类型（Assembly-CSharp.dll）——
+    StoreClientInstance.gridInv、StoreShutterButton.isClosed、EndOfDayUIManager.rows、
+    NegociationUIManager.primaryButton/secondaryButton、FeatureDefinition.isFeatureDiscovered
+    等，官方明确「反射游戏自身类型是免费的」（ModdingGuide.md:1463、:1710）。
+    只读字段、不改游戏行为、不注入代码。
+
+    ⚠️ 但「免费」的前提是**扫描器能读懂目标**：全部反射点必须写成 typeof(字面游戏类型)
+    + 字面成员名，或改走 ModReflect；computed receiver（`someObject.GetType().GetField(...)`）
+    与运行期拼出来的成员名会被判成 reflection-external（ModdingGuide.md:1457、:1710）。
+    本次改动前的两处 computed 反射点已作为变更请求 CR-T01-2 提交给 R2：
+      · mod/src/GameAccess.cs:32 `current.GetField(name, ...)`（name 来自参数，且
+        :55 传入的是 `target.GetType()`）
+      · mod/src/BridgeApi.cs:2739-2740 `rowType.GetField("Item1"/"Item2")`
+        （rowType 来自 mod/src/BridgeApi.cs:2738 `row.GetType()`）
+    这两处不转成 typeof 字面类型，本声明删除后 mod 会在启用时被判「检测到未声明能力」。
+    **在本行声明删除上线前，上面两个文件必须先由 R2 按其范围改完**，
+    并以 V5（游戏内 `mod-scan deepspace.bridge`）实机确认 declared 覆盖 detected。
+    离线自检见 scripts/check_mod_compliance.py（该脚本把这两处列为 REFLECTION 告警项）。
+    核对来源：ModdingGuide.md「Declaring capabilities」「Reflection」「Hard refusals」节，
+    核对日期 2026-11-13。
+  -->
+  <Capabilities>
+    <Capability>network</Capability>
+    <!--
+      files：v3.7 起确实有文件读写——model_config.ini（游戏内模型面板）、
+      agent.request / agent.status.json（与外部启动器 agent_hub.py 通信）、agent_run.log。
+      首次实现时注释写着"将来加文件读写必须补回来"，就是现在。
+    -->
+    <Capability>files</Capability>
+  </Capabilities>
+</ModManifest>
