@@ -54,7 +54,7 @@ python -m game_agent.cli mcp                          # ③ 启动 MCP 工具服
 
 python -m game_agent.cli goal                         # 查看商业目标进度
 python -m game_agent.cli knowledge --validate         # 校验机制知识卡
-python -m pytest -q tests                             # 全量测试（当前 874 passed）
+python -m pytest -q tests                             # 全量测试（当前 918 passed）
 ```
 
 启动游戏：`steam://rungameid/4348910`（直接跑 exe 会退出码 53）。必须**窗口化/无边框**运行，
@@ -136,7 +136,7 @@ UI 级（点按钮/选对话/拖拽）> 库存 API 级（容器间搬运，走�
 ├── knowledge/mechanics/    # 203 张机制卡（12 类，JSON）
 ├── config/agent.json       # 生效配置
 ├── scripts/                # 部署 / 运行 / 审计 / 分析脚本
-├── tests/                  # 单元测试（874 passed，离线可跑）
+├── tests/                  # 单元测试（918 passed，离线可跑）
 ├── artifacts/              # 运行产物（steps / observations / play_journal.md / STOP）
 └── docs/                   # 设计/评估/报告（01 ~ 28）
 ```
