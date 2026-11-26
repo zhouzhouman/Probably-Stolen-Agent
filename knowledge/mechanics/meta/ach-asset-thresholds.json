@@ -1,0 +1,58 @@
+{
+  "id": "ach-asset-thresholds",
+  "title": "资产成就 1 万 / 10 万严格大于",
+  "category": "meta",
+  "summary": "ACH_SETTLED 要总资产估值 >10000，ACH_RICH >100000，正好等于不算。",
+  "facts": [
+    "ACH_SETTLED 条件：总资产估值严格大于 10,000 信用点。",
+    "ACH_RICH 条件：总资产估值严格大于 100,000 信用点。",
+    "总资产恰好 10,000 或 100,000 都不满足对应成就。",
+    "金额按总资产估值判断，不能只看现金。",
+    "总资产包含库存、设备等估值，单纯攒现金不是最优路径。"
+  ],
+  "actions": [
+    "冲 ACH_SETTLED 时把库存估值一起算进去，目标定在 10,500 以上留余量",
+    "避免停在 10,000 整：多卖一件低值货即可越过",
+    "用 stock_value 与现金一起估算，不单看 money"
+  ],
+  "pitfalls": [
+    "现金刚到 10,000 就以为解锁：估值口径不同且需严格大于",
+    "为成就清空库存：估值反而掉下来"
+  ],
+  "effects": [
+    "总资产估值越过阈值 → 对应成就条件成立（Demo 平台解锁未确认）"
+  ],
+  "guards": [
+    "冲成就期间不卖高估值设备"
+  ],
+  "keywords": [
+    "ACH_SETTLED",
+    "ACH_RICH",
+    "总资产估值",
+    "10000",
+    "100000"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.economy.stock_value",
+        "op": "gte",
+        "value": 10000
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/achievements"
+  ],
+  "related": [
+    "ach-shop-quality-tiers",
+    "ach-demo-steam-status",
+    "insurance-fee-formula"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/achievements",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,57 @@
+{
+  "id": "appraisal-rank-fees",
+  "title": "鉴定等级与鉴定费（正式版四档）",
+  "category": "trade",
+  "summary": "鉴定分初级/鉴定师/高级/大师四档，基础费 20/40/60/100，费率随品级递减，等级越高越能接高品级货。",
+  "facts": [
+    "等级常量：RANK_JUNIOR=0 / RANK_APPRAISER=1 / RANK_SENIOR=2 / RANK_MASTER=3。",
+    "品级常量：GRADE_PERFECT=1 / EXCELLENT=2 / GOOD=3 / MEDIOCRE=4 / AWFUL=5。",
+    "初级：baseFee 20，费率 15/12/10/8/5%，鉴定进度 10/7/5/4/3，吸引力 33。",
+    "鉴定师：baseFee 40，费率 18/15/12/10/0%，进度 10/7/5/4/-3，吸引力 42。",
+    "高级：baseFee 60，费率 21/18/15/0/0%，进度 10/7/5/-3/-4，吸引力 48。",
+    "大师：baseFee 100，费率 25/21/0/0/0%，吸引力 55。",
+    "升级所需进度：初级→100，鉴定师→150，高级→250；升职失败重试间隔 PROMOTION_RETRY_DAYS=7 天。",
+    "低等级鉴高品级货：费率为 0 表示该等级**不受理**该品级。",
+    "当前状态看 /state 的 appraisal（rank / rank_name / progress / days_missed / promotion_pending）。"
+  ],
+  "actions": [
+    "接鉴定委托前先对照本等级受理的品级上限",
+    "鉴定失败/放弃会掉进度（负进度值），连续失败要停手"
+  ],
+  "pitfalls": [
+    "初级就接 AWFUL/低品级以外的货 → 该品级费率为 0，等于不受理。",
+    "以为鉴定费固定：基础费 20→100，且费率随品级变。",
+    "忽视 days_missed（漏做鉴定会影响升级节奏）。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "鉴定",
+    "鉴定等级",
+    "鉴定费",
+    "品级",
+    "appraisal",
+    "升职"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.appraisal.rank",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "decompile_full/AppraisalRankHelper.cs (Ranks 数组与常量)"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-11-07",
+  "related": [
+    "appraisal-overbid-trick",
+    "gun-order-acceptance"
+  ],
+  "source": "decompile:AppraisalRankHelper.cs",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false
+}

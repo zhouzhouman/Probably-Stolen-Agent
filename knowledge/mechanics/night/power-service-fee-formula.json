@@ -1,0 +1,56 @@
+{
+  "id": "power-service-fee-formula",
+  "title": "电费每晚 5+floor(D/10)",
+  "category": "night",
+  "summary": "电力服务按晚计费，成本随日期线性上涨；困难模式直接翻倍，需按当日 D 重算而非记固定价。",
+  "facts": [
+    "普通电费公式为 5＋floor(D÷10) 信用点；D 为计费时的内部日计数，floor 为向下取整。",
+    "困难模式把该结果乘 2：D＝20 时普通 7、困难 14。",
+    "偷电（POWER_HIJACK）解锁后费用置为 0 并把电力服务置为使用中；停电事件也会把显示费用置为 0。",
+    "服务费用为 0 不能证明当晚有电：断电欠费与停电事件在界面上都表现为 0。",
+    "2026-11-14 校正：开局首日不是这个公式的值：新游戏时 StoreService.ApplyDifficultyStart()（StoreService.cs:211-219，由 PlayerStore.cs:815 调用）会在基础价上一次性加 startPowerCostBonus（cozy/normal 0、hard 3、challenge 3，Difficulty.cs:215/259/303/347）；次日起 UpdateServiceCost()（PlayerStore.cs:1232-1241）逐项调 UpdateCost() 用上面公式重算并覆盖。1.0 实机 challenge 第 1 天：POWER_SERVICE cost=8（＝基础 5＋3），与公式算出的 10 不同，说明当天尚未走到 UpdateCost。"
+  ],
+  "actions": [
+    "睡前按当前 day 重算电费，不要用昨天的报价",
+    "看到费用 0 时去夜间日志确认是偷电还是停电"
+  ],
+  "pitfalls": [
+    "用开局服务初始化价当每晚固定电费：实际按 D 每 10 天涨 1 点",
+    "把 0 费用当成已供电"
+  ],
+  "effects": [
+    "支付成功：当晚照明与电网设备运转，现金 −(5＋floor(D÷10) 或 ×2)"
+  ],
+  "guards": [
+    "现金不足以同时支付电费+清洁+保险时，优先电费（影响机器与警报）"
+  ],
+  "keywords": [
+    "power-service",
+    "is_power_on",
+    "POWER_HIJACK",
+    "floor"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.services[].id",
+        "op": "contains",
+        "value": "power"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/power-service"
+  ],
+  "confidence": 0.92,
+  "verified_at": "2026-10-24",
+  "related": [
+    "power-off-battery-machines",
+    "commercial-power-upgrade",
+    "janitorial-fee-formula"
+  ],
+  "source": "wiki:/zh/wiki/services/power-service",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

@@ -1,0 +1,49 @@
+{
+  "id": "trashcan-permanent-removal",
+  "title": "清洁会永久删除垃圾桶内物品",
+  "category": "night",
+  "summary": "垃圾桶不是仓库：付清洁费即永久移除桶内容物；只有已解锁地下交易所时才能按清单换物。",
+  "facts": [
+    "垃圾桶说明明确：支付清洁服务后，桶内物品会在夜间被永久移除。",
+    "地下交易所换物需三步：看当前交换清单（部分每隔几天变化）→ 把清单要求物品放入垃圾桶 → 当晚使用清洁服务，次晨检查换回物品。",
+    "该交换不会被治安部追踪，但不使店内其他违禁品或既有证据失效。",
+    "未取得交易所资格时，普通丢弃不保证有回报；已开放交易所时先处理交换再清空垃圾。"
+  ],
+  "actions": [
+    "睡前把工具、商品、原料从垃圾桶取回",
+    "换物前先截图/记录清单要求，避免投错"
+  ],
+  "pitfalls": [
+    "把垃圾桶当免费储物格 → 夜间永久丢货",
+    "没解锁交易所就按攻略投物换货"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "trashcan",
+    "地下交易所",
+    "janitorial-service"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.rent.garbage_level",
+        "op": "gte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/janitorial-service"
+  ],
+  "confidence": 0.92,
+  "verified_at": "2026-10-24",
+  "related": [
+    "janitorial-fee-formula",
+    "garbage-level-attractiveness-penalty"
+  ],
+  "source": "wiki:/zh/wiki/services/janitorial-service",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

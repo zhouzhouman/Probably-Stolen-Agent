@@ -1,0 +1,45 @@
+{
+  "id": "fish-farm",
+  "title": "鱼场是产能，不是货架",
+  "category": "production",
+  "summary": "RAS/储水箱/饲料器/水分收集器构成产线；鱼片贡献了 72% 的已售流水。",
+  "facts": [
+    "产线：循环水养殖系统 + 养殖储水箱 + 牲畜饲料分配器 + 水分收集器（需要电力）。",
+    "设备（MACHINE/STORAGE/WATER）不是商品；卖掉等于杀鸡取卵。",
+    "罗非鱼/鱼苗/鱼卵是种鱼与苗种，优先留种；大鱼片/小鱼片才是商品。"
+  ],
+  "actions": [
+    "食品买家到场：sell large_fish_fillet / tiny_fish_fillet",
+    "缺饲料：phone_order mining / commissary",
+    "设备只升级不出售"
+  ],
+  "pitfalls": [
+    "把 RAS/储藏区卖给设备买家",
+    "为凑现金卖种鱼，后续产量归零"
+  ],
+  "keywords": [
+    "鱼场",
+    "养殖系统",
+    "鱼苗",
+    "鱼子"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client.buying_tags",
+        "op": "contains",
+        "value": "FOOD"
+      }
+    ]
+  },
+  "evidence": [
+    "docs/10 储存区清单：设备 12,591 / 商品 7,837",
+    "sold 流水鱼片占 72%"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "source": "docs:10-十日千元目标与修复报告.md（设备 12,591 / 商品 7,837）"
+}

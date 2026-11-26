@@ -1,0 +1,56 @@
+{
+  "id": "gun-order-acceptance",
+  "title": "枪械订单：先看需求是否全满足再接",
+  "category": "trade",
+  "summary": "订单有必选(mandatory)与加分(bonus)两组需求，必选全满足才算可交(accepted)；需求要拿「这单对应的枪」逐条判定。",
+  "facts": [
+    "订单分三档：TIER_BASIC=1 / TIER_MID=2 / TIER_HIGH=3，best 订单额外溢价 BEST_PREMIUM_PERCENT=50%。",
+    "订单挂在顾客对象上（StoreClient.gunOrderData），/state 的 client.gun_order 给出完整明细。",
+    "必选需求 mandatoryRequirements 全部 IsMet 才算 accepted=true；bonus 只加钱不作废。",
+    "「这单对应的枪」由 GunOrderData.ResolveOrderGun() 解析：服务单看已放置的枪，否则看当前议价物品或后台含 ADV_GUN_TAG 的枪。",
+    "实际奖励 = 订单奖励 × (100 + 市场修正% + retailMarkup) / 100（ApplyRewardModifiers）。",
+    "每条需求带 met 字段（已按当前枪算过），不要自己猜。"
+  ],
+  "actions": [
+    "接单前逐条核对 client.gun_order.must 的 met 是否全为 true",
+    "met 不满足时，先看能否换枪/改装配件，再决定接不接"
+  ],
+  "pitfalls": [
+    "只看 base_reward 就接单，忽略 mandatory 未满足 → 交不了货。",
+    "把 bonus 需求当成硬性条件，白白放弃可接的单。",
+    "自己按名字猜需求是否满足，不看 met 字段。"
+  ],
+  "effects": [],
+  "guards": [
+    "accepted=false 时不要让顾客进入交付对话"
+  ],
+  "keywords": [
+    "枪械订单",
+    "订单",
+    "需求",
+    "改装",
+    "gun order",
+    "枪械",
+    "交付订单"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client.gun_order",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "decompile_full/GunOrderData.cs / GunOrderRequirement.cs"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-11-07",
+  "related": [
+    "appraisal-rank-fees"
+  ],
+  "source": "decompile:GunOrderData.cs",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false
+}

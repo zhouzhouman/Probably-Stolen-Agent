@@ -1,0 +1,52 @@
+{
+  "id": "rep-per-trade-formula",
+  "title": "单笔声望=点数÷400×倍率",
+  "category": "customer",
+  "summary": "声望基础换算是整数点数÷400，下层区再乘 0.66、上层区乘 1.2。",
+  "facts": [
+    "单笔交易声望基础换算为：整数点数 ÷ 400。",
+    "下层区顾客派系倍率为 0.66。",
+    "上层区顾客派系倍率为 1.2，约为下层区的 1.82 倍。",
+    "基础整数点数还会再经顾客交易倍率，不能从物品标价直接反推最终声望。",
+    "本次静态检索未发现每日或每周的声望自然衰减（衰减率 = 0）。"
+  ],
+  "actions": [
+    "想刷声望优先做上层区交易（×1.2），下层区效率只有其 55%"
+  ],
+  "pitfalls": [
+    "按成交额估算声望涨幅 → 实际要除以 400 再打折"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "reputation",
+    "0.66",
+    "1.2",
+    "派系倍率"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.reputations",
+        "op": "truthy"
+      },
+      {
+        "field": "visible_info.table.nego_open",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/faction-standing"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "rep-clamp-22-grades",
+    "rep-multipliers"
+  ],
+  "source": "wiki:/zh/wiki/terms/faction-standing",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

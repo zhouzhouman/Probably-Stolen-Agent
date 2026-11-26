@@ -1,0 +1,60 @@
+{
+  "id": "rat-husbandry-feeding",
+  "title": "养鼠：饲料与饥饿管理",
+  "category": "production",
+  "summary": "鼠要动物笼+饲料分配器+储备食物；低于 375 才进食，拥挤线 55%。",
+  "facts": [
+    "需要动物笼、牲畜饲料分配器与食物；食物要先放进分配器加工成储备，并与目标鼠处于同一库存。",
+    "饥饿值低于 375 才尝试进食，储备充足时补到约 425；「低于 400 会少长肉」不是进食开关。",
+    "动物占格超过容器面积 55% 开始拥挤，需及时分笼或出肉。",
+    "不要用鼠肉回喂，会进入朊病毒疾病链；血清会增加饥饿负担。",
+    "孕鼠断粮会触发高概率流产，供粮优先级：种鼠 > 孕鼠 > 幼鼠 > 肉鼠。"
+  ],
+  "actions": [
+    "每天先检查分配器储备与次日饥饿值",
+    "优先保种鼠/孕鼠/幼鼠的粮",
+    "拥挤前分笼或处理肉鼠"
+  ],
+  "pitfalls": [
+    "把食物直接丢进笼子而不经分配器加工 → 鼠吃不到",
+    "断粮拖到孕鼠流产",
+    "鼠肉回喂引发朊病毒"
+  ],
+  "effects": [
+    "喂到：次日饥饿值回升到约 425，生长按正常速度",
+    "断粮：生长变慢、繁殖力下降、孕鼠可能流产"
+  ],
+  "guards": [
+    "容器占用 ≤55%",
+    "分配器内有储备"
+  ],
+  "keywords": [
+    "动物笼",
+    "饲料分配器",
+    "饥饿值",
+    "朊病毒",
+    "animal_cage",
+    "livestock_feed_dispenser"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.machines",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki:/zh/guides/rat-ranching-feeding-breeding-and-meat"
+  ],
+  "related": [
+    "rat-breeding-genetics",
+    "rat-meat-yield"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/guides/rat-ranching-feeding-breeding-and-meat",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

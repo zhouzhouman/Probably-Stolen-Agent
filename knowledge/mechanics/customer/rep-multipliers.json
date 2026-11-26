@@ -1,0 +1,54 @@
+{
+  "id": "rep-multipliers",
+  "title": "声望增减的七种倍率",
+  "category": "customer",
+  "summary": "舌灿莲花×1.33、严重违禁品×(违禁等级×0.5+1)、黑市负向×2、大嘴巴×0.5。",
+  "facts": [
+    "起始特权「舌灿莲花」使正向点数 ×1.33。",
+    "严重违禁品倍率为 ×（违禁等级 × 0.5 + 1），违禁等级 1 时即 ×1.5。",
+    "黑市负向在 ModReputation 分支硬编码 ×2，且不检查黑市特权。",
+    "起始特权「大嘴巴」使黑市与革命军的正向收益 ×0.5。",
+    "上层区特权 UL_PETITION 使治安部负向 ×2。",
+    "黑市另有 1.5 常量与 1.5 字段初值的 2 个来源，但读取点未定位，净倍率需运行验证。"
+  ],
+  "actions": [
+    "卖严重违禁品前先扣掉 ×2 的黑市惩罚再算收益"
+  ],
+  "pitfalls": [
+    "带大嘴巴特质还去刷黑市/革命军 → 正向只拿 50%"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "舌灿莲花",
+    "大嘴巴",
+    "UL_PETITION",
+    "ModReputation",
+    "违禁等级"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.reputations",
+        "op": "truthy"
+      },
+      {
+        "field": "visible_info.table.nego_open",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/faction-standing"
+  ],
+  "confidence": 0.88,
+  "verified_at": "2026-10-24",
+  "related": [
+    "rep-per-trade-formula",
+    "bm-perk-thresholds"
+  ],
+  "source": "wiki:/zh/wiki/terms/faction-standing",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

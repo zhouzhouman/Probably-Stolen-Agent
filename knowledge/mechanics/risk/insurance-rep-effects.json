@@ -1,0 +1,52 @@
+{
+  "id": "insurance-rep-effects",
+  "title": "声望直接改保险与证据倍率",
+  "category": "risk",
+  "summary": "沦为猎物保险倍率 2、无法参保直接拒保、守口如瓶证据倍率 0.5。",
+  "facts": [
+    "下层区沦为猎物 LLTARGET（≤−60）的保险倍率为 2，即保费翻倍。",
+    "黑市无法参保 BM_UNINSURABLE（≤−60）是拒保，可用保险数量为 0，不是加价。",
+    "下层区守口如瓶 LLTIGHTLIPS（≥80）的证据倍率为 0.5，即证据减半。",
+    "黑名单 BM_DISTRUSTED（≤−40）的清洁费翻倍（×2，消费点未定位）。",
+    "以上 4 项均为效果参数而非解锁门槛，须看面板实际启用项。"
+  ],
+  "actions": [
+    "保险成本上升时先查是否踩了 ≤−60 的沦为猎物",
+    "有保险前不要囤高值货过夜"
+  ],
+  "pitfalls": [
+    "同时踩下层 −60 与黑市 −60 → 保费翻倍且可能直接拒保"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "LLTARGET",
+    "BM_UNINSURABLE",
+    "LLTIGHTLIPS",
+    "保险倍率"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.economy.insurance_days_without",
+        "op": "gte",
+        "value": 7
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/reputation/lower-level-perks",
+    "wiki: /zh/wiki/reputation/black-market-perks"
+  ],
+  "confidence": 0.88,
+  "verified_at": "2026-10-24",
+  "related": [
+    "ll-perk-thresholds",
+    "bm-perk-thresholds",
+    "night-service-cost"
+  ],
+  "source": "wiki:/zh/wiki/reputation/black-market-perks",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,53 @@
+{
+  "id": "npc-georgio-schedule",
+  "title": "乔治奥按D值六次来访",
+  "category": "customer",
+  "summary": "六次固定日计数来访，D=27 求飞船借款；核废料返还另需 D≥3 且曾丢弃核废料。",
+  "facts": [
+    "非无尽模式日计数：D=6 初见、D=9 介绍新发明、D=12 出售香烟、D=16 带来上层区货物、D=21 再次出售特殊货物、D=27 请求飞船借款。",
+    "核废料返还独立条件：D≥3、曾丢弃核废料、且尚未触发该次来访。",
+    "角色生成用拾荒客设置 + 下层区阵营；加入来客列表前还过「已知告密者」检查。",
+    "他会把商品说成外星遗物、「未来之水」或保真的海明威香烟，这些是销售说辞，且专门配了假货设置。",
+    "无尽模式下这条角色线会被跳过。"
+  ],
+  "actions": [
+    "D=12/16/21 备好验货工具再交易",
+    "D=27 前先算清现金流再决定借款"
+  ],
+  "pitfalls": [
+    "信他的「保真」保证：假货是专门配的",
+    "以为每次丢核废料都有回收：一次性条件"
+  ],
+  "effects": [
+    "触发来访 → 生成对应商品/借款对话"
+  ],
+  "guards": [
+    "现金 < 借款额时拒绝 D=27 借款"
+  ],
+  "keywords": [
+    "乔治奥",
+    "核废料",
+    "已知告密者",
+    "飞船借款"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-georgio"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "npc-visit-state-rules"
+  ],
+  "source": "wiki:/zh/wiki/terms/npc-georgio",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

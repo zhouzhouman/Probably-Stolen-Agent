@@ -1,0 +1,53 @@
+{
+  "id": "mortgage-default-seizure",
+  "title": "断供先收物品再收店铺",
+  "category": "risk",
+  "summary": "断供会先取走物品抵偿，财物不足时直接收走店铺；付清本难度规定的期数才解除风险。",
+  "facts": [
+    "断供后第 1 步是取走物品抵偿（并非立即收店）。",
+    "可收取财物不足时第 2 步收走店铺，经营终止。",
+    "被抵走库存不等于免付，剩余期数仍然存在。",
+    "期数不是固定 14：按难度 cozy 8 / normal 12 / hard 16 / challenge 16（Difficulty.cs:232/276/320/364），付清对应期数才解除房产债务风险。",
+    "催款来访提供「还款 / 不还款」2 个选择，后果按当前债务状态处理。",
+    "2026-11-13 校正：旧结论「只有付清全部 14 期才解除风险」→ 新结论「期数按难度 8/12/16/16」，依据 PlayerStore.cs:3919-3922 GetMortgageWeeks() 与 Difficulty.cs:232/276/320/364。"
+  ],
+  "actions": [
+    "还款日优先保周供，宁可卖库存也不要不还款",
+    "不要在断供期囤高值库存（会被直接抵走）"
+  ],
+  "pitfalls": [
+    "以为被抄一次库存就两清 → 下期照扣，最后照样收店"
+  ],
+  "effects": [],
+  "guards": [
+    "现金 < 周供 时提前卖货，不要等催款来访"
+  ],
+  "keywords": [
+    "断供",
+    "收店",
+    "催款",
+    "loan_shark"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.economy.loan_days",
+        "op": "lte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/rent-and-loans"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "mortgage-weekly-payment",
+    "rent-default-evicted"
+  ],
+  "source": "wiki:/zh/wiki/terms/rent-and-loans",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

@@ -1,0 +1,53 @@
+{
+  "id": "micro-purifier-durability",
+  "title": "微型净水器耐久换算",
+  "category": "production",
+  "summary": "海德拉微型净水器把任意水拉到基础水，每 100ml 扣 1 耐久且不足就整份不处理。",
+  "facts": [
+    "海德拉科技微型净水器把任意水质提升到基础水级别，耐久消耗 = 向上取整（实际水量 ÷ 100 毫升）。",
+    "实测换算：100ml→1 点、101ml→2 点、750ml→8 点、2,000ml→20 点、6,000ml→60 点。",
+    "水质已达 98% 时拒绝重复处理；耐久不足时整份不处理，不会按剩余耐久自动净化一部分。",
+    "按实际液体数量结算，与容器最大容量无关；沟渠水与铁锈水同一公式。",
+    "高级滤水器每天开始时恢复 50 点耐久，但滤水器只去杂质、微塑料、有机废物三类，超过纯度阈值后不再生效（阈值未给出）。",
+    "韧棉织物织孔太粗、完全无法用于净水；水培芦苇滤芯可在过滤系统内去除特定污染物。"
+  ],
+  "actions": [
+    "处理大批水前按 ceil(ml/100) 算够耐久再动手",
+    "大水量优先走净水器过夜，微型净水器留给小批量应急"
+  ],
+  "pitfalls": [
+    "拿微型净水器洗 6 升沟渠水：一次吃掉 60 点耐久",
+    "在 98% 的水上反复使用：被拒绝，白费操作"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "海德拉科技微型净水器",
+    "高级滤水器",
+    "净水药片",
+    "紫外线灯",
+    "水培芦苇滤芯",
+    "韧棉"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.inventory.owned.features",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/water-purification",
+    "wiki: /zh/wiki/occupations/occupation-water-merchant"
+  ],
+  "confidence": 0.93,
+  "verified_at": "2026-10-24",
+  "related": [
+    "water-grade-tiers"
+  ],
+  "source": "wiki:/zh/wiki/terms/water-purification",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

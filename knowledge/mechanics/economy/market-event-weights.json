@@ -1,0 +1,50 @@
+{
+  "id": "market-event-weights",
+  "title": "事件权重 180 不是概率",
+  "category": "economy",
+  "summary": "15 项事件总权重 180，权重 15 的单次份额约 8.33%，不是「每天 15%」。",
+  "facts": [
+    "普通随机池共 15 项事件，总权重 180。",
+    "权重 15 的单次抽取份额 = 15 ÷ 180 ≈ 8.33%。",
+    "无活跃事件（50% 生成判定）时，权重 15 事件的当日判定概率 ≈ 4.17%。",
+    "权重分布：9 项为 15；电力短缺 7；发电厂检修 10；游轮停靠 10；全站停电 4；奥克西莫成瘾上升 6；下层区暴民私刑 8。",
+    "权重是相对抽取份额，冷却与其它筛选会缩小可用范围。",
+    "当前观测层没有「事件权重/活跃事件」字段，需扩展后才能按条件触发。"
+  ],
+  "actions": [
+    "按权重估算命中率",
+    "按事件权重排补货优先级"
+  ],
+  "pitfalls": [
+    "把「权重 15」读成「15% 概率」→ 高估约 1.8 倍。",
+    "忽略冷却：可用池变小后实际命中率高于 8.33%。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "权重",
+    "总权重 180",
+    "抽取份额"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.afterhour_events",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/market-events"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "market-event-gen-prob",
+    "market-event-price-mods"
+  ],
+  "source": "wiki:/zh/wiki/terms/market-events",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

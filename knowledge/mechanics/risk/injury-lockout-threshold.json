@@ -1,0 +1,56 @@
+{
+  "id": "injury-lockout-threshold",
+  "title": "伤势 >5 即重伤，禁止外出拾荒",
+  "category": "risk",
+  "summary": "轻伤 +2、重伤 +5，伤势超过 5 判重伤并封掉拾荒，直到压回 5 以下。",
+  "facts": [
+    "轻伤增加 2 点伤势，重伤增加 5 点，并使伤口变为不稳定状态。",
+    "伤势大于 5 会被判为重伤（seriously wounded），限制外出拾荒。",
+    "这里的数值是伤势等级，不是生命值或伤口数量。",
+    "战斗中的出血效果不能等同于拾荒伤势。",
+    "外用药膏绷带管愈合辅助、止血绷带管出血，与基础绷带的包扎不同。"
+  ],
+  "actions": [
+    "伤势到 4 就停止拾荒，避免跨过 5",
+    "出门前查 seriously_wounded 再决定"
+  ],
+  "pitfalls": [
+    "按「轻伤没事」继续拾荒：两次轻伤就 4 点，再一次直接锁死",
+    "用基础绷带处理出血：不对症"
+  ],
+  "effects": [
+    "伤势 >5 → seriously_wounded = true → 禁止拾荒"
+  ],
+  "guards": [
+    "visible_info.night.seriously_wounded 为 true 时禁止进入垃圾场"
+  ],
+  "keywords": [
+    "seriously_wounded",
+    "轻伤",
+    "重伤",
+    "afterhours"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.night.seriously_wounded",
+        "op": "eq",
+        "value": true
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/health-and-addiction",
+    "wiki: /zh/wiki/terms/afterhours"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "wound-night-settlement",
+    "scavenge-injury-formula"
+  ],
+  "source": "wiki:/zh/wiki/terms/health-and-addiction",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

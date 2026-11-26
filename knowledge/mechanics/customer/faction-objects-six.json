@@ -1,0 +1,55 @@
+{
+  "id": "faction-objects-six",
+  "title": "只有 6 个派系有独立声望",
+  "category": "customer",
+  "summary": "下层区/上层区/治安部/黑市/革命军/卡特尔共 6 个有声望对象，中层区与游客为 0。",
+  "facts": [
+    "有独立声望对象的派系共 6 个：下层区、上层区、治安部、黑市、革命军、13 区卡特尔。",
+    "中层区与游客对应的声望对象数量为 0。",
+    "指南另提到 6 类顾客派系（含中层、游客），但不等同于 6 个声望对象。",
+    "革命、教会、卡特尔 3 类声望在分析记录中出现，不能据此当成同一种顾客分组。",
+    "每次交易只结算 1 个对应派系的声望，不跨派系共享。"
+  ],
+  "actions": [
+    "做声望规划时只针对这 6 个对象，不要在游客/中层身上做无效投入"
+  ],
+  "pitfalls": [
+    "以为讨好游客能提升任何声望 → 游客无声望对象"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "派系",
+    "中层区",
+    "游客",
+    "卡特尔",
+    "革命军"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.reputations",
+        "op": "truthy"
+      },
+      {
+        "field": "visible_info.table.nego_open",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/faction-standing",
+    "wiki: /zh/wiki/factions"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "rep-clamp-22-grades",
+    "cartel-perk-thresholds"
+  ],
+  "source": "wiki:/zh/wiki/terms/faction-standing",
+  "review_note": "待人工定论：正式版 StoreReputation 有 8 个派系常量（LOWER/UPPER/SECURITY/BLACK_MARKET/REVOLUTION/TOURIST/CHURCH/CARTEL），而实机 /state.reputations 只返回 5 个（下层/上层/治安部/黑市/革命军）。原卡说 6 个，三个口径都不一致——不能凭常量存在就断言有独立声望对象，需在游戏内实测游客/教会/卡特尔是否各自累计声望后再改。",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

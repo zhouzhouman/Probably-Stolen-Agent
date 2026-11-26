@@ -1,0 +1,53 @@
+{
+  "id": "nego-rep-multiplier-tiers",
+  "title": "议价声望倍率四档",
+  "category": "trade",
+  "summary": "让利按比例加声望倍率，争利成功直接把倍率设为负值；跨档代价陡增。",
+  "facts": [
+    "让利/争利比例 p ≤ 10%：主动让利倍率 +1；争利成功倍率变 −3。",
+    "10% < p ≤ 25%：让利 +1.5；争利 −6。",
+    "25% < p < 50%：让利 +2.5；争利 −12。",
+    "p > 50%：让利 +3；争利 −16。",
+    "让利时奖励是加到原倍率 B 上（B=1 时让利 10% → 2，让利 25% → 2.5）；争利成功是把该方向倍率直接设为负值（争利 10% → −3），不是从 B 中扣减。",
+    "倍率不是固定声望点数，最终声望还与交易额有关；界面给出「每交易 1000 信用点的预计声望」，应与接受/拒绝/离开概率一起看。",
+    "单笔声望 = 整数点数 ÷ 400 × 派系倍率，其中上层区 1.2、下层区 0.66（wiki-economy 交接）；倍率档位只放大这条公式的结果，不改变点数本身。"
+  ],
+  "actions": [
+    "出售侧提供折扣",
+    "购买侧提出加价"
+  ],
+  "pitfalls": [
+    "为冲声望一次性让利 >50%：倍率只到 +3，但现金让出更多，单位现金的声望性价比反而下降。",
+    "只看单件差价不看每 1000 信用点声望预览。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "声望倍率",
+    "让利",
+    "争利",
+    "每交易 1000 信用点"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.table.nego_open",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/trading-and-bargaining"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "nego-four-directions",
+    "discount-boosts-budget",
+    "budget-perk-unlocks"
+  ],
+  "source": "wiki:/zh/wiki/terms/trading-and-bargaining",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

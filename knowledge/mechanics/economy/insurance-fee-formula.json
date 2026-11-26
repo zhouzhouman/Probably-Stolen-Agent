@@ -1,0 +1,72 @@
+{
+  "id": "insurance-fee-formula",
+  "title": "保费按总资产计价",
+  "category": "economy",
+  "summary": "保费＝3+⌊总资产/400⌋，再乘「被针对」×2 与难度倍率（cozy/normal ×1、hard ×2、challenge ×3）。",
+  "facts": [
+    "基础保费 3 信用点；游戏估算的总资产 W 每满 400 再加 1（W 含自有物品估值与现金，不是标价）。",
+    "W＝3999 时保费 12；W＝4000 才升到 13。",
+    "结算顺序：①3＋⌊W÷400⌋ →②下层区「被针对」LLTARGET 生效则 ×2 →③再乘难度倍率 insuranceCostMultiplier：cozy 1 / normal 1 / hard 2 / challenge 3（Difficulty.cs:214/258/302/346；StoreService.cs:314 应用）。因此 hard＋被针对 = ×4，challenge＋被针对 = ×6。",
+    "下层区「被针对」同时提高被小偷盯上的频率，并把基础阈值改为 66。",
+    "黑市「拒保」直接让保险服务不可用——这是与「保费变高」不同的状态。",
+    "保费按晚选择，睡前可加入或退出。",
+    "声望侧两个独立状态：下层区「沦为猎物」LLTARGET 需下层区声望 ≤ −60，保险倍率参数为 2；黑市「无法参保」BM_UNINSURABLE 需黑市声望 ≤ −60，保险直接不可用。",
+    "黑市「黑名单」BM_DISTRUSTED 需黑市声望 ≤ −40，清洁费翻倍（来自游戏说明，消费点未定位），与保险是两回事。",
+    "wiki 未给任何「高声望保费折扣」数值，不要写成声望越高越便宜。",
+    "2026-11-13 校正：旧结论「被针对×2、困难再×2，最高可翻四倍」→ 新结论「难度倍率是 1/1/2/3（challenge 为 ×3，非 ×2），叠加被针对后最高 ×6」，依据 Difficulty.cs:214/258/302/346 + StoreService.cs:314。",
+    "2026-11-14 校正：开局首日还要加一次性 startInsuranceCostBonus（cozy/normal 0、hard 4、challenge 5，Difficulty.cs:217/261/305/349，由 StoreService.ApplyDifficultyStart() 在 StoreService.cs:216 施加）；次日起 UpdateCost()（StoreService.cs:309-314）用 3＋⌊W÷400⌋ 重算覆盖。1.0 实机 challenge 第 1 天 INSURANCE_SERVICE cost=9（＝基础 4＋5），cozy 快照为 4（＝基础 4＋0）。"
+  ],
+  "actions": [
+    "睡前按当前 W 重算保费，不要沿用昨天的数字",
+    "困难模式+被针对时，用暗格降风险比买保险更划算"
+  ],
+  "pitfalls": [
+    "用展示柜标价估算 W：W 是总资产（含现金）",
+    "W 跨过 400 的整数倍时保费会跳 1 点，预算要留余量"
+  ],
+  "effects": [
+    "付费成功：现金 −保费，当晚进入受保分支，连续未投保夜数清零"
+  ],
+  "guards": [
+    "现金 < 保费×2 时不要同时开其它夜间服务"
+  ],
+  "keywords": [
+    "insurance_days_without",
+    "Joe Wild",
+    "被针对",
+    "拒保",
+    "总资产"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "CLOSED"
+      },
+      {
+        "field": "visible_info.economy.insurance_days_without",
+        "op": "gte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/insurance-service",
+    "wiki: /zh/wiki/reputation/lower-level-perks",
+    "wiki: /zh/wiki/reputation/black-market-perks"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "day-cycle",
+    "insurance-rep-effects",
+    "insurance-return-items",
+    "insurance-unavailable-states",
+    "night-theft-threshold"
+  ],
+  "source": "wiki:/zh/wiki/services/insurance-service",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false
+}

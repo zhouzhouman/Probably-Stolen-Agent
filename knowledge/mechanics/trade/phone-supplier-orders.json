@@ -1,0 +1,54 @@
+{
+  "id": "phone-supplier-orders",
+  "title": "电话订货四渠道",
+  "category": "trade",
+  "summary": "拿名片解锁四类联系人，下单显示数量与「次日/若干天后」送达，夜间日志提示可接单。",
+  "facts": [
+    "四个已核实订货渠道：红魔鬼酿酒厂 → 啤酒；GP 采矿合作社 → 矿石；Wilds 网络药商 → 奥克西莫注射器；化学家 → 梦尘。",
+    "每个渠道都需先获得对应联系人名片（phone.contacts 中出现该联系人）才能致电下单。",
+    "电话选项显示本单数量与「次日」或「若干天后」送达；不是所有联系人都即时发货。",
+    "夜间日志会提示「联系人已准备好接受新订单」；未接单时按「冷却 → 未解锁 → 无人接听」顺序排查。"
+  ],
+  "actions": [
+    "打开电话",
+    "致电联系人",
+    "下单订货"
+  ],
+  "pitfalls": [
+    "按「次日到货」安排隔天交付的采购订单 → 部分是「若干天后」，会错过交货日。",
+    "没拿名片就翻电话本：联系人不存在。"
+  ],
+  "effects": [
+    "下单成功：现金扣除本单金额，货在次日或若干天后的夜间日志到达。"
+  ],
+  "guards": [],
+  "keywords": [
+    "联系人名片",
+    "红魔鬼酿酒厂",
+    "GP 采矿合作社",
+    "药商",
+    "化学家",
+    "phone.open"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.phone.open",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/suppliers-and-wholesale"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "wholesale-batch-deal",
+    "market-event-price-mods"
+  ],
+  "source": "wiki:/zh/wiki/terms/suppliers-and-wholesale",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

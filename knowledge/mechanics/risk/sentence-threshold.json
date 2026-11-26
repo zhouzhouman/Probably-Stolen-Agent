@@ -1,0 +1,60 @@
+{
+  "id": "sentence-threshold",
+  "title": "刑罚三档阈值",
+  "category": "risk",
+  "summary": "总值 100–299 罚款、300–1499 监禁、1500 及以上处决；<100 不适用。",
+  "facts": [
+    "预计判罚按当前犯罪总值：0–99 不适用；100–299 罚款；300–1499 监禁；≥1500 处决。",
+    "罚款数额等于当前犯罪总值（100–299 区间即 100–299 信用点）。",
+    "无证经营单次犯罪值 50 ＋ 20×(店铺天数 mod 7)，即 50/70/90/110/130/150/170，每 7 天循环。",
+    "拒买营业许可累计两次即可越过 100 进入罚款档；到 300 进监禁档。",
+    "总值 <100 时档案显示「不适用」只是显示条件，不代表以前累积的调查进度清零；正式清案才全归零。",
+    "现场盘查另按查获物品处置，与档案预计判罚是两套结算。",
+    "当前观测层无「犯罪总值/预计判罚」字段，需扩展。"
+  ],
+  "actions": [
+    "总值逼近 300 前必须摆平者或清案",
+    "不想被罚：宁买 1500 营业许可也不要连续拒买"
+  ],
+  "pitfalls": [
+    "看到「不适用」就当已清案：只是显示条件",
+    "把盘查现场处置与档案判罚混成一个结算"
+  ],
+  "effects": [
+    "达到 1500 触发处决，游戏结束"
+  ],
+  "guards": [
+    "犯罪总值 ≥250 时禁止继续任何违法交易"
+  ],
+  "keywords": [
+    "判罚",
+    "罚款",
+    "监禁",
+    "处决",
+    "无证经营",
+    "清案"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk.crime_value",
+        "op": "gte",
+        "value": 100
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/crime-and-investigation",
+    "wiki: /zh/wiki/terms/business-permit"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "investigation-daily-growth",
+    "fixer-crime-reduction"
+  ],
+  "source": "wiki:/zh/wiki/terms/crime-and-investigation",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

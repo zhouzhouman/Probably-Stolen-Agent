@@ -1,0 +1,59 @@
+{
+  "id": "ach-shop-quality-tiers",
+  "title": "吸引力 1000 与机器品质 250",
+  "category": "meta",
+  "summary": "三个硬门槛成就：吸引力 ≥1000、调整后机器品质 ≥250、自有机器 ≥10 台。",
+  "facts": [
+    "ACH_SHINY：店铺吸引力 ≥ 1,000（含等于）。",
+    "ACH_OVERLOAD：机器调整后品质 ≥ 250（含等于，按调整后算不是裸值）。",
+    "ACH_INDUSTRIOUS：被相应查询收集到的自有机器数量 ≥ 10。",
+    "吸引力受脏乱惩罚影响，garbage_level 每超 2 一级扣基础吸引力 5%。",
+    "机器品质需先装模组调整，才可能达到 250。"
+  ],
+  "actions": [
+    "冲 ACH_SHINY 前先 clear_trash 把垃圾等级压回 2 以下",
+    "冲 ACH_OVERLOAD 先装高品质模组再看调整后数值",
+    "冲 ACH_INDUSTRIOUS 前算清每台机器的独立耗电"
+  ],
+  "pitfalls": [
+    "吸引力 1000 但垃圾等级高：结算时被扣回 1000 以下",
+    "用裸机品质算 250：要调整后"
+  ],
+  "effects": [
+    "指标达标 → 对应成就条件成立"
+  ],
+  "guards": [
+    "机器 ≥10 台前先确认总供电足够"
+  ],
+  "keywords": [
+    "ACH_SHINY",
+    "ACH_OVERLOAD",
+    "ACH_INDUSTRIOUS",
+    "吸引力",
+    "调整后品质"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.economy.attractiveness",
+        "op": "gte",
+        "value": 1000
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/achievements"
+  ],
+  "related": [
+    "ach-asset-thresholds",
+    "attractiveness-dirt-penalty",
+    "garbage-level-attractiveness-penalty",
+    "module-effects-and-nodes"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/achievements",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

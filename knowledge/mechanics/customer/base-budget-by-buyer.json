@@ -1,0 +1,52 @@
+{
+  "id": "base-budget-by-buyer",
+  "title": "五种买家基础预算公式",
+  "category": "customer",
+  "summary": "水类买家预算随内部日 D 线性上涨；囤水者 D+500，买水的顾客约 145+D/4。",
+  "facts": [
+    "囤水者：B = D + 500 + R0–100（D=14 时 514–614）。",
+    "买水的顾客：B = 145 + ⌊D÷4⌋ + R0–50（D=14 时 148–198）。",
+    "上层区私人厨师：B = D + 400 + R0–100（D=14 时 414–514）。",
+    "买水的拾荒客：B = 175，固定不随 D 变化。",
+    "水相关事件的普通买家：B = 150 + R0–50（150–200）。",
+    "R0–N 表示两端都包含的随机整数；D 是生成顾客时的内部日计数，与界面日期的偏移未核实。"
+  ],
+  "actions": [
+    "用内部日 D 估算预算",
+    "按水类买家预算定价"
+  ],
+  "pitfalls": [
+    "用界面「第 N 天」直接代入 D → 偏移未核实，预算估算可能整体偏差。",
+    "以为预算随天数对所有买家都涨：买水的拾荒客固定 175。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "囤水者",
+    "买水的顾客",
+    "私人厨师",
+    "水配给",
+    "内部日计数"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client.is_buying",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/customer-budgets"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "budget-formula",
+    "showcase-client-tier"
+  ],
+  "source": "wiki:/zh/wiki/terms/customer-budgets",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

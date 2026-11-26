@@ -1,0 +1,50 @@
+{
+  "id": "crew-juan-stats",
+  "title": "雇工Juan：100血、费用80",
+  "category": "quest",
+  "summary": "Juan 健康 100/100、基础费用 80、勇气 0、无特质；11 个特质枚举都没有实现加成。",
+  "facts": [
+    "本版具名雇工只有 Juan：健康/最大健康 100/100，基础费用 80，勇气 0，特质为空。",
+    "显示名硬编码为 Juan，本地化键「胡安」不生效。",
+    "状态枚举：可用 0、远征中 1、受伤 2、已完成 3。",
+    "特质枚举共 11 个（战士、胆小、幸存者、凶残、屠夫、成瘾者、孤僻、幸运、拾荒者、寻宝者、友善），但无本地化描述、也没有读取方，不给任何加成。",
+    "基础费用 80 字段存在，但未找到实际扣费代码。",
+    "2026-11-13 标注：本卡内容全部来自 2026-10-24 Demo 期静态解包/wiki；1.0 正式版未实装远征与雇工（demo-occupations/远征代码仍存在，唯一解锁入口是开局天赋 expedition_organizer，StartingPerkContent.cs:93-96），官方 Roadmap 将 Junker+远征列为 post-launch。"
+  ],
+  "actions": [
+    "【post-launch 未实装，勿执行】按 100/100 血、无特质做派遣决策",
+    "【post-launch 未实装，勿执行】不要为「勇气/特质」付溢价"
+  ],
+  "pitfalls": [
+    "按特质加成选人：代码没有读取方",
+    "把 80 计入现金流出：未找到扣费实现"
+  ],
+  "effects": [
+    "派遣 → 状态 0→1；归来 → 3；健康 ≤50 → 2"
+  ],
+  "guards": [
+    "1.0 正式版未实装远征/雇工系统（官方 Roadmap 列为 post-launch，12 月中旬起）：不要按本卡派遣、招人或备货，本卡仅作战后参考。"
+  ],
+  "keywords": [
+    "Juan",
+    "基础费用",
+    "勇气",
+    "特质"
+  ],
+  "triggers": {},
+  "evidence": [
+    "wiki: /zh/wiki/terms/hiring-crew"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "crew-recruit-conditions",
+    "expedition-cut-accident"
+  ],
+  "source": "wiki:/zh/wiki/terms/hiring-crew",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "gated_until": "post-launch",
+  "keyword_only": true
+}

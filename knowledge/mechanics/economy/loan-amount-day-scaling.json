@@ -1,0 +1,50 @@
+{
+  "id": "loan-amount-day-scaling",
+  "title": "拖得越久贷款额越高",
+  "category": "economy",
+  "summary": "买店贷款基础 9000，内部日计数 D>50 后每天 +50、最多 +5000，总额上限 14000。",
+  "facts": [
+    "买店报价的贷款金额基础值为 9000。",
+    "内部日计数 D 超过 50 后，每多 1 天加 50，增量上限 5000。",
+    "因此贷款金额最高为 14000（= 9000 + 5000），对应 D ≥ 150。",
+    "D 是计费时的游戏内部日计数，其与界面日期的偏移 wiki 标注为未核实。",
+    "贷款额每 +50，周息按 ÷5200 增加不足 1 点，但周供分摊后仍会抬高固定支出。"
+  ],
+  "actions": [
+    "决定买店就尽早接受报价，不要拖到 D>50 之后"
+  ],
+  "pitfalls": [
+    "攒钱攒到很晚才买 → 贷款额已顶到 14000，周供显著上升"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "dayUntilLoan",
+    "loan",
+    "mortgage",
+    "日计数",
+    "贷款额度",
+    "高利贷"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.mortgage.can_be_offered",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/rent-and-loans"
+  ],
+  "confidence": 0.88,
+  "verified_at": "2026-10-24",
+  "related": [
+    "mortgage-down-payment",
+    "mortgage-weekly-payment"
+  ],
+  "source": "wiki:/zh/wiki/terms/rent-and-loans",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,53 @@
+{
+  "id": "showcase-same-day-rule",
+  "title": "展柜陈列次日生效",
+  "category": "store",
+  "summary": "只在开门前摆好的陈列当天算数，营业中新增的陈列要等次日。",
+  "facts": [
+    "每天开门时按店铺当时状态安排客源；开门后才加入的展示物次日才生效。",
+    "营业中想改客源没有意义，必须在 MORNING 阶段完成陈列调整。",
+    "基础展示柜导师说明为每天吸引 1 位相应买家。",
+    "当日吸引力低于 100 时不会生成展示柜买家；非跳过开场的新档第 1 天也不安排。"
+  ],
+  "actions": [
+    "开门前检查展示柜内容",
+    "营业中不再浪费时间调整陈列"
+  ],
+  "pitfalls": [
+    "开门后才发现卖错品类，当天客源已经锁定，白等一天"
+  ],
+  "effects": [
+    "开门结算后新增陈列的物品次日才进入品类统计"
+  ],
+  "guards": [
+    "吸引力 <100 时先做清洁/翻新，再谈陈列"
+  ],
+  "keywords": [
+    "Clientele",
+    "客源界面",
+    "MORNING",
+    "展柜"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "MORNING"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/showcase"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "showcase-buyer-slots",
+    "attractiveness-dirt-penalty"
+  ],
+  "source": "wiki:/zh/wiki/terms/showcase",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

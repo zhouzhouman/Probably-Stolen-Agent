@@ -1,0 +1,52 @@
+{
+  "id": "night-service-cost",
+  "title": "夜间服务逐项扣费，默认全关",
+  "category": "night",
+  "summary": "夜间服务逐项扣费、只在下一天生效；价格以 /state 的 services[].cost 为准，不要记历史数字。",
+  "facts": [
+    "每项服务都有独立的 cost，勾选状态在 end_day_confirm 时才真正扣费。",
+    "价格必须读 /state 的 services[].cost 实时值：试玩版与正式版定价不同（保险在试玩版曾为 96/晚，正式版实测为个位数），照旧数字判断会做出完全相反的决策。",
+    "推荐类服务（SEC_INFORMANT / BUY_REFERAL / SELL_REFERAL / WILD_FIXER）与档期相关，队列不缺客时应关闭。",
+    "强制项（如 CARTEL_PROTECTION）不能取消，只能接受。",
+    "冷却中的服务无法再次购买，冷却天数见 services[].cooldown。",
+    "判断「值不值」= cost 与「今晚预计收益」比较，而不是固定阈值。"
+  ],
+  "actions": [
+    "进面板先逐项 night_service enable=false",
+    "垃圾=0 关清洁；无犯罪点关 WILD_FIXER；队列≥3 关推荐类",
+    "前台有 >1000 高值货过夜才买保险"
+  ],
+  "pitfalls": [
+    "按记忆中的旧价格判断贵不贵（跨版本必错）。",
+    "以为勾选就立刻扣费：实际在 end_day_confirm 扣。",
+    "把强制项当成可选，反复尝试取消。"
+  ],
+  "effects": [
+    "当晚扣费 = Σ(is_using 的 cost)"
+  ],
+  "keywords": [
+    "night_service",
+    "WILD_FIXER",
+    "INSURANCE_SERVICE"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "CLOSED"
+      }
+    ]
+  },
+  "evidence": [
+    "2026-10-24 /state.services 实测",
+    "r105 关 WILD_FIXER 省 25/晚",
+    "decompile_full/PlayerStore.cs (StoreService.cost / isUsing)"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-11-07",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false,
+  "source": "decompile:PlayerStore.cs StoreService.cost/isUsing + live:/state.services"
+}

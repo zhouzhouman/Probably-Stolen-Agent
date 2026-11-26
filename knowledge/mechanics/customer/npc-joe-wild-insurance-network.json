@@ -1,0 +1,60 @@
+{
+  "id": "npc-joe-wild-insurance-network",
+  "title": "乔·王尔德：D=4 保险、D=7 网络",
+  "category": "customer",
+  "summary": "保险按日订阅要睡前开，网络付款只买到项目本身，到访与交货另算。",
+  "facts": [
+    "D=4 介绍保险，D=7 介绍 Wilds 网络，两者是两次独立来访。",
+    "保险在睡前服务里加入或退出，按日计费，不是一次性买断。",
+    "保险不是理赔：投保生效的当晚直接免除失窃判定、不发生物品移除；不投保才会按 33+5N 概率掷骰（PlayerStore.cs:2085-2137）。买了网络项目不会自动获得免费保护。",
+    "Wilds 网络出售七类：引荐、推荐、服务、恩惠、线人、许可、供货商项目。",
+    "网络付款只完成对应项目，后续人物到访、服务订阅、实际交货仍需分别触发。",
+    "名称表另有「乔·王尔德的助手」，电话、提醒、救急各有独立流程，不能当本人。",
+    "部分产业引荐、枪证项目、高阶扩建在抓取时的试玩版未开放；正式版这些项虽带 lockInDemo=true，但判定函数零调用者（NetworkUpgrade.cs:654-668），以网络列表与实际购买结果为准。",
+    "2026-11-13 校正：旧表述「保险按机制返还物品/保险只处理盗窃后的赔付」→ 新结论「投保当晚免除失窃判定、无物品移除与返还」，依据 PlayerStore.cs:2060-2141。"
+  ],
+  "actions": [
+    "买完网络项目后，night_services 里确认对应服务确实开启",
+    "电话订单用 phone_call 走，别指望网络付款自动到货",
+    "D=4 前先算清每晚保费再决定订阅"
+  ],
+  "pitfalls": [
+    "买了网络项目就以为当晚必然受保：服务没开就没有，投保要在睡前服务里实际开启",
+    "把助手当乔本人，误判可交易内容"
+  ],
+  "effects": [
+    "buy_insurance → 当夜起按日计费；投保生效的夜晚不走失窃判定，货不会被拿走（无理赔、无返还流转，PlayerStore.cs:2126-2137）"
+  ],
+  "guards": [
+    "现金 < 次日 rent_due 时不新增按日订阅项"
+  ],
+  "keywords": [
+    "Wilds",
+    "Wilds 网络",
+    "乔·王尔德",
+    "网络项目"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.services[]",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-joe-wild"
+  ],
+  "related": [
+    "npc-visit-state-rules",
+    "insurance-fee-formula",
+    "network-shop-table",
+    "phone-cooldown-orders"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-joe-wild",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

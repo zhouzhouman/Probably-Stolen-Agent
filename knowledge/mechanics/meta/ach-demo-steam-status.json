@@ -1,0 +1,54 @@
+{
+  "id": "ach-demo-steam-status",
+  "title": "21 个成就标识，Demo 解锁未确认",
+  "category": "meta",
+  "summary": "共 21 个标识，12 个未闭环验证；Demo 商店页当时未声明 Steam 成就支持，1.0 是否支持未复核。",
+  "facts": [
+    "成就标识合计 21 个：9 个有明确数值门槛 + 12 个仅有检查入口。",
+    "未闭环的 12 个：ACH_TUTORIAL、ACH_BUYOUT、ACH_HONEST_MERCHANT、ACH_AUTHORIZED、ACH_RATS、ACH_RAG_TO_RICHES、ACH_NOTHING_TO_RICHES、ACH_PERFECT_MEDIATOR、ACH_LAB_PURE、ACH_HUGE_NUTRIFRUIT、ACH_PRODIGIOUS、ACH_LOWER_LEVELS_SPECIAL。",
+    "这 12 个不能据英文名编造额外次数、限定天数或路线要求。",
+    "解锁需三件事同时成立：Steam 初始化、用户统计可用、成就保存接口。",
+    "本卡抓取时（2026-10-24）Demo 商店页未提供 Steam 成就支持说明，当时平台解锁状态为「未确认」；1.0 正式版是否支持 Steam 成就未复核。",
+    "游戏文件里有成就代码不等于 Demo 会弹出成就。",
+    "2026-11-13 校正：本卡全部内容抓自 2026-10-24 Demo 期商店页，1.0 正式版的成就支持状态未复核，不得当作正式版结论。"
+  ],
+  "actions": [
+    "1.0 是否支持 Steam 成就有待实机确认，别把成就当经营目标",
+    "做成就规划时只依赖 9 个已确认门槛",
+    "涉及 12 个未知标识时不预设条件"
+  ],
+  "pitfalls": [
+    "为 ACH_TUTORIAL 之类反复重开存档：条件未核实",
+    "以为有代码就会弹：Demo 平台状态未确认"
+  ],
+  "effects": [
+    "满足条件且平台可用 → 成就写入；平台不可用 → 无提示"
+  ],
+  "guards": [
+    "不为成就牺牲 rent_due 现金流（成就触发条件与平台支持 1.0 均未复核）"
+  ],
+  "keywords": [
+    "ACH_TUTORIAL",
+    "ACH_BUYOUT",
+    "ACH_HONEST_MERCHANT",
+    "ACH_AUTHORIZED",
+    "Steam 统计"
+  ],
+  "triggers": {},
+  "evidence": [
+    "wiki: /zh/wiki/terms/achievements"
+  ],
+  "related": [
+    "ach-asset-thresholds",
+    "ach-shop-quality-tiers",
+    "ach-steam-stat-counters",
+    "game-modes-and-failures"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/achievements",
+  "game_version": "demo",
+  "verify_basis": "wiki_snapshot",
+  "needs_verify": true,
+  "keyword_only": true
+}

@@ -1,0 +1,55 @@
+{
+  "id": "network-shop-table",
+  "title": "店铺升级 10 项价目与前置",
+  "category": "store",
+  "summary": "店铺网络 10 项：供电 300/350、展示柜 200→500、投资 400→650、翻新 500→1000。",
+  "facts": [
+    "POWER_HIJACK 300（NetworkUpgradeList.cs:796）；COMMERCIAL_POWER 350（:832）；均无前置。另有 POWER_HIJACK2 600（前置 POWER_HIJACK，:806/808）、POWER_HIJACK3 1000（前置 POWER_HIJACK2，:819/821），wiki 未列。",
+    "SHOWCASE_I 200（NetworkUpgradeList.cs:842）；SHOWCASE_II 500 前置 I（:853/855）。",
+    "JACKSON1 400（NetworkUpgradeList.cs:1093）；JACKSON2 650 前置 JACKSON1（:1116/1118）。另有 JACKSON_SPECIAL_STOCK 1250 前置 JACKSON2（:1103/1105），wiki 未列。",
+    "RENOVATION1 500（NetworkUpgradeList.cs:1128）；RENOVATION2 750 前置 I（:1138/1140）；RENOVATION3 1000 前置 II（:1149/1151）。",
+    "RUINED_MACHINE_UNLOCK 300 无前置（NetworkUpgradeList.cs:889）。「Demo 不可购买」在正式版没有生效路径：这些项确实带 lockInDemo=true，但判定函数 NetworkUpgrade.IsLockedInDemo()（NetworkUpgrade.cs:654-668）零调用者，购买判定走 IsReady()（NetworkUpgrade.cs:844-859 = 前置已解锁+冷却结束+state==1），而这些工厂都设 state=1。故正式版应可购买，实际可买性仍需实机点一次确认。",
+    "本组全部项目冷却为「无」；指南未给出杰克逊投资的收益，不能据名称推算固定回报。",
+    "2026-11-13 校正：旧结论「SHOWCASE_II/JACKSON2/RENOVATION3/RUINED_MACHINE 在 Demo 不可购买」→ 新结论「lockInDemo 判定零调用者，正式版应可购买（待实机确认）」，依据 NetworkUpgrade.cs:654-668/844-859 与 NetworkUpgradeList.cs 各 cost/prerequisite 行。"
+  ],
+  "actions": [
+    "电费压力大先买 300 偷接私电；充电慢买 350 商用级",
+    "展示柜扩容 SHOWCASE_I 200 之后再买 SHOWCASE_II 500（前置 I）；正式版无 Demo 锁生效路径，但实际可购性待实机确认"
+  ],
+  "pitfalls": [
+    "把杰克逊投资当固定收益率产品",
+    "按「RENOVATION3/SHOWCASE_II 在 Demo 买不到」就放弃：正式版 lockInDemo 判定零调用者（NetworkUpgrade.cs:654-668），这两项应可购买，前置分别是 RENOVATION2 与 SHOWCASE_I"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "POWER_HIJACK",
+    "COMMERCIAL_POWER",
+    "SHOWCASE_I",
+    "JACKSON1",
+    "RENOVATION2",
+    "RUINED_MACHINE_UNLOCK"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "OPEN"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/upgrades/shop-network"
+  ],
+  "confidence": 0.93,
+  "verified_at": "2026-10-24",
+  "related": [
+    "commercial-power-upgrade",
+    "network-upgrade-demo-lock"
+  ],
+  "source": "wiki:/zh/wiki/upgrades/shop-network",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

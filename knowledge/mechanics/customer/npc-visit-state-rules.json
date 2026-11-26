@@ -1,0 +1,56 @@
+{
+  "id": "npc-visit-state-rules",
+  "title": "NPC 分四组，剧情线按模式开关",
+  "category": "customer",
+  "summary": "NPC 分剧情/服务执法/专家供货/顾客四组；乔治奥、伦警官、埃莉诺在无尽模式被跳过。",
+  "facts": [
+    "四组划分：剧情人物（导师、索耶、乔·王尔德、杰克逊博士、房东、乔治奥、伦警官、埃莉诺）、服务与执法、专家与供货、顾客与机制。",
+    "乔治奥、伦警官、埃莉诺的角色线在无尽模式下会被跳过。",
+    "日计数 D 只说明已核实安排，不保证每个存档在界面同一天见到同一人。",
+    "杰克逊博士的普通设备来访同时受日计数与下层区声望影响；乔·王尔德保险按日订阅。",
+    "治安部盘查员有普通、懒惰、可疑三种变体，不能由制服推断执法范围。",
+    "wiki 记载的「Demo 锁定引荐」清单（退休农夫、退休枪匠、退休化学家、废弃机器拆解、化学家与药商供货、杰克逊投资 II）在正式版没有生效路径：这些项带 lockInDemo=true，但判定函数 NetworkUpgrade.IsLockedInDemo()（NetworkUpgrade.cs:654-668）零调用者，购买判定走 IsReady()（:844-859）。清单本身可能仍作参考，但不应据此断言「买不到」（待实机确认）。",
+    "2026-11-13 校正：旧结论「wiki 的 Demo 锁定引荐清单在正式版仍生效，买不到」→ 新结论「该清单在 1.0 无生效路径，只可作参考」，依据 tools/decompile_full/NetworkUpgrade.cs:654-668（IsLockedInDemo 零调用者）/ :844-859（IsReady）。"
+  ],
+  "actions": [
+    "按四组分工找人：许可找贸易委员会官员、检查找盘查员、罚款找警官",
+    "无尽模式不要等乔治奥/伦警官/埃莉诺"
+  ],
+  "pitfalls": [
+    "按 D 值死等某个 NPC：存档差异会导致不出现",
+    "把同肖像的盘查员当同一人"
+  ],
+  "effects": [
+    "剧情来客受模式、剧情开关、天赋三重影响"
+  ],
+  "guards": [
+    "无尽模式下不安排依赖乔治奥/伦警官/埃莉诺的采购"
+  ],
+  "keywords": [
+    "无尽模式",
+    "已知告密者",
+    "盘查员",
+    "杰克逊投资 II"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-overview",
+    "wiki: /zh/collections/npc-directory"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "related": [
+    "npc-georgio-schedule"
+  ],
+  "source": "wiki:/zh/wiki/terms/npc-overview",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

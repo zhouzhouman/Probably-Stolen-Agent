@@ -1,0 +1,63 @@
+{
+  "id": "npc-trade-permit-1500",
+  "title": "经营许可 1500，捐赠不算持证",
+  "category": "security",
+  "summary": "贸易委员会官员卖许可：现金 ≥1500 才可买，扣款后许可证上柜；捐赠只是延缓。",
+  "facts": [
+    "购买营业许可需至少持有 1500 信用点，接受付款即扣 1500。",
+    "付款成功后记录已取得许可，并把许可证实体放到柜台。",
+    "「捐赠」是交付本次要求价值的货物换取延缓处理，不是许可证本身。",
+    "见过官员一次不等于已持证，后续状态还会再要求办理。",
+    "拒办与无证经营会记录在案，关联调查、罚款、判刑流程。",
+    "经营许可流程与 Demo 未开放的网络枪证项目是两套，不能互推开放状态。"
+  ],
+  "actions": [
+    "现金攒到 ≥1500 再去找官员，按购买分支付清",
+    "付完检查柜台是否出现许可证物品",
+    "现金不足时宁可暂不购买，也别用捐赠冒充持证"
+  ],
+  "pitfalls": [
+    "交一次捐赠货就当永久合法：仍属无证经营",
+    "把枪证被锁当成经营许可也没开放"
+  ],
+  "effects": [
+    "付款分支 → 现金 −1500，持证记录写入，许可证上柜台"
+  ],
+  "guards": [
+    "visible_info.money < 1500 时不走购买分支"
+  ],
+  "keywords": [
+    "贸易委员会官员",
+    "营业许可",
+    "1500",
+    "捐赠",
+    "无证经营"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.money",
+        "op": "gte",
+        "value": 1500
+      },
+      {
+        "field": "visible_info.phone.contacts",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-trade-board-official"
+  ],
+  "related": [
+    "inspection-schedule-band",
+    "crime-ledger-entry",
+    "sentence-threshold"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-trade-board-official",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

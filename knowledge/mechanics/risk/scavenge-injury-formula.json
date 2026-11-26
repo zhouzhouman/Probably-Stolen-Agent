@@ -1,0 +1,54 @@
+{
+  "id": "scavenge-injury-formula",
+  "title": "拾荒受伤率随次数线性上升",
+  "category": "risk",
+  "summary": "第 k 次轻伤率=(k+5)%、重伤率=k×0.25+1%，手电筒把两者都乘 0.5。",
+  "facts": [
+    "轻伤几率 = 已用次数 + 5（百分点）；第 0 次搜索即 5%，第 4 次为 9%。",
+    "重伤几率 = 已用次数 × 0.25 + 1（百分点）；第 0 次 1%，第 4 次 2%。",
+    "手电筒让上面两条几率都 ×0.5：5 次搜索期望受伤数从 0.4195 降到 0.211125。",
+    "原版先判轻伤，未命中再判重伤，实际受伤率 q = m + (1−m)×h。",
+    "受伤当次仍消耗一次尝试且没有掉落。"
+  ],
+  "actions": [
+    "长趟拾荒必带手电筒",
+    "剩余次数 ≤1 且已受伤时直接收工"
+  ],
+  "pitfalls": [
+    "不带手电筒做 7 次：期望受伤 0.672 次，治疗支出翻倍",
+    "以为受伤只影响血量：实际当次搜索也作废"
+  ],
+  "effects": [
+    "受伤 → 无法继续拾荒，伤势在睡眠时结算"
+  ],
+  "guards": [
+    "现金不足以覆盖治疗时缩短拾荒次数"
+  ],
+  "keywords": [
+    "flashlight",
+    "轻伤",
+    "重伤",
+    "scavenging_attempts"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.night.is_outside",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/junkyard-scavenging"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "scavenge-attempt-cap",
+    "wound-night-settlement"
+  ],
+  "source": "wiki:/zh/wiki/terms/junkyard-scavenging",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

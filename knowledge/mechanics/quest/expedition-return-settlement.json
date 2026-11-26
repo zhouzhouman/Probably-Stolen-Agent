@@ -1,0 +1,51 @@
+{
+  "id": "expedition-return-settlement",
+  "title": "归来健康≤50判受伤",
+  "category": "quest",
+  "summary": "对话结束后生成日志并结算状态；健康 ≤50 为受伤，之后每次雇工客户处理回 10 点。",
+  "facts": [
+    "归来由「已完成」雇工生成归来客户，对话结束后才生成探险日志并结算状态。",
+    "健康小于等于 50 即判为受伤；代码无死亡判定，健康最低 0。",
+    "远征已解锁且招募牌在展示柜内时，雇工客户处理让受伤者在后台恢复 10 点健康，以最大健康封顶。",
+    "受伤者不会作为客户来店，只在后台休养；「远征中」的雇工不处理。",
+    "补给箱要在雇工本人来店并走完对话后才摆到柜台，出发时又从商店侧撤走。",
+    "2026-11-13 标注：本卡内容全部来自 2026-10-24 Demo 期静态解包/wiki；1.0 正式版未实装远征与雇工（demo-occupations/远征代码仍存在，唯一解锁入口是开局天赋 expedition_organizer，StartingPerkContent.cs:93-96），官方 Roadmap 将 Junker+远征列为 post-launch。"
+  ],
+  "actions": [
+    "【post-launch 未实装，勿执行】归来看日志确认健康与收益",
+    "【post-launch 未实装，勿执行】保持招募牌在展示柜内，让受伤雇工持续回血"
+  ],
+  "pitfalls": [
+    "撤掉招募牌：受伤雇工不再回血，永久卡住",
+    "把受伤雇工当可用人员继续派遣"
+  ],
+  "effects": [
+    "对话结束 → 生成 expedition_log → 状态更新；每次休养 health +10"
+  ],
+  "guards": [
+    "1.0 正式版未实装远征/雇工系统（官方 Roadmap 列为 post-launch，12 月中旬起）：不要按本卡派遣、招人或备货，本卡仅作战后参考。",
+    "雇工健康 ≤50 时标记为受伤，禁止派遣"
+  ],
+  "keywords": [
+    "expedition_log",
+    "招募牌",
+    "休养"
+  ],
+  "triggers": {},
+  "evidence": [
+    "wiki: /zh/wiki/terms/expedition-accidents",
+    "wiki: /zh/wiki/terms/hiring-crew"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "expedition-cut-accident",
+    "crew-recruit-conditions"
+  ],
+  "source": "wiki:/zh/wiki/terms/expedition-accidents",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "gated_until": "post-launch",
+  "keyword_only": true
+}

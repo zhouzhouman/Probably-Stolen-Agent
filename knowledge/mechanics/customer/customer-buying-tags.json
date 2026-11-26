@@ -1,0 +1,43 @@
+{
+  "id": "customer-buying-tags",
+  "title": "顾客意图与收购类别匹配",
+  "category": "customer",
+  "summary": "is_buying=买家、is_selling=卖家（可同时为真）；buying_tags 与物品 item_types 无交集会被守卫拒绝。",
+  "facts": [
+    "buying_tags 是顾客想收的类别；item_types 无交集时 sell_item 被类别守卫直接拒绝。",
+    "sellable_now = 观察层算好的『他想收 ∩ 你有』清单，identifier 可直接照抄。",
+    "budget_left 是买家剩余预算；budget 不足时再便宜也卖不动。"
+  ],
+  "actions": [
+    "买家且 sellable_now 非空：sell_item",
+    "sellable_now 为空：dismiss_client 换人",
+    "卖家且物品含 JUNK：dismiss_client"
+  ],
+  "pitfalls": [
+    "拿日用品凑数卖给要医疗品/工具的顾客",
+    "对同一件已卖光的物品反复 sell_item"
+  ],
+  "keywords": [
+    "buying_tags",
+    "is_buying",
+    "is_selling"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client.is_buying",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "r51/r59/r61 空转复盘",
+    "观察层 sellable_now 实现"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "source": "live:game_agent/structured/observer.py:449 _sellable_now 实现 + r51/r59/r61 空转复盘"
+}

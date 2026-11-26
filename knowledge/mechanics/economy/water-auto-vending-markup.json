@@ -1,0 +1,52 @@
+{
+  "id": "water-auto-vending-markup",
+  "title": "自动售水机加价规则",
+  "category": "economy",
+  "summary": "自动售水机只卖基础/优质/纯水，售价 +10% 并计零售加价且不受事件修正，是稳定出水位。",
+  "facts": [
+    "自动售水机只出售基础水、优质水和纯水三档，不卖幽灵水及更低档。",
+    "售出价额外 +10%，适用时再计入零售加价，但不受事件修正影响。",
+    "零售加价 retailMarkup 的默认值是 15（PlayerStore.cs:97），但开局由难度覆盖（StoreService.cs:217 `PlayerStore.Instance.retailMarkup = rules.retailMarkup`）：cozy 20 / normal 15 / hard 0 / challenge 0（Difficulty.cs:210/254/298/342）；困难与挑战模式 retailMarkup ≤ 0 时零售加价整段被排除（PlayerStore.cs:3880）。1.0 实机 cozy 快照 retail_markup=20。故不能写死 15。",
+    "下层区居民与拾荒者通常不买优质水或纯水；大量买水的顾客通常自带检测工具。",
+    "标签与实测水质可以不一致，但改标签不改变内容物；错标出售会积累治安证据。",
+    "2026-11-13 校正：旧结论「当前观测层 retail_markup 为 15」→ 新结论「默认 15 但开局被难度覆盖为 20/15/0/0」，依据 PlayerStore.cs:97/3880、StoreService.cs:217、Difficulty.cs:210/254/298/342。"
+  ],
+  "actions": [
+    "把纯水/优质水优先塞自动售水机，幽灵水走人工议价",
+    "困难模式不要指望零售加价，按裸价核算"
+  ],
+  "pitfalls": [
+    "把幽灵水放进售水机：机器不收，白折腾",
+    "以为 +10% 能叠加事件涨价：明确不受事件修正"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "自动售水机",
+    "retail_markup",
+    "幽灵水",
+    "优质水"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.machines[]",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/water-purification",
+    "wiki: /zh/wiki/occupations/occupation-water-merchant"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "water-grade-tiers",
+    "game-modes-and-failures"
+  ],
+  "source": "wiki:/zh/wiki/terms/water-purification",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

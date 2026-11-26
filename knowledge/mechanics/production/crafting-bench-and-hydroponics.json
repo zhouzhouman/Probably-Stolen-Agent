@@ -1,0 +1,61 @@
+{
+  "id": "crafting-bench-and-hydroponics",
+  "title": "制作台网格与水培前置",
+  "category": "production",
+  "summary": "制作台输入 10×16、输出 3×3；水培要水+矿物质+电源+种子，Demo 未开放入口（1.0 是否开放未复核）。",
+  "facts": [
+    "制作台配方形态：产出物 id + 产出数量 + 材料 id + 材料数量（数量默认 1），材料也可按标签集合匹配。",
+    "制作台界面：输入网格 10×16，输出槽位 3×3。",
+    "水培需要水容器 + 矿物质 + 电源 + 种子四件齐备，达到该作物所需进度后收获，不按固定一两天计算。",
+    "化学加工按当前可用设备区分工序并检查纯度；旧蒸发器已于 2026-09-15 热修移除，物品名与旧攻略仍提它只是文本未清理。",
+    "化学、制药、水培的职业与 Wilds 购买入口在 Demo 未开放；正式版这些网络项（CHEMIST 250 / PHARMA 300 无前置，NetworkUpgradeList.cs:618/629）虽带 lockInDemo=true，但判定函数 NetworkUpgrade.IsLockedInDemo()（NetworkUpgrade.cs:654-668）零调用者，理应可买，实际可达性未实机确认。",
+    "按图鉴「基础价值」估算批量收益会高估：还要算原料、耗电、耗材与资金占用时间。",
+    "2026-11-13 校正：旧结论「化学/制药/水培入口 Demo 未开放」→ 新结论「lockInDemo 判定零调用者，正式版应可购买（待实机确认）」，依据 NetworkUpgrade.cs:654-668/844-859。"
+  ],
+  "actions": [
+    "配方投料前先核对输入网格空间与产出槽位",
+    "水培先备齐四件再开工"
+  ],
+  "pitfalls": [
+    "照旧攻略买蒸发器 → 当前版本不可执行",
+    "用基础价值估算批量收益 → 高估"
+  ],
+  "effects": [
+    "配方完成：产出进入输出槽，消耗配方材料与电力/时间"
+  ],
+  "guards": [
+    "水培：水+矿物质+电源+种子四件齐备"
+  ],
+  "keywords": [
+    "制作台",
+    "水培",
+    "蒸发器",
+    "配方",
+    "纯度",
+    "hydroponics"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.machines",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki:/zh/wiki/terms/production-recipes",
+    "wiki:/zh/wiki/terms/hydroponics",
+    "Demo 049-Rev5-L 资料基线"
+  ],
+  "related": [
+    "furnace-smelting-ratio",
+    "water-grade-tiers",
+    "machine-power-slot"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/hydroponics",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

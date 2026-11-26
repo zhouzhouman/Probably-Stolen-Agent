@@ -1,0 +1,50 @@
+{
+  "id": "cartel-protection-mandatory",
+  "title": "卡特尔保护是强制服务，初始费用 0",
+  "category": "security",
+  "summary": "卡特尔保护在服务清单里标记为 mandatory，初始费用配置 0，启用即跳过普通夜间盗窃分支。",
+  "facts": [
+    "卡特尔保护的初始费用配置为 0，并标记为强制服务（mandatory）。",
+    "已确认它启用时会跳过普通夜间盗窃分支。",
+    "它的解锁状态会影响普通保险可用性。",
+    "跳过盗窃不等于免除治安检查、没收或所有其他损失。"
+  ],
+  "actions": [
+    "把卡特尔保护当成默认开启的兜底，而不是可选消费",
+    "别因它跳过盗窃就省掉检查前的准备"
+  ],
+  "pitfalls": [
+    "以为保护费 0 就没有代价：保险被影响，检查与没收照旧",
+    "因为「已保护」而在展示柜放违禁品"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "mandatory",
+    "卡特尔",
+    "cartel"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.services[].mandatory",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/contact-services",
+    "wiki: /zh/wiki/terms/theft-and-insurance"
+  ],
+  "confidence": 0.88,
+  "verified_at": "2026-10-24",
+  "related": [
+    "insurance-unavailable-states",
+    "contact-inspection-warning",
+    "night-service-cost"
+  ],
+  "source": "wiki:/zh/wiki/services/contact-services",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,54 @@
+{
+  "id": "network-contacts-table",
+  "title": "人脉升级 5 项：解锁费+每晚费",
+  "category": "customer",
+  "summary": "人脉组 5 项全 200–350 无冷却，但只是买解锁权；真实成本要叠加每晚 10/25/45 的服务费。",
+  "facts": [
+    "WILD_FIXER 350（NetworkUpgradeList.cs:717）；BUY_REFERAL 200（:765）；SELL_REFERAL 200（:775）；均无前置无冷却。另有 WILD_FIXER2 450（前置 WILD_FIXER，:727/729）、WILD_FIXER3 550（前置 WILD_FIXER2，:740/742），wiki 未列。",
+    "CRIMINEL_NETWORK 350（NetworkUpgradeList.cs:785）；MARKETPLACE_REQUESTS 250（:1082）。「Demo 不可购买」在正式版没有生效路径：这些项确实带 lockInDemo=true，但判定函数 NetworkUpgrade.IsLockedInDemo()（NetworkUpgrade.cs:654-668）零调用者，购买判定走 IsReady()（NetworkUpgrade.cs:844-859 = 前置已解锁+冷却结束+state==1），而这些工厂都设 state=1。故正式版应可购买，实际可买性仍需实机点一次确认。",
+    "解锁后每晚仍需付费启用：买家/卖家介绍各 10、犯罪网络 45、Wild's Fixers 25。",
+    "标识原文为 BUY_REFERAL / SELL_REFERAL（单 R）、CRIMINEL_NETWORK，按原文匹配不要改写。",
+    "2026-11-13 校正：旧结论「CRIMINEL_NETWORK/MARKETPLACE_REQUESTS 不可购买」→ 新结论「lockInDemo 判定零调用者，正式版应可购买（待实机确认）」，依据 NetworkUpgrade.cs:654-668/844-859。"
+  ],
+  "actions": [
+    "按需求买：要客源买 BUY_REFERAL，要货源买 SELL_REFERAL",
+    "预算按解锁费+首晚服务费合并计算"
+  ],
+  "pitfalls": [
+    "只算 200 解锁费忽略每晚 10",
+    "因为 CRIMINEL_NETWORK（NetworkUpgradeList.cs:785）或 MARKETPLACE_REQUESTS（:1082）带 lockInDemo=true 就放弃：该判定零调用者（NetworkUpgrade.cs:654-668），两项应可购买，但需实机确认"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "WILD_FIXER",
+    "BUY_REFERAL",
+    "SELL_REFERAL",
+    "CRIMINEL_NETWORK",
+    "MARKETPLACE_REQUESTS"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.phone.contacts",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/upgrades/contacts-network"
+  ],
+  "confidence": 0.92,
+  "verified_at": "2026-10-24",
+  "related": [
+    "contact-buyer-referral",
+    "contact-seller-referral",
+    "wild-fixers-evidence",
+    "criminal-network-referral"
+  ],
+  "source": "wiki:/zh/wiki/upgrades/contacts-network",
+  "review_note": "待复核：正式版 PlayerStore 已无 networkUpgrade 字段，「人脉升级 5 项」的解锁链可能已整体重做；在确认正式版对应界面与字段前，本卡数值不可作为决策依据。",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

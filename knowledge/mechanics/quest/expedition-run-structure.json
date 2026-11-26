@@ -1,0 +1,50 @@
+{
+  "id": "expedition-run-structure",
+  "title": "远征固定12回合",
+  "category": "quest",
+  "summary": "一次远征 12 回合；有可访问兴趣点就访问，否则环顾四周发现 2–4 个。",
+  "facts": [
+    "远征长度固定 12 回合。",
+    "每回合逻辑：有已发现且冷却满足的兴趣点则访问排序后第一个，否则环顾四周。",
+    "一次环顾发现 2–4 个兴趣点，全部为拾荒类型且可重复。",
+    "远征在「一天结束时」整段结算，不是逐回合交互。",
+    "归来时先由归来客户对话播报结果，对话结束后才生成探险日志并结算雇工状态。",
+    "2026-11-13 标注：本卡内容全部来自 2026-10-24 Demo 期静态解包/wiki；1.0 正式版未实装远征与雇工（demo-occupations/远征代码仍存在，唯一解锁入口是开局天赋 expedition_organizer，StartingPerkContent.cs:93-96），官方 Roadmap 将 Junker+远征列为 post-launch。"
+  ],
+  "actions": [
+    "【post-launch 未实装，勿执行】派遣后当天不再等交互，直接安排次日",
+    "【post-launch 未实装，勿执行】次日先看探险日志再决定是否再派"
+  ],
+  "pitfalls": [
+    "以为能中途干预：整段在日终结算",
+    "不看日志就重复派遣，看不到上次亏损原因"
+  ],
+  "effects": [
+    "日终结算 → 生成 expedition_log → 雇工状态更新"
+  ],
+  "guards": [
+    "1.0 正式版未实装远征/雇工系统（官方 Roadmap 列为 post-launch，12 月中旬起）：不要按本卡派遣、招人或备货，本卡仅作战后参考。"
+  ],
+  "keywords": [
+    "12 回合",
+    "expedition_log",
+    "环顾四周"
+  ],
+  "triggers": {},
+  "evidence": [
+    "wiki: /zh/wiki/terms/expedition-accidents",
+    "wiki: /zh/wiki/terms/expedition-locations"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "expedition-cut-accident",
+    "expedition-return-settlement"
+  ],
+  "source": "wiki:/zh/wiki/terms/expedition-locations",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "gated_until": "post-launch",
+  "keyword_only": true
+}

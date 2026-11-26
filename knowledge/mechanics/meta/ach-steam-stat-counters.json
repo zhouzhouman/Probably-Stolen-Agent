@@ -1,0 +1,52 @@
+{
+  "id": "ach-steam-stat-counters",
+  "title": "三个 Steam 统计类成就各 10 次",
+  "category": "meta",
+  "summary": "完美鉴定、举报罪犯、击杀改造体各累计 10 次，是 Steam 账号统计不在存档面板。",
+  "facts": [
+    "ACH_MASTER_APPRAISER：Steam 完美鉴定累计统计达到 10。",
+    "ACH_MODEL_CITIZEN：Steam 举报罪犯累计统计达到 10。",
+    "ACH_AUG_HUNTER：Steam 击杀改造体累计统计达到 10。",
+    "三者是 Steam 用户统计计数，不是某个存档面板上的同名数值。",
+    "ACH_LUCKY 走另一套：幸运检查收到头奖标记，或刮刮乐奖金 ≥350 会传入该标记。"
+  ],
+  "actions": [
+    "完美鉴定走 appraisal 全对流程，累计到 10 次",
+    "举报只对 is_wanted 为真的顾客做，避免误报中断累计",
+    "击杀改造体需 enter_shooting_mode 后 shoot"
+  ],
+  "pitfalls": [
+    "在存档里找「完美鉴定 10」的进度条：不存在",
+    "以为误报也计入举报统计"
+  ],
+  "effects": [
+    "Steam 统计到 10 → 对应成就条件成立（需平台支持）"
+  ],
+  "guards": [
+    "无枪与弹时不进入射击模式"
+  ],
+  "keywords": [
+    "ACH_MASTER_APPRAISER",
+    "ACH_MODEL_CITIZEN",
+    "ACH_AUG_HUNTER",
+    "ACH_LUCKY",
+    "刮刮乐"
+  ],
+  "triggers": {},
+  "evidence": [
+    "wiki: /zh/wiki/terms/achievements"
+  ],
+  "related": [
+    "ach-asset-thresholds",
+    "appraisal-accept-range",
+    "wanted-bounty-table",
+    "shop-shooting-flow"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/achievements",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "keyword_only": true
+}

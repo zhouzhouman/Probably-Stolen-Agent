@@ -1,0 +1,1219 @@
+[
+  {
+    "id": "night-out-cost",
+    "title": "夜间外出代价：次日迟开＋少 1 客",
+    "category": "night",
+    "summary": "打烊后可外出，但次日迟开店且固定少 1 名顾客，携带空间不够的货物会丢。",
+    "facts": [
+      "夜间外出的固有代价是次日迟开店，并少来 1 名顾客，与去哪个地点无关。",
+      "背包是网格容器：36 格不等于能装 36 件任意形状的货物，形状不合就装不下。",
+      "离场时留在地点地面的货物会被丢弃，出发前必须把地面与随身容器清空。",
+      "夜间外出与远征是两套流程：外出是店主本人出发，远征走雇工派遣。",
+      "重伤状态会限制外出；外出要带背包与绷带。"
+    ],
+    "actions": [
+      "出门前把地面货物全部拾起",
+      "按背包网格形状挑货，不按件数估容量",
+      "次日迟开店期间不安排必须早到的进货"
+    ],
+    "pitfalls": [
+      "按 36 件估容量：形状不符会带不走",
+      "为一件高价值货牺牲次日 1 名顾客与早市时段"
+    ],
+    "effects": [
+      "次日开店推迟",
+      "次日客流 −1"
+    ],
+    "guards": [
+      "visible_info.night.seriously_wounded 为 true 时禁止外出拾荒"
+    ],
+    "keywords": [
+      "afterhours",
+      "backpack_small",
+      "seriously_wounded",
+      "夜间外出"
+    ],
+    "triggers": {
+      "all": [
+        {
+          "field": "visible_info.store_state",
+          "op": "eq",
+          "value": "CLOSED"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/afterhours",
+      "wiki: /zh/wiki/terms/daily-cycle"
+    ],
+    "related": [
+      "night-sleep-gate",
+      "scavenge-attempt-cap",
+      "close-vs-sleep"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/afterhours"
+  },
+  {
+    "id": "night-sleep-gate",
+    "title": "打烊与睡觉是两个步骤",
+    "category": "night",
+    "summary": "营业中不能睡觉；必须打烊后用睡袋，睡觉才推进一天并自动存档。",
+    "facts": [
+      "当天阶段顺序固定为：早晨整理 → 开门接客 → 打烊准备 → 睡觉结算。",
+      "营业状态（OPEN）下不能睡觉，必须先关店再用睡袋。",
+      "睡觉会推进一天并自动存档；夜间生产、服务、事件的结果在次日核对。",
+      "打烊后可选择外出，先确认携带物品、带回空间与次日安排，再决定是否睡觉。",
+      "睡眠同时结算伤口、成瘾戒断与哨兵疾病。"
+    ],
+    "actions": [
+      "打烊后先处理伤口与投料，再睡",
+      "睡前确认警报已启用且有独立电源",
+      "外出与睡觉二选一，先看次日安排"
+    ],
+    "pitfalls": [
+      "营业中试图睡觉：流程不成立",
+      "睡前不处理伤口，睡眠时直接走 10%/50% 恶化分支"
+    ],
+    "effects": [
+      "睡觉 → day +1、自动存档、夜间结算全部生效"
+    ],
+    "guards": [
+      "store_state 必须为 CLOSED 才能睡"
+    ],
+    "keywords": [
+      "store_state",
+      "CLOSED",
+      "睡袋",
+      "自动存档"
+    ],
+    "triggers": {
+      "all": [
+        {
+          "field": "visible_info.store_state",
+          "op": "eq",
+          "value": "CLOSED"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/daily-cycle"
+    ],
+    "related": [
+      "night-out-cost",
+      "wound-night-settlement"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/daily-cycle"
+  },
+  {
+    "id": "scavenge-attempt-cap",
+    "title": "拾荒次数上限 5，受天赋加减",
+    "category": "night",
+    "summary": "基础每晚 5 次搜索，熟练拾荒客 +2、骨关节炎每周 −1，算后不足 3 直接归零。",
+    "facts": [
+      "搜索次数上限基础为 5；剩余次数 = 上限 − 已用次数，拾荒结束时已用次数重置。",
+      "起始天赋「熟练的拾荒客」上限 +2（即 7）。",
+      "起始天赋「退行性骨关节炎」上限减去 floor((D−1)÷7)，D 为内部日计数：第一周不减，此后每周少 1 次。",
+      "下限保护：计算后上限小于 3 则归 0，此时完全无法拾荒。",
+      "受伤状态下无法继续拾荒，伤势处理后才可继续。"
+    ],
+    "actions": [
+      "出门前先算剩余次数，再决定带几件工具",
+      "骨关节炎存档在 D≥15 后不要再规划拾荒收入"
+    ],
+    "pitfalls": [
+      "以为每周固定 −1：实际是 floor((D−1)÷7)，第一周不减",
+      "上限算到 2 仍按 2 次规划：实际归 0"
+    ],
+    "effects": [
+      "每次搜索 scavenging_attempts 递减；离场重置"
+    ],
+    "guards": [
+      "计算后上限 < 3 时禁止规划拾荒"
+    ],
+    "keywords": [
+      "scavenging_attempts",
+      "熟练的拾荒客",
+      "退行性骨关节炎"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.night.scavenging_attempts",
+          "op": "lte",
+          "value": 1
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/junkyard-scavenging"
+    ],
+    "related": [
+      "scavenge-injury-formula",
+      "scavenge-tool-extra-drops"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/junkyard-scavenging"
+  },
+  {
+    "id": "scavenge-injury-formula",
+    "title": "拾荒受伤率随次数线性上升",
+    "category": "risk",
+    "summary": "第 k 次轻伤率=(k+5)%、重伤率=k×0.25+1%，手电筒把两者都乘 0.5。",
+    "facts": [
+      "轻伤几率 = 已用次数 + 5（百分点）；第 0 次搜索即 5%，第 4 次为 9%。",
+      "重伤几率 = 已用次数 × 0.25 + 1（百分点）；第 0 次 1%，第 4 次 2%。",
+      "手电筒让上面两条几率都 ×0.5：5 次搜索期望受伤数从 0.4195 降到 0.211125。",
+      "原版先判轻伤，未命中再判重伤，实际受伤率 q = m + (1−m)×h。",
+      "受伤当次仍消耗一次尝试且没有掉落。"
+    ],
+    "actions": [
+      "长趟拾荒必带手电筒",
+      "剩余次数 ≤1 且已受伤时直接收工"
+    ],
+    "pitfalls": [
+      "不带手电筒做 7 次：期望受伤 0.672 次，治疗支出翻倍",
+      "以为受伤只影响血量：实际当次搜索也作废"
+    ],
+    "effects": [
+      "受伤 → 无法继续拾荒，伤势在睡眠时结算"
+    ],
+    "guards": [
+      "现金不足以覆盖治疗时缩短拾荒次数"
+    ],
+    "keywords": [
+      "flashlight",
+      "轻伤",
+      "重伤",
+      "scavenging_attempts"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.night.scavenging_attempts",
+          "op": "gte",
+          "value": 3
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/junkyard-scavenging"
+    ],
+    "related": [
+      "scavenge-attempt-cap",
+      "wound-night-settlement"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/junkyard-scavenging"
+  },
+  {
+    "id": "scavenge-tool-extra-drops",
+    "title": "采集工具与扫描仪的额外掉落",
+    "category": "night",
+    "summary": "三把工具各 10% 独立加一材料；扫描仪初始 15%、每级 +5 个百分点、上限 100%，只生效一台。",
+    "facts": [
+      "螺丝刀 / 剪线钳 / 等离子切割机：成功拾荒时各做一次 10% 独立判定，分别额外给金属螺丝 / 线缆 / 废金属。",
+      "拾荒扫描仪初始 15% 额外抽取，每升一级 +5 个百分点，上限 100%，同时只生效一台，重复购买不叠加。",
+      "扫描仪触发后是从同一张表再抽一件，可能和基础物品相同，也不改变单件概率、不优先抽贵重物。",
+      "额外判定：未拥有挎包（小）时 3% 得挎包；1% 得随机未拥有磁带（损坏），都拥有则随机；1% 得捕鼠夹。",
+      "只有随身携带的自有工具才参与判定，同类工具按是否携带判断，不叠加，也不消耗工具。"
+    ],
+    "actions": [
+      "按目标带工具：要螺丝带螺丝刀、要线缆带剪线钳、要废金属带等离子切割机",
+      "扫描仪只买一台并优先升级"
+    ],
+    "pitfalls": [
+      "买两台扫描仪想叠概率：只有一台生效",
+      "把工具放仓库没带在身上：判定不触发"
+    ],
+    "effects": [
+      "带齐三工具后单次成功搜索期望价值从 24.13 升到 28.13"
+    ],
+    "guards": [
+      "升级扫描仪前确认现金够付近期账单"
+    ],
+    "keywords": [
+      "metal_scanner",
+      "welder",
+      "wire_cutter",
+      "screwdriver",
+      "satchel"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.scene",
+          "op": "eq",
+          "value": "SCAVENGING"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/junkyard-scavenging"
+    ],
+    "related": [
+      "scavenge-loot-table",
+      "scavenge-expected-value"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/junkyard-scavenging"
+  },
+  {
+    "id": "scavenge-loot-table",
+    "title": "拾荒掉落池：垃圾占 55.25%",
+    "category": "economy",
+    "summary": "类别先抽再抽物品，垃圾类 65%×85%=55.25%，废金属只有 1.875%，矿石概率为 0。",
+    "facts": [
+      "类别概率：垃圾与杂物 65%、材料 15%、医疗用品 5%、日用品 4.75%、食品饮料 4.75%、工具 2%、简易武器 2%、随机模组 1%、其他模组 0.5%。",
+      "垃圾在杂物类内占 85%，实际概率 65%×85%=55.25%；废金属 15%×12.5%=1.875%。",
+      "铅管同时出现在杂物 3% 与武器 25% 两处，合计 65%×3%+2%×25%=2.45%。",
+      "普通金属矿石与稀有金属矿石不在掉落表中，直接拾荒概率 0%，扫描仪重抽也不会出。",
+      "医疗用品只有三种绷带，各 33.3333%。"
+    ],
+    "actions": [
+      "要废金属靠等离子切割机的 10% 独立判定，不要靠表内 1.875%",
+      "按品类概率给拾荒收益做期望，不按单次结果"
+    ],
+    "pitfalls": [
+      "指望拾荒出矿石：概率为 0",
+      "把一次捡到贵重物当稳定产出"
+    ],
+    "effects": [
+      "单次成功搜索基础期望价值 11.6392"
+    ],
+    "guards": [],
+    "keywords": [
+      "scrap_metal",
+      "junk",
+      "pipe_weapon",
+      "metal_scanner"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/junkyard-scavenging"
+    ],
+    "related": [
+      "scavenge-tool-extra-drops",
+      "scavenge-expected-value"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/junkyard-scavenging"
+  },
+  {
+    "id": "scavenge-expected-value",
+    "title": "拾荒 5 次约 106 信用点净收益",
+    "category": "economy",
+    "summary": "满级扫描仪下 5 次搜索期望 110.52，扣治疗 4.20 后约 106.33，带工具可升到 132.59。",
+    "facts": [
+      "只带满级扫描仪：5 次期望掉落 110.52、治疗支出 4.20、净 106.33；7 次为 152.68 / 6.72 / 145.96。",
+      "满级扫描仪＋全部工具：5 次 134.70 / 2.11 / 132.59；7 次 187.37 / 3.39 / 183.99。",
+      "单次成功搜索期望价值：普通表 11.6392；满级扫描仪抽两件并加 0.85（1% 磁带 35 + 1% 捕鼠夹 50）≈ 24.13；带齐工具 ≈ 28.13。",
+      "治疗支出按每次受伤 10 信用点估算（wiki 预算假设，非硬编码数值）。",
+      "以上未计市场/零售/议价修正，也未扣工具购置、扫描仪升级与次日迟开店成本。"
+    ],
+    "actions": [
+      "把 5 次拾荒按约 106 信用点计入日预算",
+      "先买手电筒再升级扫描仪，降低治疗拖累"
+    ],
+    "pitfalls": [
+      "把 132 当净赚：还没扣工具钱和次日少 1 名顾客的损失"
+    ],
+    "effects": [
+      "净收益 ≈（N−W）×单次期望 − 10W"
+    ],
+    "guards": [
+      "现金 < 账单需求时不要为拾荒购物料"
+    ],
+    "keywords": [
+      "metal_scanner",
+      "flashlight",
+      "期望价值"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/junkyard-scavenging"
+    ],
+    "related": [
+      "scavenge-loot-table",
+      "night-out-cost"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/junkyard-scavenging"
+  },
+  {
+    "id": "expedition-location-dumping-grounds",
+    "title": "远征地点只有垃圾倾倒场",
+    "category": "quest",
+    "summary": "本版唯一地点 dumping_grounds：危险 1、人流 5、合法性 5，开局即解锁。",
+    "facts": [
+      "本版只找到 dumping_grounds（垃圾倾倒场）一个店铺远征地点，危险等级 1、人流 5、合法性 5，出厂即解锁。",
+      "可能危险：敌对拾荒者、有毒废料、机械陷阱；可能战利品：废金属、旧电子件、稀有元件。",
+      "危险等级、人流、合法性三个字段的消费方未定位，不能假设它们参与实际判定。",
+      "选点顺序：先排除未解锁 → 读危险 → 看人流/合法性/机会类型 → 最后比战利品。",
+      "地点是派遣目的地，兴趣点是途中遇到的具体机会，同一地点不能用一个固定收益描述。"
+    ],
+    "actions": [
+      "远征只派垃圾倾倒场，不要等地其他地点",
+      "按兴趣点实际结果记账，不按地点名预判收益"
+    ],
+    "pitfalls": [
+      "以为危险等级 1 就没风险：事故判定根本不看危险等级"
+    ],
+    "effects": [
+      "派遣后雇工状态变为「远征中 1」"
+    ],
+    "guards": [
+      "地点未解锁时禁止派遣"
+    ],
+    "keywords": [
+      "dumping_grounds",
+      "垃圾倾倒场",
+      "危险等级"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/expedition-locations"
+    ],
+    "related": [
+      "expedition-poi-ratio",
+      "expedition-run-structure"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/expedition-locations"
+  },
+  {
+    "id": "expedition-poi-ratio",
+    "title": "兴趣点按收益÷(收益+危险)排序",
+    "category": "quest",
+    "summary": "三个拾荒兴趣点收益 10/20/40、危险均 10、成功率均 85%，比值 0.5/0.667/0.8，代码取最高。",
+    "facts": [
+      "Worthless Junk Pile：收益 10、危险 10、成功率 85%；Scrap Pile：20/10/85%；Fresh Scrap Pile：40/10/85%。",
+      "排序比值 = 收益 ÷（收益 + 危险）：0.5 / 0.667 / 0.8，代码取排序后第一个访问，即 Fresh Scrap Pile 优先。",
+      "三个兴趣点全部属于拾荒类型，且都可重复。",
+      "兴趣点被抽中的权重在资产表里，当前未取到。",
+      "选点时不必人工挑：系统已按比值排序自动访问第一个。"
+    ],
+    "actions": [
+      "接受系统自动排序结果，不用手动抢点",
+      "按 85% 成功率估成功次数，不按 100%"
+    ],
+    "pitfalls": [
+      "以为可以自选兴趣点：代码取排序后第一个",
+      "把 40 收益当保底：成功率只有 85%"
+    ],
+    "effects": [
+      "每次访问按 85% 判定成功"
+    ],
+    "guards": [],
+    "keywords": [
+      "Fresh Scrap Pile",
+      "Scrap Pile",
+      "Worthless Junk Pile"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/expedition-locations"
+    ],
+    "related": [
+      "expedition-run-structure",
+      "expedition-location-dumping-grounds"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/expedition-locations"
+  },
+  {
+    "id": "expedition-run-structure",
+    "title": "远征固定12回合",
+    "category": "quest",
+    "summary": "一次远征 12 回合；有可访问兴趣点就访问，否则环顾四周发现 2–4 个。",
+    "facts": [
+      "远征长度固定 12 回合。",
+      "每回合逻辑：有已发现且冷却满足的兴趣点则访问排序后第一个，否则环顾四周。",
+      "一次环顾发现 2–4 个兴趣点，全部为拾荒类型且可重复。",
+      "远征在「一天结束时」整段结算，不是逐回合交互。",
+      "归来时先由归来客户对话播报结果，对话结束后才生成探险日志并结算雇工状态。"
+    ],
+    "actions": [
+      "派遣后当天不再等交互，直接安排次日",
+      "次日先看探险日志再决定是否再派"
+    ],
+    "pitfalls": [
+      "以为能中途干预：整段在日终结算",
+      "不看日志就重复派遣，看不到上次亏损原因"
+    ],
+    "effects": [
+      "日终结算 → 生成 expedition_log → 雇工状态更新"
+    ],
+    "guards": [],
+    "keywords": [
+      "12 回合",
+      "expedition_log",
+      "环顾四周"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/expedition-accidents",
+      "wiki: /zh/wiki/terms/expedition-locations"
+    ],
+    "related": [
+      "expedition-cut-accident",
+      "expedition-return-settlement"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/expedition-locations"
+  },
+  {
+    "id": "expedition-no-supply-drain",
+    "title": "远征不消耗食物弹药信用点",
+    "category": "quest",
+    "summary": "本版远征过程只改雇工健康、状态、指派地点与日志，不扣食物/药/弹药/钱。",
+    "facts": [
+      "本版远征过程中不消耗食物、药物、弹药或信用点。",
+      "代码只改雇工健康、状态、指派地点与日志四项。",
+      "因此不存在「返回后核对消耗」这一机制，补给箱只负责分配装备。",
+      "雇工基础费用 80 字段存在，但未找到实际扣费代码。",
+      "补给箱内容窗口为 5 行 × 2 列。"
+    ],
+    "actions": [
+      "不要把食物弹药算进远征成本",
+      "把预算集中到雇工健康与工具上"
+    ],
+    "pitfalls": [
+      "按其他游戏直觉给远征备粮：白占箱子槽位",
+      "把 80 基础费用当必然支出：代码未扣费"
+    ],
+    "effects": [
+      "派遣前后现金不变"
+    ],
+    "guards": [],
+    "keywords": [
+      "expedition_box",
+      "基础费用",
+      "ammo"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/expedition-supplies",
+      "wiki: /zh/wiki/terms/hiring-crew"
+    ],
+    "related": [
+      "expedition-supply-box",
+      "crew-juan-stats"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/expedition-supplies"
+  },
+  {
+    "id": "expedition-supply-box",
+    "title": "补给箱 5 个槽位，必须先摆上柜台",
+    "category": "quest",
+    "summary": "箱子 5 行×2 列、5 个槽位；雇工走完招募对话才摆上柜台，出发时又撤走。",
+    "facts": [
+      "槽位：0 主武器（单格）、1 副武器（单格）、2 口袋 #1（2×4）、3 口袋 #2（2×4）、4 背包（单格）。",
+      "装填顺序为先试背包槽，装不下才退到箱子本体，都装不下时记录「无法携带」。",
+      "箱子初始在店铺侧；只有雇工本人来店并走完招募对话，箱子才摆到柜台；出发时又从商店侧撤走。",
+      "每名雇工一个箱子，用归属标签绑定雇工 id。",
+      "未使用装备退还未找到显式代码，只能确认箱子本身没被销毁。"
+    ],
+    "actions": [
+      "雇工到店后立刻装填箱子再派遣",
+      "优先把装备放背包槽，装不下再放本体"
+    ],
+    "pitfalls": [
+      "把东西放柜台没进箱子：等于没携带",
+      "以为剩余装备会退回：无显式代码"
+    ],
+    "effects": [
+      "箱子上柜台 → 可装填；出发 → 箱子撤走"
+    ],
+    "guards": [
+      "箱子不在柜台上时禁止派遣"
+    ],
+    "keywords": [
+      "expedition_box",
+      "背包槽",
+      "归属标签"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/expedition-supplies"
+    ],
+    "related": [
+      "crew-recruit-conditions",
+      "expedition-no-supply-drain"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/expedition-supplies"
+  },
+  {
+    "id": "expedition-cut-accident",
+    "title": "尖金属割伤：50% 扣 5–8 健康",
+    "category": "risk",
+    "summary": "本版唯一事故，只在垃圾倾倒场触发，兴趣点判定失败后 50% 概率扣 5–8 健康，无死亡。",
+    "facts": [
+      "事故「在尖金属上割伤自己」触发概率 50%，伤害 5–8 点健康。",
+      "仅在地点为垃圾倾倒场（dumping_grounds）时生效；代码另有一处重复实现不判断地点。",
+      "触发时机在兴趣点判定失败之后；未命中时记录「差点割伤但躲开了」，不扣血。",
+      "没有死亡判定，健康最低为 0，状态只会是「受伤」。",
+      "事故判定不看地点危险等级，也不看雇工勇气或特质。"
+    ],
+    "actions": [
+      "接受 50% 事故率，把它计入每次远征的期望损失",
+      "雇工健康低于 60 时不要派遣"
+    ],
+    "pitfalls": [
+      "挑低危险地点想避事故：判定不看危险等级",
+      "以为高勇气/好特质能减伤：无读取方"
+    ],
+    "effects": [
+      "失败判定 → 50% 扣 5–8 健康；健康 ≤50 记为受伤"
+    ],
+    "guards": [
+      "雇工健康 < 60 时禁止派遣"
+    ],
+    "keywords": [
+      "dumping_grounds",
+      "尖金属",
+      "expedition_log"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/expedition-accidents"
+    ],
+    "related": [
+      "expedition-return-settlement",
+      "expedition-poi-ratio"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/expedition-accidents"
+  },
+  {
+    "id": "expedition-return-settlement",
+    "title": "归来健康≤50判受伤",
+    "category": "quest",
+    "summary": "对话结束后生成日志并结算状态；健康 ≤50 为受伤，之后每次雇工客户处理回 10 点。",
+    "facts": [
+      "归来由「已完成」雇工生成归来客户，对话结束后才生成探险日志并结算状态。",
+      "健康小于等于 50 即判为受伤；代码无死亡判定，健康最低 0。",
+      "远征已解锁且招募牌在展示柜内时，雇工客户处理让受伤者在后台恢复 10 点健康，以最大健康封顶。",
+      "受伤者不会作为客户来店，只在后台休养；「远征中」的雇工不处理。",
+      "补给箱要在雇工本人来店并走完对话后才摆到柜台，出发时又从商店侧撤走。"
+    ],
+    "actions": [
+      "归来看日志确认健康与收益",
+      "保持招募牌在展示柜内，让受伤雇工持续回血"
+    ],
+    "pitfalls": [
+      "撤掉招募牌：受伤雇工不再回血，永久卡住",
+      "把受伤雇工当可用人员继续派遣"
+    ],
+    "effects": [
+      "对话结束 → 生成 expedition_log → 状态更新；每次休养 health +10"
+    ],
+    "guards": [
+      "雇工健康 ≤50 时标记为受伤，禁止派遣"
+    ],
+    "keywords": [
+      "expedition_log",
+      "招募牌",
+      "休养"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/expedition-accidents",
+      "wiki: /zh/wiki/terms/hiring-crew"
+    ],
+    "related": [
+      "expedition-cut-accident",
+      "crew-recruit-conditions"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/expedition-accidents"
+  },
+  {
+    "id": "crew-recruit-conditions",
+    "title": "招募需远征解锁＋招募牌在展示柜",
+    "category": "quest",
+    "summary": "两个条件缺一不可，且只有状态「可用」的雇工才生成招募客户。",
+    "facts": [
+      "招募条件：远征系统已解锁，且招募牌确实放在展示柜内。",
+      "只有「可用 0」状态的雇工生成招募客户；「受伤 2」只后台休养，「远征中 1」不处理。",
+      "「已完成 3」的雇工生成归来客户，对话结束后生成探险日志并结算状态。",
+      "招到人后仍需安排地点与补给，并确认目标地点已解锁。",
+      "探险供应商是另一条客户线（下层区阵营、固定食物需求），与雇工招募无关。"
+    ],
+    "actions": [
+      "把招募牌放展示柜并保持",
+      "招募后立刻确认地点解锁与箱子在柜台"
+    ],
+    "pitfalls": [
+      "以为远征解锁就能招人：还要招募牌",
+      "把探险供应商当雇工线：两条客户线不同"
+    ],
+    "effects": [
+      "招募牌在展示柜 → 生成招募客户"
+    ],
+    "guards": [
+      "远征未解锁或招募牌不在展示柜时，不要等雇工"
+    ],
+    "keywords": [
+      "招募牌",
+      "展示柜",
+      "EXPEDITION"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/hiring-crew"
+    ],
+    "related": [
+      "expedition-return-settlement",
+      "expedition-supply-box"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/hiring-crew"
+  },
+  {
+    "id": "crew-juan-stats",
+    "title": "雇工Juan：100血、费用80",
+    "category": "quest",
+    "summary": "Juan 健康 100/100、基础费用 80、勇气 0、无特质；11 个特质枚举都没有实现加成。",
+    "facts": [
+      "本版具名雇工只有 Juan：健康/最大健康 100/100，基础费用 80，勇气 0，特质为空。",
+      "显示名硬编码为 Juan，本地化键「胡安」不生效。",
+      "状态枚举：可用 0、远征中 1、受伤 2、已完成 3。",
+      "特质枚举共 11 个（战士、胆小、幸存者、凶残、屠夫、成瘾者、孤僻、幸运、拾荒者、寻宝者、友善），但无本地化描述、也没有读取方，不给任何加成。",
+      "基础费用 80 字段存在，但未找到实际扣费代码。"
+    ],
+    "actions": [
+      "按 100/100 血、无特质做派遣决策",
+      "不要为「勇气/特质」付溢价"
+    ],
+    "pitfalls": [
+      "按特质加成选人：代码没有读取方",
+      "把 80 计入现金流出：未找到扣费实现"
+    ],
+    "effects": [
+      "派遣 → 状态 0→1；归来 → 3；健康 ≤50 → 2"
+    ],
+    "guards": [],
+    "keywords": [
+      "Juan",
+      "基础费用",
+      "勇气",
+      "特质"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/hiring-crew"
+    ],
+    "related": [
+      "crew-recruit-conditions",
+      "expedition-cut-accident"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/hiring-crew"
+  },
+  {
+    "id": "wound-night-settlement",
+    "title": "伤口睡眠结算：10%恶化/50%稳定",
+    "category": "risk",
+    "summary": "不稳定伤口先 10% 恶化 +1，未恶化再 50% 稳定；已稳定伤口每夜回 4 点。",
+    "facts": [
+      "伤口在睡眠时结算，不是受伤当场结算。",
+      "不稳定伤口先做 10% 恶化判定，成功则伤势 +1；未恶化再做 50% 稳定判定。",
+      "本夜刚稳定的伤口不会立即走恢复分支。",
+      "结算开始时已经稳定的伤口恢复 4 点，最低 0。",
+      "伤势已大于 10 的分支会先限制到 10、稳定伤口，并恢复 1 点。"
+    ],
+    "actions": [
+      "受伤当晚就用绷带处理，避免带着不稳定伤口睡",
+      "把「稳定后每夜 −4」当恢复节奏，不按固定天数算"
+    ],
+    "pitfalls": [
+      "把一次受伤换算成固定休养天数：实际是概率链",
+      "伤势 >10 反复卡在 10，恢复被吃掉"
+    ],
+    "effects": [
+      "睡眠结算 → 伤势 ±，稳定者 −4"
+    ],
+    "guards": [
+      "伤势不稳定时不要继续外出拾荒"
+    ],
+    "keywords": [
+      "不稳定伤口",
+      "残伤",
+      "wound"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.store_state",
+          "op": "eq",
+          "value": "CLOSED"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/health-and-addiction"
+    ],
+    "related": [
+      "injury-lockout-threshold",
+      "night-sleep-gate"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/health-and-addiction"
+  },
+  {
+    "id": "injury-lockout-threshold",
+    "title": "伤势 >5 即重伤，禁止外出拾荒",
+    "category": "risk",
+    "summary": "轻伤 +2、重伤 +5，伤势超过 5 判重伤并封掉拾荒，直到压回 5 以下。",
+    "facts": [
+      "轻伤增加 2 点伤势，重伤增加 5 点，并使伤口变为不稳定状态。",
+      "伤势大于 5 会被判为重伤（seriously wounded），限制外出拾荒。",
+      "这里的数值是伤势等级，不是生命值或伤口数量。",
+      "战斗中的出血效果不能等同于拾荒伤势。",
+      "外用药膏绷带管愈合辅助、止血绷带管出血，与基础绷带的包扎不同。"
+    ],
+    "actions": [
+      "伤势到 4 就停止拾荒，避免跨过 5",
+      "出门前查 seriously_wounded 再决定"
+    ],
+    "pitfalls": [
+      "按「轻伤没事」继续拾荒：两次轻伤就 4 点，再一次直接锁死",
+      "用基础绷带处理出血：不对症"
+    ],
+    "effects": [
+      "伤势 >5 → seriously_wounded = true → 禁止拾荒"
+    ],
+    "guards": [
+      "visible_info.night.seriously_wounded 为 true 时禁止进入垃圾场"
+    ],
+    "keywords": [
+      "seriously_wounded",
+      "轻伤",
+      "重伤",
+      "afterhours"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.night.seriously_wounded",
+          "op": "eq",
+          "value": true
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/health-and-addiction",
+      "wiki: /zh/wiki/terms/afterhours"
+    ],
+    "related": [
+      "wound-night-settlement",
+      "scavenge-injury-formula"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/health-and-addiction"
+  },
+  {
+    "id": "addiction-withdrawal",
+    "title": "戒断：计数3起−8%，20清除",
+    "category": "risk",
+    "summary": "尼古丁/酒精/麻醉品未摄入计数 ≥3 触发 −8% 交易，每夜 +1，到 20 成瘾消失。",
+    "facts": [
+      "三种成瘾（尼古丁、酒精、麻醉品）机制同构：未摄入计数 ≥3 触发戒断，单项交易惩罚 8%。",
+      "计数在睡眠时 +1；计数达到 20 时移除该成瘾（自然治愈）。",
+      "三种惩罚相加，全部戒断时为 24%。",
+      "开局选这三种成瘾时计数直接初始化为 3，所以第一天就处于戒断状态，同时发放对应物品。",
+      "摄入对应物质只是压制戒断并按物品抑制量重设计数，不是当场治愈；形成新成瘾所需次数尚未核实。",
+      "赌博成瘾不走这套计数，另见彩票与赌博机制。"
+    ],
+    "actions": [
+      "要养新成瘾就先算清 20 夜的空窗期",
+      "戒断期间把交易加价空间预留 8%–24%"
+    ],
+    "pitfalls": [
+      "以为吸一次就治好：只重设计数",
+      "开局带 3 成瘾却按无惩罚定价：一开局就 −24%"
+    ],
+    "effects": [
+      "睡眠 → 计数 +1；达 20 → 移除成瘾"
+    ],
+    "guards": [
+      "戒断未解除时不要接低毛利大单"
+    ],
+    "keywords": [
+      "尼古丁",
+      "酒精",
+      "麻醉品",
+      "戒断"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/health-and-addiction"
+    ],
+    "related": [
+      "sentinel-collapse",
+      "wound-night-settlement"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/health-and-addiction"
+  },
+  {
+    "id": "sentinel-collapse",
+    "title": "哨兵病：注射计数与累积 20 结局",
+    "category": "risk",
+    "summary": "不可治愈；未注射计数 6 夜起症状、14 夜起每夜 +3 累积，达 20 触发崩溃结局。",
+    "facts": [
+      "哨兵崩溃综合征不可治愈；选该天赋时获得 1 支免疫宁。",
+      "未注射计数每次睡眠 +1：第 6 夜起提示轻度症状；7–9 夜每夜累积 +1；10–13 夜 +2；14 夜及以后 +3。",
+      "疾病累积达到 20 即触发哨兵崩溃结局。",
+      "注射只重设未注射计数（真品 0、过期品 3、假冒品 3/4/5），不清零已累积的疾病值。",
+      "免疫宁需验货：真品/过期/假冒分别重设为 0 / 3 / 3、4、5。"
+    ],
+    "actions": [
+      "按每周注射安排补货并留验货时间",
+      "第 6 夜出现症状立刻注射，不要拖到 14 夜后"
+    ],
+    "pitfalls": [
+      "拖到最后再注射：已累积的疾病值不会清零",
+      "凭「感觉好一些」判断真假：假冒品也会短期缓解"
+    ],
+    "effects": [
+      "注射 → 未注射计数按药效重设；累积值保留"
+    ],
+    "guards": [
+      "累积接近 20 时优先注射而不是扩张经营"
+    ],
+    "keywords": [
+      "免疫宁",
+      "哨兵崩溃综合征",
+      "injector_guide",
+      "赛纳普斯注射器"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/health-and-addiction"
+    ],
+    "related": [
+      "addiction-withdrawal"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/health-and-addiction"
+  },
+  {
+    "id": "gun-permit-tiers",
+    "title": "枪证300/600/900，Demo锁",
+    "category": "security",
+    "summary": "三级枪证 300→600→900 递进，声明声望 30/60/90、吊销线 0/30/60，但 Demo 锁死。",
+    "facts": [
+      "GUN_PERMIT_I 300、GUN_PERMIT_II 600（需 I）、GUN_PERMIT_III 900（需 II），三级全部标「不可购买」。",
+      "三项枪证在 Demo 内即使费用足够也不会开放，不要为此攒钱。",
+      "同页可用项：LANDLORD_GRACE 租金宽限 100（冷却 15 天）、SEC_GRACE 豁免权 250、INSPECTION_INFORMANT 盘查预警 300、EVIDENCE_REMOVAL 清除证据 500（冷却 14 天）。",
+      "下层区特权「下层区传奇」解锁后，全部网络项目按基础费用的 85% 结算。",
+      "枪证的下发声望 30 / 60 / 90 与吊销线 0 / 30 / 60 归 gun-license-revoke；本页只写「声明」且执行点未定位，不在本卡重复。"
+    ],
+    "actions": [
+      "不要攒钱买枪证：Demo 不开放",
+      "先买盘查预警 300 降低被查风险"
+    ],
+    "pitfalls": [
+      "攒够 300 也买不到枪证 I：Demo 三级全锁",
+      "以为持证就免查：检查与证据是独立流程",
+      "在本卡找声望门槛：那组数字归 gun-license-revoke"
+    ],
+    "effects": [
+      "购买成功 → 解锁许可（非 Demo）"
+    ],
+    "guards": [
+      "Demo 下 GUN_PERMIT_I/II/III 均不可购买"
+    ],
+    "keywords": [
+      "GUN_PERMIT_I",
+      "GUN_PERMIT_II",
+      "GUN_PERMIT_III",
+      "EVIDENCE_REMOVAL",
+      "INSPECTION_INFORMANT"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/upgrades/security-network"
+    ],
+    "related": [
+      "shop-shooting-flow",
+      "wanted-bounty-table",
+      "gun-license-revoke",
+      "weapon-permit-ceiling"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/upgrades/security-network"
+  },
+  {
+    "id": "shop-shooting-flow",
+    "title": "店内射击：解锁＋枪＋口径弹，四条件分离",
+    "category": "security",
+    "summary": "射击要先解锁并用匹配口径弹药，物品窗会隐藏；非致命弹不保证免责。",
+    "facts": [
+      "店内射击需先解锁对应操作，并准备适用的枪械与匹配口径的弹药。",
+      "进入射击模式后可射击或收枪，商店物品窗口暂时隐藏，退出后恢复。",
+      "射击解锁、持有许可、当前弹药、顾客身份是四个彼此独立的条件。",
+      "原版弹药分普通、非致命、穿甲三类；「非致命」不保证安全、不保证眩晕、也不免除法律后果。",
+      "护甲、武器模组、机器模组是三种不同的升级系统；站点不提供统一伤害表与命中公式。",
+      "7 把枪械全部带违禁品标签，价格 40 / 120 / 160 / 190 / 200 / 280 / 310 信用点。"
+    ],
+    "actions": [
+      "开枪前先确认已解锁、弹口径匹配、顾客身份已核实",
+      "处理疑似改造体先用改造体扫描仪"
+    ],
+    "pitfalls": [
+      "持证就当免责：检查与证据链独立",
+      "用「非致命」弹打人以为没事：仍可能被通缉"
+    ],
+    "effects": [
+      "进入射击模式 → 物品窗隐藏；收枪 → 恢复"
+    ],
+    "guards": [
+      "无匹配口径弹药时禁止进入射击模式"
+    ],
+    "keywords": [
+      "aug_scanner",
+      "非致命",
+      "穿甲",
+      "违禁品"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/combat-and-weapons",
+      "wiki: /zh/items/t/firearm"
+    ],
+    "related": [
+      "gun-permit-tiers",
+      "wanted-bounty-table"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/combat-and-weapons"
+  },
+  {
+    "id": "phone-contact-numbers",
+    "title": "六个电话联系人号码",
+    "category": "phone",
+    "summary": "8376 王尔德、8815 红魔鬼、56371 矿业（科尔森）、4615 药剂、3319 化学、51189 革命商人。",
+    "facts": [
+      "六个独立号码：Wilds 8376、Red Imp 8815、矿业 56371、药剂 4615、化学 3319、革命商人 51189。",
+      "56371 在电话簿显示为「科尔森」，即 GP 采矿合作社负责人，与「矿业」是同一对象。",
+      "配给站另有电话对话但没有独立号码，不能补出第七个。",
+      "四个供货号码分别对应红魔鬼酿酒厂、下层区化学家、上层区药商、GP 采矿合作社四项升级。",
+      "王尔德（8376）是服务入口、革命商人（51189）走访问分支，两者都不是供货商订单。"
+    ],
+    "actions": [
+      "按号码直接拨，不用猜联系人",
+      "供货优先拨 8815/56371/4615/3319"
+    ],
+    "pitfalls": [
+      "把 8376 当供货商：它是服务入口，不能下单",
+      "在配给站找第七个号码：不存在"
+    ],
+    "effects": [
+      "拨通 → 联系人状态转入回应/首次介绍"
+    ],
+    "guards": [],
+    "keywords": [
+      "8376",
+      "8815",
+      "56371",
+      "4615",
+      "3319",
+      "51189",
+      "StorePhoneClient"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.phone.open",
+          "op": "eq",
+          "value": true
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/phone-contacts"
+    ],
+    "related": [
+      "phone-cooldown-orders"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/phone-contacts"
+  },
+  {
+    "id": "phone-cooldown-orders",
+    "title": "电话号码簿条件与 4–7 天冷却",
+    "category": "phone",
+    "summary": "须处于正常服务/冷却且拨通过一次才进电话簿；冷却 4/5/7/4/5 天，订单分次日与若干天。",
+    "facts": [
+      "号码进入电话簿的条件：状态为「正常服务」或「冷却」，且此前至少拨通过一次。",
+      "冷却：红魔鬼 4 天、矿业 5 天、药剂 7 天、化学 4 天、革命商人 5 天。",
+      "可订购品类为啤酒、矿石、奥克西莫注射器、梦尘各一套。",
+      "订单档期两档：次日送达，或界面显示若干天后送达；缺货对话会显示下一批还需等待天数。",
+      "首次建立供货关系时，联系人承诺次日送一份免费样品。",
+      "革命商人初始状态为不回应，需先建立联系；戒严期间拒接、被拉黑后别再拨。"
+    ],
+    "actions": [
+      "按冷却排补料：药剂 7 天最慢，提前下单",
+      "新联系人先拨通一次解锁电话簿"
+    ],
+    "pitfalls": [
+      "号码正确就以为能下单：可能不回应/冷却/已在店里",
+      "把「次日送达」当默认：还有若干天档"
+    ],
+    "effects": [
+      "下单 → 次日或若干天后送达；样品首次免费"
+    ],
+    "guards": [
+      "联系人处于冷却或未建立联系时禁止安排当日补料"
+    ],
+    "keywords": [
+      "cooldown",
+      "book_shown",
+      "革命商人",
+      "免费样品"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.phone.book_shown",
+          "op": "eq",
+          "value": true
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/phone-contacts"
+    ],
+    "related": [
+      "phone-contact-numbers"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/phone-contacts"
+  },
+  {
+    "id": "npc-georgio-schedule",
+    "title": "乔治奥按D值六次来访",
+    "category": "customer",
+    "summary": "六次固定日计数来访，D=27 求飞船借款；核废料返还另需 D≥3 且曾丢弃核废料。",
+    "facts": [
+      "非无尽模式日计数：D=6 初见、D=9 介绍新发明、D=12 出售香烟、D=16 带来上层区货物、D=21 再次出售特殊货物、D=27 请求飞船借款。",
+      "核废料返还独立条件：D≥3、曾丢弃核废料、且尚未触发该次来访。",
+      "角色生成用拾荒客设置 + 下层区阵营；加入来客列表前还过「已知告密者」检查。",
+      "他会把商品说成外星遗物、「未来之水」或保真的海明威香烟，这些是销售说辞，且专门配了假货设置。",
+      "无尽模式下这条角色线会被跳过。"
+    ],
+    "actions": [
+      "D=12/16/21 备好验货工具再交易",
+      "D=27 前先算清现金流再决定借款"
+    ],
+    "pitfalls": [
+      "信他的「保真」保证：假货是专门配的",
+      "以为每次丢核废料都有回收：一次性条件"
+    ],
+    "effects": [
+      "触发来访 → 生成对应商品/借款对话"
+    ],
+    "guards": [
+      "现金 < 借款额时拒绝 D=27 借款"
+    ],
+    "keywords": [
+      "乔治奥",
+      "核废料",
+      "已知告密者",
+      "飞船借款"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.day",
+          "op": "gte",
+          "value": 6
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-georgio"
+    ],
+    "related": [
+      "npc-visit-state-rules"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-georgio"
+  },
+  {
+    "id": "npc-visit-state-rules",
+    "title": "NPC 分四组，剧情线按模式开关",
+    "category": "customer",
+    "summary": "NPC 分剧情/服务执法/专家供货/顾客四组；乔治奥、伦警官、埃莉诺在无尽模式被跳过。",
+    "facts": [
+      "四组划分：剧情人物（导师、索耶、乔·王尔德、杰克逊博士、房东、乔治奥、伦警官、埃莉诺）、服务与执法、专家与供货、顾客与机制。",
+      "乔治奥、伦警官、埃莉诺的角色线在无尽模式下会被跳过。",
+      "日计数 D 只说明已核实安排，不保证每个存档在界面同一天见到同一人。",
+      "杰克逊博士的普通设备来访同时受日计数与下层区声望影响；乔·王尔德保险按日订阅。",
+      "治安部盘查员有普通、懒惰、可疑三种变体，不能由制服推断执法范围。",
+      "Demo 锁定引荐：退休农夫、退休枪匠、退休化学家、废弃机器拆解、化学家与药商供货，以及杰克逊投资 II。"
+    ],
+    "actions": [
+      "按四组分工找人：许可找贸易委员会官员、检查找盘查员、罚款找警官",
+      "无尽模式不要等乔治奥/伦警官/埃莉诺"
+    ],
+    "pitfalls": [
+      "按 D 值死等某个 NPC：存档差异会导致不出现",
+      "把同肖像的盘查员当同一人"
+    ],
+    "effects": [
+      "剧情来客受模式、剧情开关、天赋三重影响"
+    ],
+    "guards": [
+      "无尽模式下不安排依赖乔治奥/伦警官/埃莉诺的采购"
+    ],
+    "keywords": [
+      "无尽模式",
+      "已知告密者",
+      "盘查员",
+      "杰克逊投资 II"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-overview",
+      "wiki: /zh/collections/npc-directory"
+    ],
+    "related": [
+      "npc-georgio-schedule"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-overview"
+  }
+]

@@ -1,0 +1,52 @@
+{
+  "id": "decorative-news-pool",
+  "title": "装饰性新闻无价格效果",
+  "category": "economy",
+  "summary": "装饰池 13 条权重全 10，只在活跃事件<2 时补入，标题不能当涨价信号。",
+  "facts": [
+    "装饰性事件池共 13 条，每条权重均为 10；普通事件池 15 条、总权重 180。",
+    "活跃事件总数不足 2 条时，系统尝试补入装饰性新闻，不是固定补两条花边。",
+    "装饰性新闻可能没有价格效果，不能只凭报纸标题大量囤货。",
+    "情报纸条提前 2–3 天送达；事件键共 132 个（普通 17 类、势力行动 17 类、装饰性 14 类、其它 10 个），带重要度 3–10 与持续天数（多为 1–3 天）。",
+    "事件可有隐藏信息，不是每件事都会公开在报纸上。",
+    "当前观测层没有「装饰性新闻」字段，需扩展后才能按条件触发。"
+  ],
+  "actions": [
+    "看报纸",
+    "确认事件是否真影响价格"
+  ],
+  "pitfalls": [
+    "看到花边新闻就囤货 → 无品类修正，压货。",
+    "把事件名当日程表：势力行动同样受条件与冷却限制。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "装饰性新闻",
+    "情报纸条",
+    "重要度",
+    "事件键",
+    "报纸"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.afterhour_events",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/news-and-events"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "market-event-gen-prob",
+    "market-event-price-mods"
+  ],
+  "source": "wiki:/zh/wiki/terms/news-and-events",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

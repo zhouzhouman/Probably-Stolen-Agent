@@ -1,0 +1,50 @@
+{
+  "id": "expedition-cut-accident",
+  "title": "尖金属割伤：50% 扣 5–8 健康",
+  "category": "risk",
+  "summary": "本版唯一事故，只在垃圾倾倒场触发，兴趣点判定失败后 50% 概率扣 5–8 健康，无死亡。",
+  "facts": [
+    "事故「在尖金属上割伤自己」触发概率 50%，伤害 5–8 点健康。",
+    "仅在地点为垃圾倾倒场（dumping_grounds）时生效；代码另有一处重复实现不判断地点。",
+    "触发时机在兴趣点判定失败之后；未命中时记录「差点割伤但躲开了」，不扣血。",
+    "没有死亡判定，健康最低为 0，状态只会是「受伤」。",
+    "事故判定不看地点危险等级，也不看雇工勇气或特质。",
+    "2026-11-13 标注：本卡内容全部来自 2026-10-24 Demo 期静态解包/wiki；1.0 正式版未实装远征与雇工（demo-occupations/远征代码仍存在，唯一解锁入口是开局天赋 expedition_organizer，StartingPerkContent.cs:93-96），官方 Roadmap 将 Junker+远征列为 post-launch。"
+  ],
+  "actions": [
+    "【post-launch 未实装，勿执行】接受 50% 事故率，把它计入每次远征的期望损失",
+    "【post-launch 未实装，勿执行】雇工健康低于 60 时不要派遣"
+  ],
+  "pitfalls": [
+    "挑低危险地点想避事故：判定不看危险等级",
+    "以为高勇气/好特质能减伤：无读取方"
+  ],
+  "effects": [
+    "失败判定 → 50% 扣 5–8 健康；健康 ≤50 记为受伤"
+  ],
+  "guards": [
+    "1.0 正式版未实装远征/雇工系统（官方 Roadmap 列为 post-launch，12 月中旬起）：不要按本卡派遣、招人或备货，本卡仅作战后参考。",
+    "雇工健康 < 60 时禁止派遣"
+  ],
+  "keywords": [
+    "dumping_grounds",
+    "尖金属",
+    "expedition_log"
+  ],
+  "triggers": {},
+  "evidence": [
+    "wiki: /zh/wiki/terms/expedition-accidents"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "expedition-return-settlement",
+    "expedition-poi-ratio"
+  ],
+  "source": "wiki:/zh/wiki/terms/expedition-accidents",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "gated_until": "post-launch",
+  "keyword_only": true
+}

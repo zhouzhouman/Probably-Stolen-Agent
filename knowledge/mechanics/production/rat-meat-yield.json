@@ -1,0 +1,55 @@
+{
+  "id": "rat-meat-yield",
+  "title": "养鼠：出肉重量与价值",
+  "category": "production",
+  "summary": "前四晚每天 +75g，第 5 天起 +16.67g；四档肉值 150/65/30/15。",
+  "facts": [
+    "普通肉鼠前四晚基础 +75 克/天，第 5 天起约 +16.67 克/天，再乘自身生长速度与饥饿修正。",
+    "分肉按 400/200/100/50 克依次分配，不足 50 克的余数补一小块；四档基础价值 150/65/30/15 信用点（Demo Build 26017150）。",
+    "351 克与 400 克健康鼠都出 400 克肉，基础价值分别为 125 与 150——凑整块多 25，但要比较多养的饲料与时间。",
+    "有效重量 400→401 克会多补一块小碎肉，合计基础价值 165。",
+    "患病按体重 75% 计算：400 克病鼠按 300 克分肉，合计 95；继续养还是处理要看血量、饲料与笼位。",
+    "建议第 4 天左右评估一次，不要要求所有鼠同一天宰杀。"
+  ],
+  "actions": [
+    "第 4 天按「多等一晚增加值 vs 饲料+笼位成本」决定是否出肉",
+    "优先处理已过快长期且增重不抵成本的肉鼠"
+  ],
+  "pitfalls": [
+    "等所有鼠同时宰杀 → 快长期过后只增 16.67g/天",
+    "把 401 克当 400 克算 → 少算一块碎肉"
+  ],
+  "effects": [
+    "出肉：获得 400/200/100/50 克四档肉，按档计价"
+  ],
+  "keywords": [
+    "出肉",
+    "肉鼠",
+    "分肉",
+    "rat",
+    "meat"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.machines",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki:/zh/guides/rat-ranching-feeding-breeding-and-meat",
+    "Demo Build 26017150 复核"
+  ],
+  "related": [
+    "rat-husbandry-feeding",
+    "rat-breeding-genetics",
+    "showcase-client-tier"
+  ],
+  "confidence": 0.88,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/guides/rat-ranching-feeding-breeding-and-meat",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

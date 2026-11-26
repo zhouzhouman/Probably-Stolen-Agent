@@ -1,0 +1,60 @@
+{
+  "id": "nego-four-directions",
+  "title": "四种议价方向的代价",
+  "category": "trade",
+  "summary": "让利/加价必被接受但减少收入，抬价/压价可能被拒或顾客离开。",
+  "facts": [
+    "出售侧「提供折扣」= 你少收钱、利于顾客，必定被接受，同时提高顾客预算与交易声望收益。",
+    "出售侧「抬高售价」= 你多收钱、不利顾客，可能被拒绝或顾客离开，并降低其预算；成功后消耗声望。",
+    "购买侧「提出加价」= 你多付钱、利于顾客，必定被接受，提高交易声望收益。",
+    "购买侧「要求折扣」= 你少付钱、不利顾客，可能被拒绝；成功后买入物品会消耗声望。",
+    "「必定接受」只作用于议价条件，不会让顾客收下其原本拒收的品类。",
+    "顾客来意「购买」= 顾客向你买；「出售」= 顾客卖给你；议价按钮上的文案主语与之相反，必须按按钮文案判断方向。"
+  ],
+  "actions": [
+    "出售侧提供折扣",
+    "出售侧抬高售价",
+    "购买侧提出加价",
+    "购买侧要求折扣",
+    "accept_offer"
+  ],
+  "pitfalls": [
+    "把「购买」理解成自己在买 → 方向反了，让利变成让顾客占便宜。",
+    "对已拒收的品类反复让利 → 不会成交。",
+    "反复加码：抬高离开概率，对有指定需求的顾客代价最大。"
+  ],
+  "effects": [
+    "让利成功：成交价下降、客户 budget_left 上升、派系声望收益上升。",
+    "争利成功：成交价上升、budget_left 下降、声望下降。"
+  ],
+  "guards": [],
+  "keywords": [
+    "nego_open",
+    "accept_offer",
+    "budget_left",
+    "抬高售价",
+    "要求折扣"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.table.nego_open",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/trading-and-bargaining"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "nego-rep-multiplier-tiers",
+    "discount-boosts-budget",
+    "intent-and-rejection"
+  ],
+  "source": "wiki:/zh/wiki/terms/trading-and-bargaining",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,53 @@
+{
+  "id": "aquaculture-fish-tags",
+  "title": "养殖：鱼/鱼群/鱼卵三类标签",
+  "category": "production",
+  "summary": "养殖链条把鱼分成成鱼、鱼群、鱼卵三类，各自带不同标签；鱼缸是机器，鱼在它的槽位里。",
+  "facts": [
+    "标签常量：FISH_ITEM_TAG（成鱼）/ FISH_GROUP_TAG（鱼群）/ FISH_ROE_TAG（鱼卵）。",
+    "FishSpecies 定义 speciesID / nameKey / roeIdentifier，鱼卵 identifier 由物种决定。",
+    "鱼缸（RAS 等）属于机器，鱼在 /machines 的 slots 里，不在玩家库存。",
+    "/state 的 aquaculture.items 只汇总玩家库存里的鱼类物品（identifier + count）。",
+    "AquacultureHelper.TankOccupancy 按格子形状判容量（width/height/freeCells）。"
+  ],
+  "actions": [
+    "投鱼前先用 machines[].slots 看鱼缸还有没有空位",
+    "按物种对 roeIdentifier 取卵，别把成鱼当鱼卵"
+  ],
+  "pitfalls": [
+    "以为鱼在库存里，去 inventory 里找 → 找不到。",
+    "忽略鱼缸格子占用，硬塞导致放不进。",
+    "把成鱼(FISH_ITEM_TAG)和鱼群(FISH_GROUP_TAG)混为一谈。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "养殖",
+    "鱼群",
+    "鱼卵",
+    "鱼缸",
+    "aquaculture",
+    "鱼苗"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.aquaculture.items",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "decompile_full/AquacultureHelper.cs / FishSpecies.cs"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-11-07",
+  "related": [
+    "fish-farm",
+    "machine-production-loop"
+  ],
+  "source": "decompile:AquacultureHelper.cs",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false
+}

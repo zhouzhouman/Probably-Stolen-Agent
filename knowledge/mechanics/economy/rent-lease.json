@@ -1,0 +1,57 @@
+{
+  "id": "rent-lease",
+  "title": "租金看 rent_due，不是 rent_value",
+  "category": "economy",
+  "summary": "rent_due 是真实应缴（含延期累计+罚金）；现金不足时房东只给『拒付』，拒付=延期、涨租、卡店。",
+  "facts": [
+    "rent_value 是本期名义租金；rent_due 才是房东实际要收的钱。",
+    "day_until_rent=0 当天，房东是队列最后一位；现金 < rent_due 时对话只有『拒付』。",
+    "拒付后果：再延期 7 天、租金上涨、房东卡店挡住打烊。"
+  ],
+  "actions": [
+    "交租日前把现金攒到 ≥ rent_due",
+    "商人（倒数第二位）到场时清库存回血",
+    "房东对话只选含『交/付/租金』的选项"
+  ],
+  "pitfalls": [
+    "用 rent_value 做预算：r78 名义 242、实际 693",
+    "对房东 dismiss_client：守卫拒绝且卡店"
+  ],
+  "effects": [
+    "pay_rent 成功：现金 −rent_due、day_until_rent 重置为 7"
+  ],
+  "guards": [
+    "现金 < rent_due×3 时禁止大额进货"
+  ],
+  "keywords": [
+    "rent_due",
+    "房东",
+    "交租",
+    "pay_rent"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.rent.day_until_rent",
+        "op": "lte",
+        "value": 2
+      }
+    ]
+  },
+  "evidence": [
+    "docs/09 §七 r78 实测",
+    "r67 pay_rent 成功扣款 210"
+  ],
+  "confidence": 0.97,
+  "verified_at": "2026-10-20",
+  "related": [
+    "rent-increase-rate",
+    "rent-grace-once",
+    "rent-default-evicted",
+    "bill-reserve-first"
+  ],
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "source": "docs:09-十天连续游玩评估.md r78（rent_due=693）+ r67 pay_rent 实盘"
+}

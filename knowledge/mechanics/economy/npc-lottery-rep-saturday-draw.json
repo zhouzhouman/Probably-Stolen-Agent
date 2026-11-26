@@ -1,0 +1,60 @@
+{
+  "id": "npc-lottery-rep-saturday-draw",
+  "title": "彩票代表每周六上午开奖",
+  "category": "economy",
+  "summary": "他卖票也兑奖，开奖固定在每周六上午；旧票不能当新一期资格。",
+  "facts": [
+    "彩票代表自称来自下层区彩票委员会，说明每周六上午开奖。",
+    "中奖者要回来找他兑奖，兑奖需持有状态为可兑奖的票。",
+    "后续来访有再次售票的对话，属于独立一次交易。",
+    "旧票或已处理票不能当作新一期购票资格。",
+    "见到代表不等于已中奖，也不代表本期头奖必然可得。",
+    "赌博成瘾会影响购票行为，与尼古丁/酒精/麻醉品的戒断计数是不同系统。",
+    "彩票不计入固定经营收入；应先把租金与贷款的钱留出。"
+  ],
+  "actions": [
+    "每周六上午前核对 economy.lottery_number 与手持票状态",
+    "兑奖前先 pay_rent，别把奖金预期当现金",
+    "赌博成瘾计数 > 0 时限购"
+  ],
+  "pitfalls": [
+    "拿旧票兑新一期：无效",
+    "用最高奖金倒推期望收益"
+  ],
+  "effects": [
+    "兑奖 → 按票与奖项结算；购票 → 现金支出，票进入待开奖状态"
+  ],
+  "guards": [
+    "现金 < rent_due 时不购票"
+  ],
+  "keywords": [
+    "彩票代表",
+    "下层区彩票委员会",
+    "每周六上午",
+    "兑奖",
+    "lottery_number"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.economy.lottery_number",
+        "op": "ne",
+        "value": ""
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-lottery-representative"
+  ],
+  "related": [
+    "lottery-odds-and-gambling",
+    "rent-increase-rate",
+    "addiction-withdrawal"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-lottery-representative",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

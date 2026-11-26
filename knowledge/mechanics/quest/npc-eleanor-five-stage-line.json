@@ -1,0 +1,57 @@
+{
+  "id": "npc-eleanor-five-stage-line",
+  "title": "埃莉诺五段：买→卖→求助",
+  "category": "quest",
+  "summary": "D=17/19 她买、D=21 她卖、D=23 无偿求食、D=25 带货来访且看获助次数。",
+  "facts": [
+    "D=17 购食、D=19 采购生活用品 —— 这两段她是买方。",
+    "D=21 变卖随身物品 —— 这一段她是卖方，方向相反。",
+    "D=23 的求食前置是「资金耗尽 + 遭失窃」，属于无偿求助而非交易。",
+    "D=25 安排新的拾荒货物来访，并额外检查「已获帮助次数」。",
+    "她有三种原版肖像键：普通、去掉首饰、低落，外观变体不算新 NPC。",
+    "角色工厂初始用上层区居民设置，后续转向下层区生活与拾荒，是同一人。",
+    "页面明确不承诺固定声望奖励，也不保证帮忙后必得货单。"
+  ],
+  "actions": [
+    "D=21 前留出现金准备收购她的随身物品",
+    "D=23 前留一份可食用货物，别全投料",
+    "D=25 前记录已帮她几次"
+  ],
+  "pitfalls": [
+    "一直拒绝求助却期待 D=25 照常来",
+    "把后期「能吃的就行」反推成初见时什么都收"
+  ],
+  "effects": [
+    "完成当段交互 → 推进下一段；D=25 的来访受获助次数影响"
+  ],
+  "guards": [
+    "现金 < 当日 rent_due 时不主动收购她的物品"
+  ],
+  "keywords": [
+    "埃莉诺",
+    "上层区居民",
+    "获助次数",
+    "拾荒货物"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-eleanor"
+  ],
+  "related": [
+    "npc-visit-state-rules",
+    "ul-perk-thresholds"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-eleanor",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,57 @@
+{
+  "id": "difficulty-rules",
+  "title": "难度档位与它改了什么",
+  "category": "meta",
+  "summary": "四档难度不是换个名字：零售加价、租金涨幅倍率、水电费倍率都不同，同一决策在 hard 上可能亏。",
+  "facts": [
+    "四档 id：cozy(100) / normal(200) / hard(300) / challenge(400)，标题分别是 Price Gouge / Mark Up / Thin Margins / Red Ink。",
+    "cozy：retailMarkup=20，rentIncreaseMultiplier=1.025，power/insurance 各 ×1。",
+    "normal：retailMarkup=15，rentIncreaseMultiplier=1.05，power/insurance 各 ×1，propertyBasePrice=12000，mortgageInterestRate=50，mortgageWeeks=12，mortgageDownPaymentShare=0.15，vendorPermitFee=1500。",
+    "hard：retailMarkup=0（没有零售加价），rentIncreaseMultiplier=1.10，powerCostMultiplier=2，insuranceCostMultiplier=2，propertyBasePrice=24000，mortgageWeeks=16，mortgageDownPaymentShare=0.125，vendorPermitFee=2000。",
+    "challenge：retailMarkup=0，rentIncreaseMultiplier=1.10，powerCostMultiplier=2，insuranceCostMultiplier=3，propertyBasePrice=36000，mortgageInterestRate=100，mortgageWeeks=16，mortgageDownPaymentShare=0.2，vendorPermitFee=3000。",
+    "propertyBasePrice 不是四档相同：cozy 12000 / normal 12000 / hard 24000 / challenge 36000（Difficulty.cs:228/272/316/360）；propertyPriceIncreasePerDay 为 25/50/50/100（:229/273/317/361），propertyPriceIncreaseCap 为 3000/5000/10000/20000（:230/274/318/362）；涨价从第 50 天后开始（PlayerStore.cs:3901 `if (StoreStation.Instance.dayCounter > 50)`）。",
+    "本局难度看 /state 的 difficulty.id 与 difficulty.title，不要假设是 normal。",
+    "2026-11-13 校正：旧结论「propertyPriceIncreasePerDay 四档为 25/50/50/50、normal 未列全字段」→ 新结论「25/50/50/100，且四档 base/rate/weeks/share/permit 全部补全」，依据 Difficulty.cs:228-233 / 272-277 / 316-321 / 360-365。"
+  ],
+  "actions": [
+    "开局先读 difficulty.id，再决定加价策略与夜间服务开销",
+    "hard 及以上：先算水电翻倍后的成本，再决定是否开机器与服务"
+  ],
+  "pitfalls": [
+    "按 normal 的加价率定价 → hard 上 retailMarkup=0，等于按成本卖出。",
+    "在 hard 上照常开机器：电费 ×2，产出可能盖不住电费。",
+    "把 difficulty 当成纯展示字段，不读它。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "难度",
+    "cozy",
+    "normal",
+    "hard",
+    "challenge",
+    "加价率",
+    "零售加价"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.difficulty.id",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "decompile_full/Difficulty.cs (Vanilla/CreateVanilla/DifficultyRules)"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-11-07",
+  "related": [
+    "mortgage-weekly-payment",
+    "contraband-tier-markup"
+  ],
+  "source": "decompile:Difficulty.cs",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false
+}

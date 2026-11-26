@@ -1,0 +1,48 @@
+{
+  "id": "appraisal-overbid-trick",
+  "title": "105% 估价多拿 0–11 点",
+  "category": "trade",
+  "summary": "每次按 105% 上限估价，可多拿 int(E×15%) 的尾巴；可多估的值 = 真实价值//10//2。",
+  "facts": [
+    "每次估价取 105% 上限，奖金可多获得 0–11 信用点。",
+    "可多估的价 = 真实价值的个位舍去后再除以 2 向下取整，即 x // 10 // 2。",
+    "例：V=45 时估 45 得奖金 int(45×0.15)=6，估 47 得 int(47×0.15)=7，多 1 点。",
+    "例：V=255 时 25÷2=12，可多估 12，多估收益约 2 信用点（等于真实价值的百位数字）。",
+    "抬高幅度不能跨出 T(105)，否则掉到极佳档，12% < 15%，总收入下降。",
+    "当前观测层没有「鉴定档位」字段，需扩展后才能按条件触发。"
+  ],
+  "actions": [
+    "按 T(105) 上限估价"
+  ],
+  "pitfalls": [
+    "多估过头越过 T(105) → 掉极佳档，35 变 32。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "105%",
+    "x//10//2",
+    "int(E*0.15)"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.appraisal.rank",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/appraisal-tips"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "appraisal-accept-range",
+    "appraisal-fee-formula"
+  ],
+  "source": "wiki:/zh/wiki/terms/appraisal-tips",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

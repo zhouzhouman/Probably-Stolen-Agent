@@ -1,0 +1,61 @@
+{
+  "id": "npc-cartel-contact-roles",
+  "title": "卡特尔接头人 / 士兵 / 杀手三职",
+  "category": "customer",
+  "summary": "接头人管介绍、检查与每周交货；士兵与杀手是另两种生成，交易≠完成交货。",
+  "facts": [
+    "名称表与生成定义有三类：卡特尔接头人、卡特尔士兵、卡特尔杀手。",
+    "接头人的介绍工厂使用卡特尔阵营设置；另有受伤士兵、可疑农场主、交易来访分支。",
+    "接头人流程含介绍、检查、每周交货三段。",
+    "交货需同时满足品类、数量、纯度、当前配额四项，缺一不算完成。",
+    "把物品卖给带卡特尔名称的来客，不等于完成本周正式交货。",
+    "该阵营有独立声望与 25/50/100 特权档，举报后存在相关后续来访。",
+    "相关化学家、药商、退休化学家引荐在 Demo 未开放，但卡特尔来客本身仍会出现。"
+  ],
+  "actions": [
+    "交货前逐项核对品类/数量/纯度/配额，再决定投货",
+    "先看对方是接头人还是普通交易来客，再判断是否计配额",
+    "把卡特尔声望维持在 25 以上再谈特权"
+  ],
+  "pitfalls": [
+    "把普通卖货当交货：配额未清",
+    "只满足数量不满足纯度：交货失败",
+    "以为一次交易换来以后所有成员友善"
+  ],
+  "effects": [
+    "完成交货 → 配额消耗，声望按机制变动"
+  ],
+  "guards": [
+    "纯度不达标的批次不投入正式交货"
+  ],
+  "keywords": [
+    "卡特尔接头人",
+    "卡特尔士兵",
+    "卡特尔杀手",
+    "配额",
+    "纯度"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.phone.contacts",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-cartel-contacts"
+  ],
+  "related": [
+    "cartel-delivery-quota",
+    "cartel-perk-thresholds",
+    "cartel-protection-mandatory",
+    "confrontation-goods-check"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-cartel-contacts",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

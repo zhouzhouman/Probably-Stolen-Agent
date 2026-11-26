@@ -1,0 +1,53 @@
+{
+  "id": "counter-transfer-flow",
+  "title": "上柜台≠成交",
+  "category": "trade",
+  "summary": "用 Ctrl+单击把货移到议价柜台，只是准备交易；不确认成交就不发生任何事。",
+  "facts": [
+    "交易前置：把货物拖到谈判柜台，或用 Ctrl＋单击快速转移，然后打开议价界面。",
+    "物品放上柜台只是准备交易，仍须完成成交确认操作。",
+    "快速转移后必须确认落点：议价柜台、普通库存/储物容器、机器内部、展示柜、走私暗格是五个不同位置，普通箱子不能替代暗格。",
+    "储物容器「不等于已经投料」，材料必须放进机器内部才会生产。"
+  ],
+  "actions": [
+    "把货物拖到议价柜台",
+    "Ctrl＋单击快速转移",
+    "完成成交确认"
+  ],
+  "pitfalls": [
+    "Ctrl+单击后不看落点 → 货被丢进储物箱或机器，交易空跑。",
+    "把材料放在机器旁边 → 不生产。"
+  ],
+  "effects": [
+    "place_item：物品上台且 nego_open=true；未成交时库存不变"
+  ],
+  "guards": [],
+  "keywords": [
+    "Ctrl＋单击",
+    "议价柜台",
+    "走私暗格",
+    "机器内部"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.table.nego_open",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/basic-controls",
+    "wiki: /zh/wiki/terms/trading-and-bargaining"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "nego-four-directions",
+    "faq-machine-no-output"
+  ],
+  "source": "wiki:/zh/wiki/terms/basic-controls",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

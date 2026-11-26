@@ -1,0 +1,56 @@
+{
+  "id": "inspection-reputation-points",
+  "title": "盘查声望扣分表",
+  "category": "risk",
+  "summary": "每件货按基础1+违禁等级+赃物价值档累计，单次最多扣 25 点。",
+  "facts": [
+    "每件被查获物：基础 1 点；违禁等级 无/低/中/高/高危 = 0/1/2/3/4。",
+    "赃物价值档：非赃物或 <18 → 0；18–49 → 1；50–84 → 2；85–139 → 3；≥140 → 4。",
+    "同一件货同时是违禁品与赃物时，两部分都计入。",
+    "所有被查获物分数相加后，单次最多扣 25 点。",
+    "清白奖励 +3 的例外：本次只要有物品被藏匿，就不再发放。",
+    "藏匿保护物品，不保护声望——即使零查获也拿不到 +3。",
+    "当前观测层无「治安部声望/查获物品等级」字段，需扩展。"
+  ],
+  "actions": [
+    "多件低价赃物一起被查时优先保高价值档那件",
+    "想拿 +3 清白声望就别在本次盘查中启用暗格"
+  ],
+  "pitfalls": [
+    "以为藏匿是纯赚：每次藏匿都放弃 +3",
+    "用单件上限算总扣分：上限是整次 25，不是每件 25"
+  ],
+  "effects": [
+    "扣分后治安部声望下降；清零获 +3"
+  ],
+  "guards": [
+    "声望接近触发「被针对」时停止收赃"
+  ],
+  "keywords": [
+    "治安部声望",
+    "赃物价值档",
+    "清白",
+    "藏匿标签"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk.contraband_crime",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/inspections"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "inspection-severity-ladder",
+    "smuggler-bay-variants"
+  ],
+  "source": "wiki:/zh/wiki/terms/inspections",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

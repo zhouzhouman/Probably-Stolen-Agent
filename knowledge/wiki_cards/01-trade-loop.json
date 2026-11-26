@@ -1,0 +1,1252 @@
+[
+  {
+    "id": "day-cycle-stages",
+    "title": "一日四阶段固定顺序",
+    "category": "loop",
+    "summary": "每天按早晨整理、开门接客、打烊准备、睡觉结算推进；顺序错了会漏结算或漏补货。",
+    "facts": [
+      "一日的固定顺序为四段：早晨整理 → 开门接客 → 打烊准备 → 睡觉结算，打烊与睡觉是两个独立步骤。",
+      "早晨必做四件事：看夜间日志（机器产物/失物/服务状态/伤口）、看报纸确认生效事件、核对现金与租金到期、再决定进货。",
+      "开门前三件事：把要卖的商品放进展示柜、整理柜台与储物空间、最后才打开卷帘门。",
+      "营业中按铃接待下一位顾客，接待顺序固定为「先读来意 → 再处理买卖/鉴定/订单/检查」。",
+      "打烊后睡前检查五块：生产（材料入机器内部）、夜间服务（逐晚开关、核对费用）、防盗（警报已启用且备独立电源）、健康（伤口/成瘾）、外出安排。",
+      "营业状态（OPEN）下不能睡觉，必须先把店铺关闭（CLOSED）才能用睡袋。"
+    ],
+    "actions": [
+      "看报纸核对当前生效事件",
+      "打开卷帘门营业",
+      "按铃接待下一位",
+      "关闭卷帘门打烊"
+    ],
+    "pitfalls": [
+      "开门后才把货放展示柜：当天不生效，白摆一轮（展示物次日才生效）。",
+      "营业中直接想换日：必须先打烊，多一步操作。"
+    ],
+    "effects": [
+      "睡觉成功后：day +1，自动存档，夜间产物/服务/事件结果在次日日志可见。"
+    ],
+    "guards": [
+      "现金 < 下次 rent_due 时不得把备用金换成库存"
+    ],
+    "keywords": [
+      "夜间日志",
+      "报纸",
+      "卷帘门",
+      "睡袋",
+      "Clientele",
+      "store_state"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.store_state",
+          "op": "eq",
+          "value": "MORNING"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/daily-cycle"
+    ],
+    "related": [
+      "close-vs-sleep",
+      "morning-log-audit",
+      "counter-transfer-flow"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/daily-cycle"
+  },
+  {
+    "id": "close-vs-sleep",
+    "title": "打烊与睡觉是两步",
+    "category": "loop",
+    "summary": "关店不等于换日；睡觉才推进一天并自动存档，夜间结算要次日核对。",
+    "facts": [
+      "打烊（关闭卷帘门）与睡觉（使用睡袋）是两个步骤，只关店不会推进天数。",
+      "睡觉时游戏自动存档，夜间生产、夜间服务与随机事件的结果在次日才可核对。",
+      "睡眠同时结算伤口、戒断与哨兵疾病三类状态。",
+      "打烊后外出会使次日少来 1 名顾客。"
+    ],
+    "actions": [
+      "关闭卷帘门打烊",
+      "用睡袋睡觉"
+    ],
+    "pitfalls": [
+      "只打烊不睡觉：机器不结算、事件不推进，误判为机器故障。",
+      "打烊后外出：次日客流 −1。"
+    ],
+    "effects": [
+      "睡觉成功：day +1 并自动存档；次日夜间日志出现产物/失物/服务记录。"
+    ],
+    "keywords": [
+      "睡袋",
+      "打烊",
+      "自动存档",
+      "afterhours",
+      "store_state"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.store_state",
+          "op": "eq",
+          "value": "CLOSED"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/daily-cycle",
+      "wiki: /zh/wiki/terms/basic-controls"
+    ],
+    "related": [
+      "day-cycle-stages",
+      "morning-log-audit"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/daily-cycle"
+  },
+  {
+    "id": "morning-log-audit",
+    "title": "早晨先审计夜间日志",
+    "category": "loop",
+    "summary": "开局先核对四项夜间结果，异常（停电/破坏/伤口）优先处理再谈进货。",
+    "facts": [
+      "夜间日志必核四项：机器产物、失物、服务状态、伤口；四者有任一异常时先处理异常再开门。",
+      "发生停电或店门/设备被破坏时，先修复再接待顾客，否则当天生产与客流都受损。",
+      "取出的成品要并入「今天真正能出售的库存」后再算进货预算。",
+      "新手验证方式：第一轮只观察一台机器，睡前记录投入，次日对比产出与日志。"
+    ],
+    "actions": [
+      "查看夜间日志",
+      "取出机器产物",
+      "检查并恢复供电"
+    ],
+    "pitfalls": [
+      "跳过日志直接进货：停电导致的零产出被误判为需求不足。"
+    ],
+    "keywords": [
+      "夜间日志",
+      "停电",
+      "失物",
+      "夜间服务"
+    ],
+    "triggers": {
+      "all": [
+        {
+          "field": "visible_info.store_state",
+          "op": "eq",
+          "value": "MORNING"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/daily-cycle"
+    ],
+    "related": [
+      "day-cycle-stages",
+      "faq-machine-no-output"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/daily-cycle"
+  },
+  {
+    "id": "bill-reserve-first",
+    "title": "账单备用金优先于进货",
+    "category": "economy",
+    "summary": "先扣下次账单的租金/还款/服务费，剩余现金才进货；库存标价不能抵租。",
+    "facts": [
+      "现金分配顺序：先留出账单备用金（租金 + 还款 + 服务费），剩余部分才作为进货预算。",
+      "库存标价不能用于支付租金，账面货物价值不构成支付能力。",
+      "每次大额进货前要重新核对一次现金，而不是只看「还没到缴租日」。"
+    ],
+    "actions": [
+      "预留 rent_due 现金",
+      "大额进货前重看现金"
+    ],
+    "pitfalls": [
+      "把备用金全换成库存 → 到期日现金不足（rent_due 无法支付）。",
+      "用 stock_value 做预算依据 → 现金实际不够。"
+    ],
+    "guards": [
+      "现金 − 下次 rent_due − 服务费 ≤ 0 时禁止进货"
+    ],
+    "keywords": [
+      "rent_due",
+      "stock_value",
+      "账单备用金",
+      "pay_rent"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.rent.day_until_rent",
+          "op": "lte",
+          "value": 3
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/daily-cycle",
+      "wiki: /zh/wiki/terms/shop-strategies"
+    ],
+    "related": [
+      "close-vs-sleep",
+      "nego-four-directions",
+      "purchase-budget-formula",
+      "rent-increase-rate"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/daily-cycle"
+  },
+  {
+    "id": "nego-four-directions",
+    "title": "四种议价方向的代价",
+    "category": "trade",
+    "summary": "让利/加价必被接受但减少收入，抬价/压价可能被拒或顾客离开。",
+    "facts": [
+      "出售侧「提供折扣」= 你少收钱、利于顾客，必定被接受，同时提高顾客预算与交易声望收益。",
+      "出售侧「抬高售价」= 你多收钱、不利顾客，可能被拒绝或顾客离开，并降低其预算；成功后消耗声望。",
+      "购买侧「提出加价」= 你多付钱、利于顾客，必定被接受，提高交易声望收益。",
+      "购买侧「要求折扣」= 你少付钱、不利顾客，可能被拒绝；成功后买入物品会消耗声望。",
+      "「必定接受」只作用于议价条件，不会让顾客收下其原本拒收的品类。",
+      "顾客来意「购买」= 顾客向你买；「出售」= 顾客卖给你；议价按钮上的文案主语与之相反，必须按按钮文案判断方向。"
+    ],
+    "actions": [
+      "出售侧提供折扣",
+      "出售侧抬高售价",
+      "购买侧提出加价",
+      "购买侧要求折扣",
+      "点议价面板的接受报价（accept_offer）"
+    ],
+    "pitfalls": [
+      "把「购买」理解成自己在买 → 方向反了，让利变成让顾客占便宜。",
+      "对已拒收的品类反复让利 → 不会成交。",
+      "反复加码：抬高离开概率，对有指定需求的顾客代价最大。"
+    ],
+    "effects": [
+      "让利成功：成交价下降、客户 budget_left 上升、派系声望收益上升。",
+      "争利成功：成交价上升、budget_left 下降、声望下降。"
+    ],
+    "keywords": [
+      "nego_open",
+      "accept_offer",
+      "budget_left",
+      "抬高售价",
+      "要求折扣"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.table.nego_open",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/trading-and-bargaining"
+    ],
+    "related": [
+      "nego-rep-multiplier-tiers",
+      "discount-boosts-budget",
+      "intent-and-rejection"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/trading-and-bargaining"
+  },
+  {
+    "id": "nego-rep-multiplier-tiers",
+    "title": "议价声望倍率四档",
+    "category": "trade",
+    "summary": "让利按比例加声望倍率，争利成功直接把倍率设为负值；跨档代价陡增。",
+    "facts": [
+      "让利/争利比例 p ≤ 10%：主动让利倍率 +1；争利成功倍率变 −3。",
+      "10% < p ≤ 25%：让利 +1.5；争利 −6。",
+      "25% < p < 50%：让利 +2.5；争利 −12。",
+      "p > 50%：让利 +3；争利 −16。",
+      "让利时奖励是加到原倍率 B 上（B=1 时让利 10% → 2，让利 25% → 2.5）；争利成功是把该方向倍率直接设为负值（争利 10% → −3），不是从 B 中扣减。",
+      "倍率不是固定声望点数，最终声望还与交易额有关；界面给出「每交易 1000 信用点的预计声望」，应与接受/拒绝/离开概率一起看。",
+      "单笔声望 = 整数点数 ÷ 400 × 派系倍率，其中上层区 1.2、下层区 0.66（wiki-economy 交接）；倍率档位只放大这条公式的结果，不改变点数本身。"
+    ],
+    "actions": [
+      "出售侧提供折扣",
+      "购买侧提出加价"
+    ],
+    "pitfalls": [
+      "为冲声望一次性让利 >50%：倍率只到 +3，但现金让出更多，单位现金的声望性价比反而下降。",
+      "只看单件差价不看每 1000 信用点声望预览。"
+    ],
+    "keywords": [
+      "声望倍率",
+      "让利",
+      "争利",
+      "每交易 1000 信用点"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.table.nego_open",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/trading-and-bargaining"
+    ],
+    "related": [
+      "nego-four-directions",
+      "discount-boosts-budget",
+      "budget-perk-unlocks"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/trading-and-bargaining"
+  },
+  {
+    "id": "discount-boosts-budget",
+    "title": "打折会抬高顾客预算",
+    "category": "trade",
+    "summary": "让利同时提高顾客预算与声望收益，清库存时打折可能比高价少卖更赚。",
+    "facts": [
+      "出售侧提供折扣会「增加其预算」并提高交易声望收益：预算变大后同一顾客能吃下更多件。",
+      "抬价方向相反：抬高售价会「减少其预算」，可能导致顾客连原本买得起的货也买不起。",
+      "清库存场景下需比较「打折卖完的总收入」与「高价只卖少量的总收入」，而不是比较单件价格。",
+      "只有提出条件但没有实际成交，不能算已获得声望。"
+    ],
+    "actions": [
+      "出售侧提供折扣",
+      "打折批量清货"
+    ],
+    "pitfalls": [
+      "只看单件毛利就抬价 → 客户预算被压低，整单成交量下降。"
+    ],
+    "effects": [
+      "让利成交后：单件收入下降，budget_left 上升，可连续成交更多件。"
+    ],
+    "keywords": [
+      "budget_left",
+      "让利",
+      "清库存",
+      "总收入"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.client",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/trading-and-bargaining"
+    ],
+    "related": [
+      "nego-four-directions",
+      "nego-rep-multiplier-tiers",
+      "budget-formula"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/trading-and-bargaining"
+  },
+  {
+    "id": "perfume-trade-bonus",
+    "title": "香水交易增益 15%/25%",
+    "category": "trade",
+    "summary": "两种香水各给当前顾客 15% 或 25% 交易增益，互不叠加，别当全局加价。",
+    "facts": [
+      "「同步」神经活性香水（neuroactive_perfume）对当前顾客提供 15% 交易增益。",
+      "「本源」费洛蒙香水（pheromone_perfume）提供 25% 交易增益，属违禁香水。",
+      "两种效果不可叠加，只对当前顾客生效，不是全天生效。",
+      "香水增益不等于所有物品按基础价值 +15%/+25% 成交；零售加价另有合法性、物品与顾客接受条件。",
+      "当前观测层没有「香水增益状态」字段，需扩展后才能按条件触发。"
+    ],
+    "actions": [
+      "议价前对当前顾客用香水"
+    ],
+    "pitfalls": [
+      "两种香水一起用想叠出 40%：实际不叠加，浪费一瓶。",
+      "把增益当全局售价系数，抬价后被拒。"
+    ],
+    "keywords": [
+      "neuroactive_perfume",
+      "pheromone_perfume",
+      "费洛蒙",
+      "违禁香水"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/trading-and-bargaining"
+    ],
+    "related": [
+      "nego-four-directions",
+      "retail-markup-conditions"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/trading-and-bargaining"
+  },
+  {
+    "id": "retail-markup-conditions",
+    "title": "加价率按违禁等级四档",
+    "category": "trade",
+    "summary": "加价率按违禁等级四档 +35%~+200%，是存档可配置字段，不是全局固定百分比。",
+    "facts": [
+      "违禁四级默认加价 +35% / +70% / +100% / +200%，对应折扣特征默认 −17% / −35% / −50% / −100%（由 wiki-risk 从违禁品页抓取）。",
+      "交易声望倍率只从中级起算：中级 ×2.0、高级 ×2.5、高危 ×3.0；低级没有 ×1.5 档。",
+      "加价是存档字段、可配置，不是常量：同一物品在不同存档或事件下加价可不同，不能写死成 +70%。",
+      "wiki 明确「零售加价另有合法性、物品和顾客接受条件」，加价不是可任意设定的全局系数。",
+      "观测快照 visible_info.economy.retail_markup = 15（第 74 天），它与四级违禁加价的映射关系未确认，不能当百分比直接相乘。",
+      "当前观测层只暴露 retail_markup 一个数值，没有「违禁等级 → 加价」的映射字段，需扩展观测。"
+    ],
+    "actions": [
+      "读取 economy.retail_markup",
+      "上调标价",
+      "核对货物违禁等级"
+    ],
+    "pitfalls": [
+      "把 retail_markup=15 当「统一加价 15%」→ 与四级表冲突，毛利估算偏差大。",
+      "把违禁品加价套到合法品：加价率跟等级走，不跟品类走。"
+    ],
+    "keywords": [
+      "retail_markup",
+      "零售加价",
+      "违禁等级",
+      "折扣特征",
+      "交易声望倍率"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.economy.retail_markup",
+          "op": "exists"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/trading-and-bargaining",
+      "wiki: /zh/wiki/terms/contraband（经 wiki-risk 交接）",
+      "实测 观测快照：economy.retail_markup=15"
+    ],
+    "related": [
+      "nego-four-directions",
+      "contraband-tier-markup",
+      "perfume-trade-bonus",
+      "appraisal-accept-range"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/trading-and-bargaining"
+  },
+  {
+    "id": "counter-transfer-flow",
+    "title": "上柜台≠成交",
+    "category": "trade",
+    "summary": "用 Ctrl+单击把货移到议价柜台，只是准备交易；不确认成交就不发生任何事。",
+    "facts": [
+      "交易前置：把货物拖到谈判柜台，或用 Ctrl＋单击快速转移，然后打开议价界面。",
+      "物品放上柜台只是准备交易，仍须完成成交确认操作。",
+      "快速转移后必须确认落点：议价柜台、普通库存/储物容器、机器内部、展示柜、走私暗格是五个不同位置，普通箱子不能替代暗格。",
+      "储物容器「不等于已经投料」，材料必须放进机器内部才会生产。"
+    ],
+    "actions": [
+      "把货物拖到议价柜台",
+      "Ctrl＋单击快速转移",
+      "完成成交确认"
+    ],
+    "pitfalls": [
+      "Ctrl+单击后不看落点 → 货被丢进储物箱或机器，交易空跑。",
+      "把材料放在机器旁边 → 不生产。"
+    ],
+    "keywords": [
+      "Ctrl＋单击",
+      "议价柜台",
+      "走私暗格",
+      "机器内部"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.table.nego_open",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/basic-controls",
+      "wiki: /zh/wiki/terms/trading-and-bargaining"
+    ],
+    "related": [
+      "nego-four-directions",
+      "faq-machine-no-output"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/basic-controls"
+  },
+  {
+    "id": "budget-formula",
+    "title": "顾客预算加法公式",
+    "category": "customer",
+    "summary": "最终预算 = B + 三项以 B 为基数的加成各自取整后相加，不是连乘。",
+    "facts": [
+      "最终预算 = B + R(B × 好评加成) + R(B × 供应商加成) + R(B × 吸引力加成)，R 为取最近整数。",
+      "精确落在半整数时取偶数；每项分别取整，三项都以 B 为基数，加成相加而非连乘。",
+      "10% 档使用浮点近似系数，半整数附近可能有 1 点差异。",
+      "算例：B=240、吸引力 600、已解锁「好评如潮」→ 240+60+120=420；再解锁「可靠供应商」→ 再 +120，合计 540。",
+      "预算加成只在生成顾客时算一次，D 取生成当天的内部日计数。"
+    ],
+    "actions": [
+      "按公式估算顾客预算",
+      "提升吸引力"
+    ],
+    "pitfalls": [
+      "用 B 的 (1+25%)×(1+50%) 连乘 → 高估（应为相加：240+60+120=420，非 450）。",
+      "用界面日期代替内部日计数 D 算 B → 偏差。"
+    ],
+    "keywords": [
+      "最终预算",
+      "R 取整",
+      "好评加成",
+      "供应商加成",
+      "吸引力加成",
+      "budget_left"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.client",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/customer-budgets"
+    ],
+    "related": [
+      "budget-attractiveness-tiers",
+      "budget-perk-unlocks",
+      "base-budget-by-buyer"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/customer-budgets"
+  },
+  {
+    "id": "budget-attractiveness-tiers",
+    "title": "吸引力预算加成六档",
+    "category": "customer",
+    "summary": "吸引力按档位给 B 的 0%~100% 加成，同档内再提升不加钱，卡档才有效。",
+    "facts": [
+      "吸引力 < 300：+0% B。",
+      "300–449：+10% B；450–599：+25% B。",
+      "600–749：+50% B；750–899：+75% B。",
+      "≥ 900：+100% B。",
+      "吸引力加成只取当前最高档，同档内继续提升不增加预算，只有跨档才改变该项。"
+    ],
+    "actions": [
+      "提升吸引力",
+      "核对吸引力所处档位"
+    ],
+    "pitfalls": [
+      "在 620 继续堆装饰期待加钱：仍按 +50%，等于零收益，应直接冲 750。"
+    ],
+    "keywords": [
+      "attractiveness",
+      "吸引力",
+      "预算档位"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.economy.attractiveness",
+          "op": "gte",
+          "value": 300
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/customer-budgets"
+    ],
+    "related": [
+      "budget-formula",
+      "attractiveness-dirt-penalty"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/customer-budgets"
+  },
+  {
+    "id": "budget-perk-unlocks",
+    "title": "两项预算特权与门槛",
+    "category": "customer",
+    "summary": "好评如潮+25%B需上层区100，可靠供应商+50%B需治安部80；声望只通过解锁生效。",
+    "facts": [
+      "「好评如潮」给 B 的 25% 加成，解锁条件为声望上层区达到 100。",
+      "「可靠供应商」给 B 的 50% 加成，解锁条件为治安部达到 80。",
+      "两项合计最多 +75% B（以 B 为基数分别取整后相加）。",
+      "预算加成不按买家派系筛选；声望不逐点折现为现金，只通过「是否解锁特权」生效。",
+      "当前观测层没有「特权解锁状态」字段，需扩展后才能按条件触发。",
+      "「好评如潮」的加成参数为 25、解锁门槛上层区 ≥100，与本页 +25% B 的数值一致（wiki-economy 交叉核对）。"
+    ],
+    "actions": [
+      "解锁声望特权",
+      "确认特权是否已解锁"
+    ],
+    "pitfalls": [
+      "以为声望越高预算越高 → 未解锁对应特权前加成恒为 0。"
+    ],
+    "keywords": [
+      "好评如潮",
+      "可靠供应商",
+      "上层区",
+      "治安部",
+      "perk"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/customer-budgets"
+    ],
+    "related": [
+      "budget-formula",
+      "budget-attractiveness-tiers",
+      "nego-rep-multiplier-tiers"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/customer-budgets"
+  },
+  {
+    "id": "base-budget-by-buyer",
+    "title": "五种买家基础预算公式",
+    "category": "customer",
+    "summary": "水类买家预算随内部日 D 线性上涨；囤水者 D+500，买水的顾客约 145+D/4。",
+    "facts": [
+      "囤水者：B = D + 500 + R0–100（D=14 时 514–614）。",
+      "买水的顾客：B = 145 + ⌊D÷4⌋ + R0–50（D=14 时 148–198）。",
+      "上层区私人厨师：B = D + 400 + R0–100（D=14 时 414–514）。",
+      "买水的拾荒客：B = 175，固定不随 D 变化。",
+      "水相关事件的普通买家：B = 150 + R0–50（150–200）。",
+      "R0–N 表示两端都包含的随机整数；D 是生成顾客时的内部日计数，与界面日期的偏移未核实。"
+    ],
+    "actions": [
+      "用内部日 D 估算预算",
+      "按水类买家预算定价"
+    ],
+    "pitfalls": [
+      "用界面「第 N 天」直接代入 D → 偏移未核实，预算估算可能整体偏差。",
+      "以为预算随天数对所有买家都涨：买水的拾荒客固定 175。"
+    ],
+    "keywords": [
+      "囤水者",
+      "买水的顾客",
+      "私人厨师",
+      "水配给",
+      "内部日计数"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.client",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/customer-budgets"
+    ],
+    "related": [
+      "budget-formula",
+      "showcase-client-tier"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/customer-budgets"
+  },
+  {
+    "id": "intent-and-rejection",
+    "title": "先读来意再报价",
+    "category": "customer",
+    "summary": "is_buying/is_selling 定方向，buying_tags 定品类；别用真假猜身份。",
+    "facts": [
+      "顾客「购买」来意 = 向你买货；「出售」= 把货卖给你；议价按钮文案主语相反，需按按钮判断。",
+      "报价前必须核对三项：顾客要的品类（buying_tags）、拒收范围、剩余预算（budget_left）。",
+      "鉴定服务、采购交货、以物易物各有独立流程，不能套用普通零售报价。",
+      "身份类判定用 is_wanted（罪犯）与 is_aug（改造体）：敲诈针对罪犯、威胁针对改造体；对非罪犯敲诈必定失败。",
+      "不能用商品真假推断顾客身份。"
+    ],
+    "actions": [
+      "读顾客来意（买/卖）",
+      "核对 buying_tags",
+      "核对 budget_left"
+    ],
+    "pitfalls": [
+      "把「购买」当自己买 → 议价方向反了。",
+      "对普通顾客用威胁 → 必定失败并损失声望。"
+    ],
+    "keywords": [
+      "is_buying",
+      "is_selling",
+      "is_wanted",
+      "is_aug",
+      "buying_tags",
+      "budget_left"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.client",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/trading-and-bargaining"
+    ],
+    "related": [
+      "nego-four-directions",
+      "confrontation-goods-check",
+      "budget-formula"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/trading-and-bargaining"
+  },
+  {
+    "id": "market-event-gen-prob",
+    "title": "市场事件生成概率阶梯",
+    "category": "economy",
+    "summary": "按已有事件数 50%/35%/25% 决定是否新增，达到 3 条即停止；前 5 内部日不判定。",
+    "facts": [
+      "内部天数 D ≤ 5 且未跳过开场时，不进入普通事件随机判定。",
+      "已有 0 个非装饰性事件：50% 概率新增 1 个。",
+      "已有 1 个：35%；已有 2 个：25%；已有 3 个及以上：不再生成。",
+      "通过概率判定后固定生成 1 个普通事件，不会一次生成多个。",
+      "活跃事件总数不足 2 条时，系统会尝试补入装饰性新闻（不是固定补两条）。",
+      "当前观测层没有「市场事件」字段，需扩展后才能按条件触发。"
+    ],
+    "actions": [
+      "核对活跃事件数",
+      "等内部日超过 5 天再评估事件"
+    ],
+    "pitfalls": [
+      "开局前 5 天盯着事件表等行情：此时完全不判定。",
+      "以为事件会堆到 3 条以上：3 条即封顶。"
+    ],
+    "keywords": [
+      "非装饰性事件",
+      "生成判定",
+      "装饰性新闻"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/market-events",
+      "wiki: /zh/wiki/terms/news-and-events"
+    ],
+    "related": [
+      "market-event-weights",
+      "decorative-news-pool"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/market-events"
+  },
+  {
+    "id": "market-event-weights",
+    "title": "事件权重 180 不是概率",
+    "category": "economy",
+    "summary": "15 项事件总权重 180，权重 15 的单次份额约 8.33%，不是「每天 15%」。",
+    "facts": [
+      "普通随机池共 15 项事件，总权重 180。",
+      "权重 15 的单次抽取份额 = 15 ÷ 180 ≈ 8.33%。",
+      "无活跃事件（50% 生成判定）时，权重 15 事件的当日判定概率 ≈ 4.17%。",
+      "权重分布：9 项为 15；电力短缺 7；发电厂检修 10；游轮停靠 10；全站停电 4；奥克西莫成瘾上升 6；下层区暴民私刑 8。",
+      "权重是相对抽取份额，冷却与其它筛选会缩小可用范围。",
+      "当前观测层没有「事件权重/活跃事件」字段，需扩展后才能按条件触发。"
+    ],
+    "actions": [
+      "按权重估算命中率",
+      "按事件权重排补货优先级"
+    ],
+    "pitfalls": [
+      "把「权重 15」读成「15% 概率」→ 高估约 1.8 倍。",
+      "忽略冷却：可用池变小后实际命中率高于 8.33%。"
+    ],
+    "keywords": [
+      "权重",
+      "总权重 180",
+      "抽取份额"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/market-events"
+    ],
+    "related": [
+      "market-event-gen-prob",
+      "market-event-price-mods"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/market-events"
+  },
+  {
+    "id": "market-event-price-mods",
+    "title": "15 种事件的品类修正",
+    "category": "economy",
+    "summary": "水厂故障水类+100%、全站停电池+100%、坏收成食物+50%；修正叠加实际状态与议价。",
+    "facts": [
+      "坏收成（3 天）：食物 +50%；种子遭劫（2 天）：食物 +33%、种子 +50%。",
+      "发现假冒医疗用品（2 天）：医疗品 +50%；奥克西莫成瘾上升（2 天）：医疗品 +25%。",
+      "水厂故障（3 天）：水、水配给 +100%，饮料 +90%，净水用品 +80%。",
+      "水厂计划维护（2 天）：水、水配给 +35%，饮料 +30%，净水用品 +25%。",
+      "冰小行星矿工归来（2 天）：水、水配给 −25%，饮料 −20%，净水用品 −15%。",
+      "采矿远征队归来（1 天）：材料 −25%；建设项目（3 天）：材料 +30%；秘密储藏室被发现（1 天）：家庭用品 −20%。",
+      "电力短缺（2 天）：能源电池 +66%；发电厂检修（1 天）：电池 +33%；全站停电（2 天）：电池 +100%、武器 +25%。",
+      "下层区暴民私刑（1 天）：武器、护甲 +33%；游轮停靠（2 天）：无品类价格修正，但设附加来客动作。",
+      "交易修正是品类修正项，实际报价还要叠物品状态、其它修正与议价，不保证成交价。",
+      "当前观测层没有「事件品类修正」字段，需扩展后才能按条件触发。"
+    ],
+    "actions": [
+      "读事件品类修正",
+      "事件生效前补货",
+      "事件期内出货"
+    ],
+    "pitfalls": [
+      "把 +100% 当成交价翻倍：还受状态/议价/顾客预算限制。",
+      "在事件结束日才补货：持续仅 1–3 天，货到已过期。",
+      "以为自动售水机也吃水类 +100%：它的售价不受事件修正影响。"
+    ],
+    "keywords": [
+      "水厂故障",
+      "全站停电",
+      "坏收成",
+      "暴民私刑",
+      "交易修正",
+      "水配给"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/market-events"
+    ],
+    "related": [
+      "market-event-weights",
+      "market-event-cooldown",
+      "market-event-gen-prob"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/market-events"
+  },
+  {
+    "id": "market-event-cooldown",
+    "title": "事件冷却 3/5/10 天",
+    "category": "economy",
+    "summary": "冷却在事件移出活跃列表时才开始计时，归零前同一入口不能再抽中；不是固定重现周期。",
+    "facts": [
+      "普通事件默认冷却 3 天；奥克西莫成瘾上升 5 天；下层区暴民私刑 10 天。",
+      "冷却在事件移出活跃列表时登记，随后按日递减，归零前该事件不能由同一随机入口再次抽中。",
+      "冷却不是从事件开始算的固定重现周期；持续 2 天的事件实际再出现间隔 ≈ 2+3 天起。",
+      "事件的重要度（3–10）不能当冷却天数使用。",
+      "营养果丰收（3 天/食物 −20%）与流星雨（3 天/材料 +50%）有定义但未注册进当前随机池。",
+      "当前观测层没有「事件冷却」字段，需扩展后才能按条件触发。"
+    ],
+    "actions": [
+      "记录事件冷却",
+      "不依赖同一事件重演"
+    ],
+    "pitfalls": [
+      "按「重要度 8」推算 8 天冷却 → 实际该事件冷却可能只有 3 天。",
+      "等营养果丰收/流星雨出现 → 当前池不含这两条。"
+    ],
+    "keywords": [
+      "冷却",
+      "重要度",
+      "营养果丰收",
+      "流星雨",
+      "未注册随机池"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/market-events",
+      "wiki: /zh/wiki/terms/news-and-events"
+    ],
+    "related": [
+      "market-event-weights",
+      "market-event-price-mods"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/market-events"
+  },
+  {
+    "id": "decorative-news-pool",
+    "title": "装饰性新闻无价格效果",
+    "category": "economy",
+    "summary": "装饰池 13 条权重全 10，只在活跃事件<2 时补入，标题不能当涨价信号。",
+    "facts": [
+      "装饰性事件池共 13 条，每条权重均为 10；普通事件池 15 条、总权重 180。",
+      "活跃事件总数不足 2 条时，系统尝试补入装饰性新闻，不是固定补两条花边。",
+      "装饰性新闻可能没有价格效果，不能只凭报纸标题大量囤货。",
+      "情报纸条提前 2–3 天送达；事件键共 132 个（普通 17 类、势力行动 17 类、装饰性 14 类、其它 10 个），带重要度 3–10 与持续天数（多为 1–3 天）。",
+      "事件可有隐藏信息，不是每件事都会公开在报纸上。",
+      "当前观测层没有「装饰性新闻」字段，需扩展后才能按条件触发。"
+    ],
+    "actions": [
+      "看报纸",
+      "确认事件是否真影响价格"
+    ],
+    "pitfalls": [
+      "看到花边新闻就囤货 → 无品类修正，压货。",
+      "把事件名当日程表：势力行动同样受条件与冷却限制。"
+    ],
+    "keywords": [
+      "装饰性新闻",
+      "情报纸条",
+      "重要度",
+      "事件键",
+      "报纸"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/news-and-events"
+    ],
+    "related": [
+      "market-event-gen-prob",
+      "market-event-price-mods"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/news-and-events"
+  },
+  {
+    "id": "phone-supplier-orders",
+    "title": "电话订货四渠道",
+    "category": "trade",
+    "summary": "拿名片解锁四类联系人，下单显示数量与「次日/若干天后」送达，夜间日志提示可接单。",
+    "facts": [
+      "四个已核实订货渠道：红魔鬼酿酒厂 → 啤酒；GP 采矿合作社 → 矿石；Wilds 网络药商 → 奥克西莫注射器；化学家 → 梦尘。",
+      "每个渠道都需先获得对应联系人名片（phone.contacts 中出现该联系人）才能致电下单。",
+      "电话选项显示本单数量与「次日」或「若干天后」送达；不是所有联系人都即时发货。",
+      "夜间日志会提示「联系人已准备好接受新订单」；未接单时按「冷却 → 未解锁 → 无人接听」顺序排查。"
+    ],
+    "actions": [
+      "打开电话",
+      "致电联系人",
+      "下单订货"
+    ],
+    "pitfalls": [
+      "按「次日到货」安排隔天交付的采购订单 → 部分是「若干天后」，会错过交货日。",
+      "没拿名片就翻电话本：联系人不存在。"
+    ],
+    "effects": [
+      "下单成功：现金扣除本单金额，货在次日或若干天后的夜间日志到达。"
+    ],
+    "keywords": [
+      "联系人名片",
+      "红魔鬼酿酒厂",
+      "GP 采矿合作社",
+      "药商",
+      "化学家",
+      "phone.open"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.phone.open",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/suppliers-and-wholesale"
+    ],
+    "related": [
+      "wholesale-batch-deal",
+      "market-event-price-mods"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/suppliers-and-wholesale"
+  },
+  {
+    "id": "wholesale-batch-deal",
+    "title": "批发=整批全收换折扣",
+    "category": "trade",
+    "summary": "批发必须买下卖家全部货，折扣率不固定，可逐件验货，别把折扣当保真。",
+    "facts": [
+      "批发定义：部分卖家在你买下其全部物品时给折扣；仍可逐件验货。",
+      "wiki 明确「没有适用于所有卖家的固定折扣率」，不能预设固定百分比。",
+      "整批折扣不等于保真：食品券、药品的隐藏状态仍要用鉴定检查，无法使用的货同样占用现金与储位。",
+      "接受批发前要核对三项：整批总价、数量、异常品。",
+      "普通来访供货商每周来访且带溢价，不代表批发或电话单一定更便宜。",
+      "观测快照中 wholesale_cost 显示 62（−18%），属于单次观测，非 wiki 通用折扣率。"
+    ],
+    "actions": [
+      "逐件验货",
+      "接受批发（wholesale）"
+    ],
+    "pitfalls": [
+      "为折扣整批收 → 吃进无法使用的货，现金与储位双损。",
+      "把观测到的 −18% 当所有卖家的固定折扣。"
+    ],
+    "effects": [
+      "接受批发：现金流出 = 整批总价（含折扣），整批货物进入库存。"
+    ],
+    "guards": [
+      "整批总价 > 可用现金 − 下次 rent_due 时不得接受批发"
+    ],
+    "keywords": [
+      "wholesale",
+      "wholesale_cost",
+      "接受批发",
+      "溢价"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.table.nego_buttons.wholesale",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/suppliers-and-wholesale",
+      "实测 观测快照：wholesale_cost=62 (-18%)"
+    ],
+    "related": [
+      "phone-supplier-orders",
+      "bill-reserve-first",
+      "appraisal-accept-range"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/suppliers-and-wholesale"
+  },
+  {
+    "id": "appraisal-accept-range",
+    "title": "估价必须落在 50%–150%",
+    "category": "trade",
+    "summary": "提交估价 E 须在 V 的 50%–150% 内；完美档 T(95)–T(105) 给 15%，越界顾客提异议。",
+    "facts": [
+      "先算出真实鉴定基础价值 V，再提交整数估价 E。",
+      "可接受区间：E 必须落在 V 的 50% 到 150% 分界线之间（含两端），否则顾客提出异议。",
+      "完美档：T(95) ≤ E ≤ T(105)，奖金比例 15%；T(x) 表示 V 的 x% 截去小数。",
+      "极佳档以 T(90) 为下界，奖金比例 12%。",
+      "整数边界要单算：V=30 时完美估价是 28–31。",
+      "鉴定服务语义是「你给顾客估价」，不是寄给公会代定价。",
+      "当前观测层没有「鉴定界面/基础价值 V」字段，需扩展后才能按条件触发。"
+    ],
+    "actions": [
+      "先算鉴定基础价值 V",
+      "提交整数估价 E"
+    ],
+    "pitfalls": [
+      "用议价后的零售标价当答案 → 直接偏出区间。",
+      "按四舍五入算 T(105)：V=30 时 31.5 截去小数应为 31，完美档 28–31。"
+    ],
+    "keywords": [
+      "鉴定基础价值",
+      "T(95)",
+      "T(105)",
+      "完美档",
+      "极佳档",
+      "待鉴定物品"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/appraisal-tips"
+    ],
+    "related": [
+      "appraisal-fee-formula",
+      "appraisal-overbid-trick",
+      "confrontation-goods-check"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/appraisal-tips"
+  },
+  {
+    "id": "appraisal-fee-formula",
+    "title": "鉴定费=20+int(E×比例)",
+    "category": "trade",
+    "summary": "基础费固定 20，奖金按 E 而非真实价值算；抬价掉档会让收入从 35 掉到 32/27。",
+    "facts": [
+      "服务费 = 20 信用点基础费 + int(E × 本档奖金比例)，奖金基数用提交估价 E，不用真实价值 V。",
+      "V=100、E=100：奖金 15，总收入 35。",
+      "V=100、E=105：奖金 15（15.75 截去小数），总收入仍 35。",
+      "V=100、E=106：掉到极佳档，奖金 12（12.72 截去），总收入降到 32。",
+      "V=100、E=150：奖金 7（7.5 截去），总收入 27。",
+      "入会费：普通模式 85 信用点、困难模式 170 信用点，在接邀请时扣除，与每次服务费分开。",
+      "当前观测层没有「鉴定结算」字段，需扩展后才能按条件触发。"
+    ],
+    "actions": [
+      "提交整数估价 E",
+      "接受邀请并支付入会费"
+    ],
+    "pitfalls": [
+      "以为估得越高收费越高 → 掉档后收入反而下降（35 → 32 → 27）。",
+      "把入会费摊进单次服务费算盈亏。"
+    ],
+    "effects": [
+      "提交成功：现金 +（20 + int(E×比例）），档位按 E 与 T 分界线判定。"
+    ],
+    "keywords": [
+      "基础服务费",
+      "奖金比例",
+      "入会费",
+      "submit_appraisal"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/appraisal-tips"
+    ],
+    "related": [
+      "appraisal-accept-range",
+      "appraisal-overbid-trick"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/appraisal-tips"
+  },
+  {
+    "id": "appraisal-overbid-trick",
+    "title": "105% 估价多拿 0–11 点",
+    "category": "trade",
+    "summary": "每次按 105% 上限估价，可多拿 int(E×15%) 的尾巴；可多估的值 = 真实价值//10//2。",
+    "facts": [
+      "每次估价取 105% 上限，奖金可多获得 0–11 信用点。",
+      "可多估的价 = 真实价值的个位舍去后再除以 2 向下取整，即 x // 10 // 2。",
+      "例：V=45 时估 45 得奖金 int(45×0.15)=6，估 47 得 int(47×0.15)=7，多 1 点。",
+      "例：V=255 时 25÷2=12，可多估 12，多估收益约 2 信用点（等于真实价值的百位数字）。",
+      "抬高幅度不能跨出 T(105)，否则掉到极佳档，12% < 15%，总收入下降。",
+      "当前观测层没有「鉴定档位」字段，需扩展后才能按条件触发。"
+    ],
+    "actions": [
+      "按 T(105) 上限估价"
+    ],
+    "pitfalls": [
+      "多估过头越过 T(105) → 掉极佳档，35 变 32。"
+    ],
+    "keywords": [
+      "105%",
+      "x//10//2",
+      "int(E*0.15)"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/appraisal-tips"
+    ],
+    "related": [
+      "appraisal-accept-range",
+      "appraisal-fee-formula"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/appraisal-tips"
+  },
+  {
+    "id": "confrontation-goods-check",
+    "title": "对质只指认已确认缺陷",
+    "category": "risk",
+    "summary": "对质按品类逐项指认，全勾会被否认；敲诈对罪犯、威胁对改造体，别用真假猜身份。",
+    "facts": [
+      "对质前提是指出真实存在的货物问题，且真假、损坏、无法使用三类不能混为一谈。",
+      "海明威香烟检查项：字母印刷、颜色、防伪标、商标、包装盒；需比对色卡，不能只凭盒子颜色相近判真。",
+      "食品券检查项：印刷、商标、防伪标、面值、芯片；低于 160 信用点本来就没有防伪标；芯片坏了可能是真券但不可用。",
+      "免疫宁检查项：指示灯、标签、序列号、瓶体；过期、空针、召回批次都不能按正常可用药收购。",
+      "交涉后必须重新读报价；wiki 不承诺固定降幅或必定赔偿，降价也不会修复坏芯片/裂针/撕开的包装。",
+      "身份类施压属议价系统：敲诈针对罪犯（is_wanted），威胁针对改造体（is_aug）；对非罪犯敲诈必定失败。"
+    ],
+    "actions": [
+      "按品类逐项验货",
+      "只勾已确认的对质项",
+      "交涉后重读报价"
+    ],
+    "pitfalls": [
+      "把能想到的选项全勾 → 错误指控被否认，交涉失败。",
+      "只凭盒子颜色接近就判海明威假货 → 误判真品。"
+    ],
+    "keywords": [
+      "对质",
+      "海明威色卡",
+      "食品券",
+      "免疫宁",
+      "敲诈",
+      "威胁"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.client",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/confrontation",
+      "wiki: /zh/wiki/terms/trading-and-bargaining"
+    ],
+    "related": [
+      "intent-and-rejection",
+      "appraisal-accept-range",
+      "nego-four-directions"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/confrontation"
+  },
+  {
+    "id": "faq-machine-no-output",
+    "title": "机器不产出的四个原因",
+    "category": "production",
+    "summary": "按换日、通电、原料入机、工序与空间四步排查，买了机器不等于自动通电。",
+    "facts": [
+      "第一步排查是否已睡觉进入下一天，并看夜间日志有无停电或异常。",
+      "第二步排查供能方式与实际电源：买了机器不等于自动通电，需要电池等实际电源供应。",
+      "第三步排查正确原料是否放进机器内部，而不是放在旁边或储物容器里。",
+      "第四步排查设备状态、当前工序与可用空间；机器模组不是所有生产的统一必需品。",
+      "同类排查逻辑：暗灯要放展示柜、警报要启用并配独立电源、远征补给要放补给箱，仅持有不等于已启用。"
+    ],
+    "actions": [
+      "查看夜间日志",
+      "检查电源与供电",
+      "把原料放进机器内部"
+    ],
+    "pitfalls": [
+      "把「没换日」当「机器坏了」→ 重复买机器。",
+      "材料放机器旁边 → 隔夜零产出。"
+    ],
+    "keywords": [
+      "夜间日志",
+      "电源",
+      "机器内部",
+      "机器模组",
+      "补给箱",
+      "is_power_on"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.rent.is_power_on",
+          "op": "falsy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/common-questions",
+      "wiki: /zh/wiki/terms/basic-controls"
+    ],
+    "related": [
+      "morning-log-audit",
+      "counter-transfer-flow",
+      "close-vs-sleep"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/common-questions"
+  }
+]

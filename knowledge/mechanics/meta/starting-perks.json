@@ -1,0 +1,48 @@
+{
+  "id": "starting-perks",
+  "title": "开局天赋决定哪些特权可用",
+  "category": "meta",
+  "summary": "开局选的 perk 会决定以物易物、违禁品等特权是否可用；同样的动作，没有对应 perk 就做不成。",
+  "facts": [
+    "玩家已选天赋保存在 /state 的 perks[].id。",
+    "StartingPerk 有 id / cost / maxSlot / incompatiblePerks：部分天赋互斥。",
+    "部分玩法（例如以物易物成交）在源码里以 perk 为前置，未选则对应分支不成立。"
+  ],
+  "actions": [
+    "决策前先看 perks，不要尝试本局没有解锁的特权动作",
+    "遇到「动作不存在/不可用」时先怀疑是缺 perk，而不是接口坏了"
+  ],
+  "pitfalls": [
+    "照着攻略做以物易物，但本局没选对应 perk → 一直失败。",
+    "忽略 incompatiblePerks，以为可以全选。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "天赋",
+    "perk",
+    "开局",
+    "以物易物",
+    "互斥"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.perks",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "decompile_full/StartingPerk.cs / PlayerStore.startingPerks"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-11-07",
+  "related": [
+    "difficulty-rules"
+  ],
+  "source": "decompile:StartingPerk.cs",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false
+}

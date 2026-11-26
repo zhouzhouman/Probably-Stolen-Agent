@@ -1,0 +1,56 @@
+{
+  "id": "attractiveness-dirt-penalty",
+  "title": "脏乱扣吸引力公式",
+  "category": "store",
+  "summary": "脏乱 G>2 才扣，扣的是基础吸引力 B 的 5%/级，不是总吸引力打折。",
+  "facts": [
+    "吸引力 = 基础吸引力 B（翻新 I–III 提升）＋ 投影设备加成 P。",
+    "脏乱等级 G ≤ 2 时不扣，吸引力 = B＋P。",
+    "G > 2 时扣「B × G × 5%」，先截去扣减值小数，再加 P。",
+    "扣的是基础值 B，不是把 B＋P 整体打折。",
+    "吸引力 <100 时不会生成展示柜买家——脏乱可以直接把客源清零。"
+  ],
+  "actions": [
+    "G≥3 时先付清洁服务再谈采购",
+    "算吸引力时分开算 B 与 P，别把整体乘 0.9"
+  ],
+  "pitfalls": [
+    "用 (B+P)×(1−5%×G) 估算，会低估/高估实际吸引力"
+  ],
+  "effects": [
+    "清洁服务清零垃圾桶并降低 garbage_level，吸引力随 G 恢复"
+  ],
+  "guards": [
+    "吸引力 <100 时禁止大额进货"
+  ],
+  "keywords": [
+    "attractiveness",
+    "garbage_level",
+    "投影设备",
+    "翻新 I",
+    "清洁服务"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.rent.garbage_level",
+        "op": "gte",
+        "value": 3
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/shop-layout",
+    "wiki: /zh/wiki/terms/showcase"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "showcase-same-day-rule",
+    "showcase-buyer-slots"
+  ],
+  "source": "wiki:/zh/wiki/terms/shop-layout",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

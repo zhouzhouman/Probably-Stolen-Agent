@@ -1,0 +1,1242 @@
+[
+  {
+    "id": "npc-mentor-teaching-schedule",
+    "title": "导师七次教学按 D 值排",
+    "category": "customer",
+    "summary": "导师在 D=1/2/3/5/7/8/14 分七次讲完开店系统，纯教学不发放许可。",
+    "facts": [
+      "已核实顺序：D=1 初次教学、D=2 夜间外出、D=3 目视检查、D=5 展示柜、D=7 新闻与事件、D=8 议价、D=14 结束介绍。",
+      "D=2 的夜间外出介绍额外检查广场恐惧症状态，处于该状态则这次介绍不发生。",
+      "导师线全程只是教学对话，不发许可、不解锁设备、不给货物。",
+      "犯罪记录提醒、展示柜提醒、许可与武器对话另有生成定义，不在上述固定顺序内。",
+      "D 是内部店铺日计数，不等于界面显示日期；剧情来客开关关闭或无尽模式下整条线跳过。"
+    ],
+    "actions": [
+      "D=2 前若需夜间外出，先确认天赋是否含广场恐惧症",
+      "把 D=5 展示柜介绍当成陈列系统的开课点，之前别急着摆展柜",
+      "dialog_advance 推完教学；遇到许可/武器提醒时另走许可流程"
+    ],
+    "pitfalls": [
+      "以为听过导师讲许可就已持证：许可证要单独向贸易委员会官员购买 1500",
+      "把 D 值当界面天数去等某个 NPC"
+    ],
+    "effects": [
+      "教学对话结束 → 对应系统提示已解锁，但不产生物品、许可或设备"
+    ],
+    "guards": [
+      "剧情来客总开关关闭时不安排依赖导师的节奏"
+    ],
+    "keywords": [
+      "导师",
+      "导师契约",
+      "mentor_contract",
+      "广场恐惧症",
+      "剧情来客"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-mentor"
+    ],
+    "related": [
+      "npc-visit-state-rules",
+      "npc-georgio-schedule"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-mentor"
+  },
+  {
+    "id": "npc-sawyer-exchange-delivery",
+    "title": "索耶交货：垃圾桶+清洁次日报",
+    "category": "quest",
+    "summary": "D=10 索耶介绍地下交易所；交货要按当期清单投垃圾桶再用清洁服务，次日早晨结算。",
+    "facts": [
+      "索耶在 D=10 的普通开店介绍来访，人物生成归入黑市阵营。",
+      "交货流程三步：确认地下交易所已开放 → 查看当期清单 → 把所需货物放进垃圾桶并使用清洁服务。",
+      "回报在次日早晨处理，不是当场结算。",
+      "清单每期会变，上一批的需求不能沿用。",
+      "清洁会清空垃圾桶内所有物品，交货前必须先把要保留的货取出。",
+      "若开局已属清道夫组织，流程绕过普通介绍，走专门的地下交易所介绍分支。"
+    ],
+    "actions": [
+      "交货前一晚把要留的货从垃圾桶取出，再放清单货物",
+      "把清洁费算进当晚支出后再决定是否交货",
+      "次日早晨核对回报是否到账"
+    ],
+    "pitfalls": [
+      "把要留的货留在垃圾桶 → 清洁时永久删除",
+      "沿用上期清单备货 → 品类数量对不上，白投",
+      "把「不被治安部追踪」理解成店内其他赃物也免检"
+    ],
+    "effects": [
+      "投放清单货物并使用清洁服务 → 次日早晨结算交付回报"
+    ],
+    "guards": [
+      "现金 < 当晚清洁费时不投放清单货物"
+    ],
+    "keywords": [
+      "索耶",
+      "清道夫",
+      "地下交易所",
+      "垃圾桶",
+      "清洁服务"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-sawyer"
+    ],
+    "related": [
+      "npc-visit-state-rules",
+      "janitorial-fee-formula",
+      "trashcan-permanent-removal"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-sawyer"
+  },
+  {
+    "id": "npc-joe-wild-insurance-network",
+    "title": "乔·王尔德：D=4 保险、D=7 网络",
+    "category": "customer",
+    "summary": "保险按日订阅要睡前开，网络付款只买到项目本身，到访与交货另算。",
+    "facts": [
+      "D=4 介绍保险，D=7 介绍 Wilds 网络，两者是两次独立来访。",
+      "保险在睡前服务里加入或退出，按日计费，不是一次性买断。",
+      "保险只处理盗窃后的赔付；买了网络项目不会自动获得免费保护。",
+      "Wilds 网络出售七类：引荐、推荐、服务、恩惠、线人、许可、供货商项目。",
+      "网络付款只完成对应项目，后续人物到访、服务订阅、实际交货仍需分别触发。",
+      "名称表另有「乔·王尔德的助手」，电话、提醒、救急各有独立流程，不能当本人。",
+      "部分产业引荐、枪证项目、高阶扩建在 Demo 未开放，以网络列表标注为准。"
+    ],
+    "actions": [
+      "买完网络项目后，night_services 里确认对应服务确实开启",
+      "电话订单用 phone_call 走，别指望网络付款自动到货",
+      "D=4 前先算清每晚保费再决定订阅"
+    ],
+    "pitfalls": [
+      "买了网络项目就以为当晚有赔付：服务没开就没有",
+      "把助手当乔本人，误判可交易内容"
+    ],
+    "effects": [
+      "buy_insurance → 当夜起计费，失窃后按保险机制返还物品"
+    ],
+    "guards": [
+      "现金 < 次日 rent_due 时不新增按日订阅项"
+    ],
+    "keywords": [
+      "乔·王尔德",
+      "Wilds",
+      "保险",
+      "网络项目",
+      "助手"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-joe-wild"
+    ],
+    "related": [
+      "npc-visit-state-rules",
+      "insurance-fee-formula",
+      "network-shop-table",
+      "phone-cooldown-orders"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-joe-wild"
+  },
+  {
+    "id": "npc-dr-jackson-visit-gate",
+    "title": "博士设备来访 D≥12 且 D%7=5",
+    "category": "customer",
+    "summary": "设备分支只在 D≥12 且 D 对 7 余 5 时出现；LLAVOIDED 一开就直接停。",
+    "facts": [
+      "D=6 是初次见面，只是见面，不等于当天就有设备库存。",
+      "普通设备生成分支要求 D≥12 且 D 对 7 的余数为 5，即 D=12、19、26…每 7 天一档。",
+      "下层区负向特权 LLAVOIDED 门槛为 −80，启用后这条设备分支直接停止。",
+      "工具箱上柜分支要求 D≥14，并跳过已在所检查物品集合中的同类物品。",
+      "设备库存会检查现有物品与日计数，某次库存快照不是永久货单。",
+      "扩容来访（储物舱、机器区）会检查已拥有的相关扩展，价格以本次交易为准。"
+    ],
+    "actions": [
+      "按 D%7==5 的节奏留出现金等设备来访，别每天干等",
+      "买工具箱前确认 D≥14",
+      "把下层区声望守在 −80 以上"
+    ],
+    "pitfalls": [
+      "把 D=6 初见当成每天都有货",
+      "声望跌破 −80 后还在等博士上门：分支已停"
+    ],
+    "effects": [
+      "满足分支 → 生成设备/模组来访；交易后库存与现金按本次结算"
+    ],
+    "guards": [
+      "visible_info.reputations 中 lower_level ≤ −80 时不排设备采购预算"
+    ],
+    "keywords": [
+      "杰克逊博士",
+      "LLAVOIDED",
+      "工具箱",
+      "模组",
+      "储物舱"
+    ],
+    "triggers": {
+      "all": [
+        {
+          "field": "visible_info.day",
+          "op": "gte",
+          "value": 12
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-dr-jackson"
+    ],
+    "related": [
+      "npc-visit-state-rules",
+      "ll-perk-thresholds",
+      "generic-module-stats",
+      "network-shop-table"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-dr-jackson"
+  },
+  {
+    "id": "npc-dr-jackson-investment-tiers",
+    "title": "杰克逊投资 400 与 650",
+    "category": "economy",
+    "summary": "投资 I 基础 400，投资 II 基础 650 需先买 I，但 Demo 不开放 II。",
+    "facts": [
+      "杰克逊投资 I 的网络基础费用为 400 信用点。",
+      "杰克逊投资 II 基础费用为 650，前置条件是先持有投资 I。",
+      "投资 II 在 Demo 中未开放，攒够 650 也买不到。",
+      "投资 I 与投资 II 是两笔独立网络付款，不能合并预算。",
+      "下层区传奇等折扣作用于网络结算，基础费用与实际付款不是两笔费用。"
+    ],
+    "actions": [
+      "只把 400 计入可执行预算，650 那档不做计划",
+      "买 I 前确认现金 − 400 后仍能覆盖 rent_due"
+    ],
+    "pitfalls": [
+      "为投资 II 攒 650：Demo 入口关闭",
+      "把 400 与 650 当一次付清"
+    ],
+    "effects": [
+      "购买投资 I → 现金 −400（含折扣另算），项目记录写入"
+    ],
+    "guards": [
+      "现金 − 400 < rent_due 时推迟购买投资 I"
+    ],
+    "keywords": [
+      "杰克逊投资",
+      "投资 I",
+      "投资 II",
+      "400",
+      "650"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-dr-jackson"
+    ],
+    "related": [
+      "npc-dr-jackson-visit-gate",
+      "network-shop-table",
+      "network-upgrade-demo-lock"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-dr-jackson"
+  },
+  {
+    "id": "npc-officer-lun-storyline",
+    "title": "伦警官六个 D 值剧情节点",
+    "category": "quest",
+    "summary": "D=11 购食到 D=24 突击盘查，D=20/24 各有额外状态门槛，无尽模式跳过。",
+    "facts": [
+      "D=11 巡逻购食、D=12 受伤求药、D=16 复岗，三段是非无尽模式的固定剧情。",
+      "D=13 出现的「涉及袭击者的来客」不是伦本人，不能当作他改名或换身份。",
+      "D=20 的盈余物资出售要求伦的成瘾等级 > 0，否则不出现。",
+      "D=24 的突击盘查还要求他尚未被逮捕。",
+      "伦的角色生成归入治安部，肖像被其他治安部键共用，认人要看显示名称与对话。",
+      "D=12 与复岗后的求药都要求「强效止痛药」，任意医疗标签物品或任意注射器不算。"
+    ],
+    "actions": [
+      "D=12 前留一支强效止痛药，别把它卖光",
+      "D=20 前不要给他注射，除非确定要走盈余物资分支",
+      "D=24 前保持他不被逮捕"
+    ],
+    "pitfalls": [
+      "拿普通医疗品或随便一支注射器交差：不被接受",
+      "把 D=13 的来客当伦：交易对象判断错"
+    ],
+    "effects": [
+      "提交合格止痛药 → 推进剧情；D=24 触发突击盘查对话"
+    ],
+    "guards": [
+      "无尽模式下不安排伦警官相关采购"
+    ],
+    "keywords": [
+      "伦警官",
+      "强效止痛药",
+      "赛纳普斯",
+      "成瘾等级",
+      "突击盘查"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.day",
+          "op": "gte",
+          "value": 11
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-officer-lun"
+    ],
+    "related": [
+      "npc-visit-state-rules",
+      "inspection-schedule-band",
+      "addiction-withdrawal",
+      "wanted-bounty-table"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-officer-lun"
+  },
+  {
+    "id": "npc-officer-lun-drug-request",
+    "title": "给伦警官供药只认强效止痛药",
+    "category": "risk",
+    "summary": "受伤与复岗后两次求药都指定强效止痛药，其他医疗品和注射器一律无效。",
+    "facts": [
+      "D=12 受伤时对话明确要求强效止痛药。",
+      "D=16 复岗后还会再求一次药。",
+      "提交物必须符合当次接受条件，不能把「医疗标签」当通用凭证。",
+      "任意注射器不等于赛纳普斯，赛纳普斯是独立物品条目。",
+      "D=20 盈余物资分支要求伦的成瘾等级 > 0，说明供药会改变他的成瘾状态。"
+    ],
+    "actions": [
+      "库存里常备至少 1 支强效止痛药，不卖给其他客人",
+      "提交前先 appraise 确认物品身份，别拿同名不同物"
+    ],
+    "pitfalls": [
+      "用低阶止痛药顶替：对话不通过",
+      "把赛纳普斯当普通止痛药卖掉，之后无货可交"
+    ],
+    "effects": [
+      "提交合格止痛药 → 对话推进；伦的成瘾/状态记录更新"
+    ],
+    "guards": [
+      "强效止痛药库存为 0 时不承诺推进伦线"
+    ],
+    "keywords": [
+      "强效止痛药",
+      "赛纳普斯",
+      "black_injector",
+      "成瘾"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-officer-lun"
+    ],
+    "related": [
+      "npc-officer-lun-storyline",
+      "addiction-withdrawal"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-officer-lun"
+  },
+  {
+    "id": "npc-eleanor-five-stage-line",
+    "title": "埃莉诺五段：买→卖→求助",
+    "category": "quest",
+    "summary": "D=17/19 她买、D=21 她卖、D=23 无偿求食、D=25 带货来访且看获助次数。",
+    "facts": [
+      "D=17 购食、D=19 采购生活用品 —— 这两段她是买方。",
+      "D=21 变卖随身物品 —— 这一段她是卖方，方向相反。",
+      "D=23 的求食前置是「资金耗尽 + 遭失窃」，属于无偿求助而非交易。",
+      "D=25 安排新的拾荒货物来访，并额外检查「已获帮助次数」。",
+      "她有三种原版肖像键：普通、去掉首饰、低落，外观变体不算新 NPC。",
+      "角色工厂初始用上层区居民设置，后续转向下层区生活与拾荒，是同一人。",
+      "页面明确不承诺固定声望奖励，也不保证帮忙后必得货单。"
+    ],
+    "actions": [
+      "D=21 前留出现金准备收购她的随身物品",
+      "D=23 前留一份可食用货物，别全投料",
+      "D=25 前记录已帮她几次"
+    ],
+    "pitfalls": [
+      "一直拒绝求助却期待 D=25 照常来",
+      "把后期「能吃的就行」反推成初见时什么都收"
+    ],
+    "effects": [
+      "完成当段交互 → 推进下一段；D=25 的来访受获助次数影响"
+    ],
+    "guards": [
+      "现金 < 当日 rent_due 时不主动收购她的物品"
+    ],
+    "keywords": [
+      "埃莉诺",
+      "上层区居民",
+      "获助次数",
+      "拾荒货物"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.day",
+          "op": "gte",
+          "value": 17
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-eleanor"
+    ],
+    "related": [
+      "npc-visit-state-rules",
+      "ul-perk-thresholds"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-eleanor"
+  },
+  {
+    "id": "npc-foodie-tourist-variety",
+    "title": "觅食游客要的是品种不是数量",
+    "category": "customer",
+    "summary": "D=13 初见给 2 天准备，要每种食物饮料各 1 份，品种越多回访出价越高。",
+    "facts": [
+      "需求是「店内每种食物和饮料各一份」，按品类计，同一种堆数量不算。",
+      "首次对话给出两天准备时间，D=13 是普通开店介绍的初见时间。",
+      "回访由专门人物工厂生成，回访对话表示种类足够多时愿意多付钱。",
+      "不可食用材料与空容器不能凭外形当饮料提交，柜台会按当次交互校验。",
+      "原版另有「普通空间站游客」，需求与回访流程不能混用。"
+    ],
+    "actions": [
+      "D=13 后两天内保留至少 2 个不同食品 + 2 个不同饮料品类",
+      "备货期间不要把食品全部投料或交给地下交易所",
+      "回访时逐类上柜，先看接受再报价"
+    ],
+    "pitfalls": [
+      "用 10 份同一种食物充数：品种仍算 1",
+      "把空瓶当饮料上柜"
+    ],
+    "effects": [
+      "按品类交付 → 回访时按品种数给出更高出价"
+    ],
+    "guards": [
+      "库内食品品类 < 2 时不承诺完成觅食订单"
+    ],
+    "keywords": [
+      "觅食游客",
+      "空间站游客",
+      "品种",
+      "两天"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-foodie-tourist"
+    ],
+    "related": [
+      "npc-ordinary-customer-types",
+      "procurement-order-flow",
+      "showcase-buyer-slots"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-foodie-tourist"
+  },
+  {
+    "id": "npc-trade-permit-1500",
+    "title": "经营许可 1500，捐赠不算持证",
+    "category": "security",
+    "summary": "贸易委员会官员卖许可：现金 ≥1500 才可买，扣款后许可证上柜；捐赠只是延缓。",
+    "facts": [
+      "购买营业许可需至少持有 1500 信用点，接受付款即扣 1500。",
+      "付款成功后记录已取得许可，并把许可证实体放到柜台。",
+      "「捐赠」是交付本次要求价值的货物换取延缓处理，不是许可证本身。",
+      "见过官员一次不等于已持证，后续状态还会再要求办理。",
+      "拒办与无证经营会记录在案，关联调查、罚款、判刑流程。",
+      "经营许可流程与 Demo 未开放的网络枪证项目是两套，不能互推开放状态。"
+    ],
+    "actions": [
+      "现金攒到 ≥1500 再去找官员，按购买分支付清",
+      "付完检查柜台是否出现许可证物品",
+      "现金不足时宁可暂不购买，也别用捐赠冒充持证"
+    ],
+    "pitfalls": [
+      "交一次捐赠货就当永久合法：仍属无证经营",
+      "把枪证被锁当成经营许可也没开放"
+    ],
+    "effects": [
+      "付款分支 → 现金 −1500，持证记录写入，许可证上柜台"
+    ],
+    "guards": [
+      "visible_info.money < 1500 时不走购买分支"
+    ],
+    "keywords": [
+      "贸易委员会官员",
+      "营业许可",
+      "1500",
+      "捐赠",
+      "无证经营"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.money",
+          "op": "gte",
+          "value": 1500
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-trade-board-official"
+    ],
+    "related": [
+      "inspection-schedule-band",
+      "crime-ledger-entry",
+      "sentence-threshold",
+      "gun-license-revoke"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-trade-board-official"
+  },
+  {
+    "id": "npc-inspector-three-variants",
+    "title": "盘查员三种变体与两类检查",
+    "category": "security",
+    "summary": "普通/懒惰/可疑盘查员共用制服；例行检查与展柜触发的全面检查是两套对话。",
+    "facts": [
+      "检查工厂的三个名称：治安部盘查员、懒惰的治安部盘查员、可疑的治安部盘查员。",
+      "检查分两类：普通例行对话；以及「有人在展示柜发现可疑物品」引发的全面检查。",
+      "变体差异不能由制服或共享肖像推断执法范围，要按当次对话判定。",
+      "盘查员只管检查货物；伦警官的剧情检查是独立一套，不是同一人物。",
+      "违禁品、赃物、需许可商品是三类不同问题，不能合并判断。",
+      "普通储物舱不是自动免检区；某变体过去没查某处，不代表以后不查。",
+      "预警、治安宽限、证据处理来自不同网络项目，买项目不等于本次检查被规避。"
+    ],
+    "actions": [
+      "被查前先看对话判断是例行还是展柜触发的全面检查",
+      "展柜里不放违禁品，避免触发全面检查",
+      "把敏感货放暗格，不要放普通储物舱"
+    ],
+    "pitfalls": [
+      "拿「懒惰的」当不查：变体差异未量化",
+      "以为买了检查预警，本次盘查就不来了"
+    ],
+    "effects": [
+      "检查通过 → 无扣款；查出违禁/赃物 → 按盘查机制罚款与入账"
+    ],
+    "guards": [
+      "visible_info.rent.shutter_closed 为 true 时不放行检查"
+    ],
+    "keywords": [
+      "治安部盘查员",
+      "懒惰的治安部盘查员",
+      "可疑的治安部盘查员",
+      "展示柜",
+      "储物舱"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-security-inspectors"
+    ],
+    "related": [
+      "inspection-schedule-band",
+      "inspection-severity-ladder",
+      "smuggler-bay-variants",
+      "showcase-contraband-ban"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-security-inspectors"
+  },
+  {
+    "id": "npc-security-officer-enforcement",
+    "title": "警官负责罚款逮捕，卖货不清记录",
+    "category": "security",
+    "summary": "警官四类来访：执法/罚款/逮捕/执行；卖掉违禁品不消除已成型的犯罪记录。",
+    "facts": [
+      "警官来访含普通执法、罚款、逮捕、执行四类工厂，与盘查员的检查职责分开。",
+      "违法证据、调查、判刑是有先后的状态链，不能跳步。",
+      "卖掉某件违禁品不一定清除已形成的犯罪记录。",
+      "对普通顾客举报成功，不等于店铺自身记录自动消失。",
+      "仅凭人物工厂不能推算「固定多少天必然处决」。",
+      "原版另有吊销枪证与清查人物定义，其结算条件与枪证下发条件不是同一组数字，完整触发链未核实。"
+    ],
+    "actions": [
+      "被罚款时优先 pay_rent 保住房租，再处理罚款",
+      "举报顾客前先算自身犯罪记录会不会被顺带翻出",
+      "枪证相关来访无法预测时按最坏情况备现金"
+    ],
+    "pitfalls": [
+      "卖光违禁品就以为洗白：记录仍在",
+      "以为举报成功等于自身清白"
+    ],
+    "effects": [
+      "逮捕对话 → 进入调查/判刑链；执行 → 结局判定"
+    ],
+    "guards": [
+      "犯罪额接近判刑阈值时停止新增违禁交易"
+    ],
+    "keywords": [
+      "治安部警官",
+      "罚款",
+      "逮捕",
+      "执行",
+      "吊销枪证"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-security-officers"
+    ],
+    "related": [
+      "inspection-severity-ladder",
+      "sentence-threshold",
+      "report-seller-payout",
+      "gun-license-revoke",
+      "crime-ledger-entry"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-security-officers"
+  },
+  {
+    "id": "npc-lottery-rep-saturday-draw",
+    "title": "彩票代表每周六上午开奖",
+    "category": "economy",
+    "summary": "他卖票也兑奖，开奖固定在每周六上午；旧票不能当新一期资格。",
+    "facts": [
+      "彩票代表自称来自下层区彩票委员会，说明每周六上午开奖。",
+      "中奖者要回来找他兑奖，兑奖需持有状态为可兑奖的票。",
+      "后续来访有再次售票的对话，属于独立一次交易。",
+      "旧票或已处理票不能当作新一期购票资格。",
+      "见到代表不等于已中奖，也不代表本期头奖必然可得。",
+      "赌博成瘾会影响购票行为，与尼古丁/酒精/麻醉品的戒断计数是不同系统。",
+      "彩票不计入固定经营收入；应先把租金与贷款的钱留出。"
+    ],
+    "actions": [
+      "每周六上午前核对 economy.lottery_number 与手持票状态",
+      "兑奖前先 pay_rent，别把奖金预期当现金",
+      "赌博成瘾计数 > 0 时限购"
+    ],
+    "pitfalls": [
+      "拿旧票兑新一期：无效",
+      "用最高奖金倒推期望收益"
+    ],
+    "effects": [
+      "兑奖 → 按票与奖项结算；购票 → 现金支出，票进入待开奖状态"
+    ],
+    "guards": [
+      "现金 < rent_due 时不购票"
+    ],
+    "keywords": [
+      "彩票代表",
+      "下层区彩票委员会",
+      "每周六上午",
+      "兑奖",
+      "lottery_number"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.economy.lottery_number",
+          "op": "exists"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-lottery-representative"
+    ],
+    "related": [
+      "lottery-odds-and-gambling",
+      "rent-increase-rate",
+      "addiction-withdrawal"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-lottery-representative"
+  },
+  {
+    "id": "npc-appraisal-board-join-fee",
+    "title": "鉴定委员会入会费 85/170",
+    "category": "trade",
+    "summary": "D=8 受邀入会，普通 85、困难 170，入会后有培训材料并被派客。",
+    "facts": [
+      "普通开店介绍在 D=8 安排初次邀请，另有回访对话。",
+      "入会费：普通模式 85 信用点，困难模式 170 信用点，接受邀请时扣除。",
+      "三个分支：付费入会 / 请他稍后再来 / 不加入。",
+      "接受后对话提供培训材料，并说明委员会会把顾客派来。",
+      "只是听过介绍或持有一本鉴定指南，都不等于已入会。",
+      "顾客付费鉴定（你提交估值）与日常收购自验货是两种不同收入，误差处理也不同。"
+    ],
+    "actions": [
+      "D=8 前备好 85（普通）/170（困难）现金",
+      "入会后按各货物自己的指南检查部位，不套通用清单",
+      "需要放大细节时先备放大镜"
+    ],
+    "pitfalls": [
+      "有鉴定指南就以为已入会：仍需付费",
+      "把「鉴定正确」当成「必定高价卖出」"
+    ],
+    "effects": [
+      "付费入会 → 现金 −85/−170，培训材料入库，委员会开始派鉴定客"
+    ],
+    "guards": [
+      "现金 < 170 时不承诺困难模式入会"
+    ],
+    "keywords": [
+      "鉴定委员会",
+      "入会费",
+      "培训材料",
+      "放大镜",
+      "鉴定委员会成员"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.money",
+          "op": "gte",
+          "value": 170
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-appraisal-board-member"
+    ],
+    "related": [
+      "appraisal-fee-formula",
+      "appraisal-accept-range"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-appraisal-board-member"
+  },
+  {
+    "id": "npc-blackmailer-weekly-demand",
+    "title": "敲诈者每周索款，付一次不算了结",
+    "category": "risk",
+    "summary": "首访说下周来收第一笔，之后按动态金额要钱；付款后下周还来，可举报可逮捕。",
+    "facts": [
+      "初次对话说明下周回来收第一笔费用，并警告不要叫治安部。",
+      "后续对话要求支付本次「动态金额」，没有公开的固定公式。",
+      "付款后他仍说下周再来，一次付款不等于永久解除。",
+      "威胁不是系统禁用举报的证明，原版存在他的逮捕对话。",
+      "该人物生成会设置通缉相关状态，举报按通缉与举报流程处理。",
+      "是否继续来访与金额变化受当前天赋与已有状态影响。",
+      "随机拾荒客外观不构成他的固定私人身份，同脸不代表每次都是敲诈者。"
+    ],
+    "actions": [
+      "把敲诈支出单独列预算，不占 rent_due 那份钱",
+      "决定拒付时同步准备举报材料",
+      "开局天赋含额外负担类时预留每周现金"
+    ],
+    "pitfalls": [
+      "付一次就以为结束：下周照来",
+      "为付敲诈挪用租金"
+    ],
+    "effects": [
+      "付款 → 现金减少，下周再来；拒付 → 走后续分支；举报 → 通缉流程"
+    ],
+    "guards": [
+      "现金 − 敲诈额 < rent_due 时优先付租"
+    ],
+    "keywords": [
+      "敲诈者",
+      "动态金额",
+      "额外负担",
+      "通缉",
+      "逮捕"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-blackmailer"
+    ],
+    "related": [
+      "wanted-bounty-table",
+      "starting-perk-numbers",
+      "rent-increase-rate",
+      "confrontation-goods-check"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-blackmailer"
+  },
+  {
+    "id": "npc-cartel-contact-roles",
+    "title": "卡特尔接头人 / 士兵 / 杀手三职",
+    "category": "customer",
+    "summary": "接头人管介绍、检查与每周交货；士兵与杀手是另两种生成，交易≠完成交货。",
+    "facts": [
+      "名称表与生成定义有三类：卡特尔接头人、卡特尔士兵、卡特尔杀手。",
+      "接头人的介绍工厂使用卡特尔阵营设置；另有受伤士兵、可疑农场主、交易来访分支。",
+      "接头人流程含介绍、检查、每周交货三段。",
+      "交货需同时满足品类、数量、纯度、当前配额四项，缺一不算完成。",
+      "把物品卖给带卡特尔名称的来客，不等于完成本周正式交货。",
+      "该阵营有独立声望与 25/50/100 特权档，举报后存在相关后续来访。",
+      "相关化学家、药商、退休化学家引荐在 Demo 未开放，但卡特尔来客本身仍会出现。"
+    ],
+    "actions": [
+      "交货前逐项核对品类/数量/纯度/配额，再决定投货",
+      "先看对方是接头人还是普通交易来客，再判断是否计配额",
+      "把卡特尔声望维持在 25 以上再谈特权"
+    ],
+    "pitfalls": [
+      "把普通卖货当交货：配额未清",
+      "只满足数量不满足纯度：交货失败",
+      "以为一次交易换来以后所有成员友善"
+    ],
+    "effects": [
+      "完成交货 → 配额消耗，声望按机制变动"
+    ],
+    "guards": [
+      "纯度不达标的批次不投入正式交货"
+    ],
+    "keywords": [
+      "卡特尔接头人",
+      "卡特尔士兵",
+      "卡特尔杀手",
+      "配额",
+      "纯度"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-cartel-contacts"
+    ],
+    "related": [
+      "cartel-delivery-quota",
+      "cartel-perk-thresholds",
+      "cartel-protection-mandatory",
+      "confrontation-goods-check"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-cartel-contacts"
+  },
+  {
+    "id": "npc-retired-experts-table",
+    "title": "退休专家引荐价目与开放状态",
+    "category": "trade",
+    "summary": "水商 300、酿酒 200、养鼠 750 开放；农夫 350、枪匠 650、化学 1000、废料 300 全锁。",
+    "facts": [
+      "已开放：退休水商 WATER_TRADER 300、退休酿酒师 WINEMAKER 200、退休养鼠人 RETIRED_RANCHER 750。",
+      "未开放：退休农夫 RETIRED_FARMER 350、退休枪匠 RETIRED_GUNSMITH 650、退休化学家 RETIRED_CHEMIST 1000、退休废料客 RUINED_MACHINE_UNLOCK 300。",
+      "退休水产养殖户走 Wilds 水产养殖引荐，基础 400，前置水资源交易，每周来访，卖设备与受精鱼卵。",
+      "水产养殖 II 基础 1,200，前置水产养殖，使商人增加大型鱼种，已开放。",
+      "表中费用是网络基础费用，不是每件货物售价；下层区传奇折扣另作用于结算。",
+      "顺序固定：先买引荐，再等对应来客上门；人物有定义不等于入口已开放。"
+    ],
+    "actions": [
+      "只对 300/200/750/400/1200 这五档做采购计划",
+      "水产养殖 II 前先确认已买水资源交易与水产养殖",
+      "买完引荐后按每周节奏等来客，不要当天就备大额现金"
+    ],
+    "pitfalls": [
+      "攒 350/650/1000 买未开放引荐：入口关闭",
+      "把基础费用当货价",
+      "买了设备却没备电、原料、容器、许可"
+    ],
+    "effects": [
+      "购买引荐 → 对应来客进入每周来访池，出售相关物资"
+    ],
+    "guards": [
+      "引荐未开放时不列入现金流计划"
+    ],
+    "keywords": [
+      "RETIRED_FARMER",
+      "RETIRED_GUNSMITH",
+      "RETIRED_CHEMIST",
+      "RUINED_MACHINE_UNLOCK",
+      "WATER_TRADER",
+      "WINEMAKER",
+      "RETIRED_RANCHER",
+      "水产养殖"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-retired-experts"
+    ],
+    "related": [
+      "network-industry-table",
+      "lower-legend-85-discount",
+      "fish-species-table",
+      "water-grade-tiers"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-retired-experts"
+  },
+  {
+    "id": "npc-supply-channels-table",
+    "title": "四条供货渠道与快递员",
+    "category": "trade",
+    "summary": "红魔鬼 200、GP 采矿 250 开放；化学 250、药商 300 锁；付款/下单/到货是三步。",
+    "facts": [
+      "红魔鬼酿酒厂 BREWER 基础 200，已开放，对应红魔鬼代表、快递员与酒类供货。",
+      "GP 采矿合作社 MINER 基础 250，已开放，对应 GP 采矿快递员与矿业物资。",
+      "下层区化学家 CHEMIST 250、上层区药商 PHARMA 300，两者 Demo 未开放。",
+      "普通供货商不用引荐费，每周来访并以溢价提供店铺所需物资。",
+      "一次网络付款、电话下单、快递员到货是三件不同的事，必须分别完成。",
+      "已下单交付、批发、免费物资是不同生成定义，一次赠送不等于永久免费供货。",
+      "表中「已开放」只指网络入口，不保证该存档已引荐、有电话或已订到货。"
+    ],
+    "actions": [
+      "买完引荐后 open_phone 拨打 8815（红魔鬼）/56371（矿业）下单",
+      "下单前先清出储物空间",
+      "每次来货读意图，确认数量、价格与货物状态"
+    ],
+    "pitfalls": [
+      "付了 200/250 就等货自动到：不会",
+      "把一次赠送当长期免费供应",
+      "为化学 250/药商 300 攒钱：Demo 锁"
+    ],
+    "effects": [
+      "phone_order → 现金支出、货物在若干天后由快递员送达"
+    ],
+    "guards": [
+      "储物空间不足时不批量下单"
+    ],
+    "keywords": [
+      "BREWER",
+      "MINER",
+      "CHEMIST",
+      "PHARMA",
+      "红魔鬼",
+      "GP 采矿合作社",
+      "快递员"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-supply-contacts"
+    ],
+    "related": [
+      "phone-supplier-orders",
+      "phone-contact-numbers",
+      "network-industry-table",
+      "wholesale-batch-deal"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-supply-contacts"
+  },
+  {
+    "id": "npc-ordinary-customer-types",
+    "title": "来客显示名对应七类意图",
+    "category": "customer",
+    "summary": "公民/拾荒客/患病者/工程师/游客/小偷/农场主是类型模板，名字推不出预算。",
+    "facts": [
+      "下层区公民、上层区公民是居民类型，不能据名字推算现金或固定货单。",
+      "拾荒客、老拾荒客、贫穷的拾荒客是拾荒变体，不都属于乔治奥剧情。",
+      "患病的下层区公民、患病的拾荒客属健康需求，按当次接受条件选药。",
+      "空间站工程师、烦躁的工程师是工程变体，不自动等于内利斯。",
+      "游客、空间站游客不等于觅食游客的专门订单。",
+      "可疑的顾客、扒手、来买东西的小偷属可疑/犯罪类，但交易与举报仍需具体证据。",
+      "农场主、水培农场主不自动等于退休农夫引荐。",
+      "同一外观池用于多次普通来访；名字、意图、派系、通缉记录是四种不同信息。"
+    ],
+    "actions": [
+      "先读 client.is_buying / is_selling 与 buying_tags，再决定摆什么",
+      "患病类来客才拿药，普通顾客不要浪费医疗库存",
+      "可疑顾客先比对通缉海报再决定 report_client"
+    ],
+    "pitfalls": [
+      "按名字猜预算：预算由基础公式+吸引力档+特权算",
+      "见「可疑的顾客」就举报：误报有代价"
+    ],
+    "effects": [
+      "call_next → 生成来客，类型决定 buying_tags 与预算"
+    ],
+    "guards": [
+      "无证据时不报告普通顾客"
+    ],
+    "keywords": [
+      "下层区公民",
+      "上层区公民",
+      "拾荒客",
+      "患病的拾荒客",
+      "空间站工程师",
+      "可疑的顾客",
+      "水培农场主"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.client",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-ordinary-customers"
+    ],
+    "related": [
+      "base-budget-by-buyer",
+      "budget-formula",
+      "false-report-penalty",
+      "npc-georgio-schedule"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-ordinary-customers"
+  },
+  {
+    "id": "npc-suspect-customer-evidence",
+    "title": "可疑顾客不等于通缉犯",
+    "category": "risk",
+    "summary": "可疑措辞或穿着不构成证据，举报前必须比对海报与外观。",
+    "facts": [
+      "可疑的顾客、扒手、来买东西的小偷是三个不同名称的犯罪相关来客。",
+      "可疑措辞或穿着不是完整通缉证据，要同比对海报与外观。",
+      "举报走 report_client，误报有独立代价（见 false-report-penalty）。",
+      "展示柜陈列会影响来客类型，摆贵重货会吸引更危险的人。",
+      "举报成功会让对方阵营声望下降，且不等于店铺自身记录清除。"
+    ],
+    "actions": [
+      "先看 visible_info.client.is_wanted 再决定是否 report_client",
+      "无 is_wanted 时不举报，正常议价走完",
+      "报了之后按阵营声望代价重算后续采购"
+    ],
+    "pitfalls": [
+      "凭外观举报：误报代价",
+      "以为举报能顺手洗掉自己的犯罪记录"
+    ],
+    "effects": [
+      "report_client 成功 → 赏金/声望变化；失败 → 误报惩罚"
+    ],
+    "guards": [
+      "client.is_wanted 为 false 时禁止 report_client"
+    ],
+    "keywords": [
+      "可疑的顾客",
+      "扒手",
+      "is_wanted",
+      "report_client",
+      "通缉海报"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.client.is_wanted",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-ordinary-customers"
+    ],
+    "related": [
+      "wanted-bounty-table",
+      "false-report-penalty",
+      "report-seller-payout",
+      "npc-security-officer-enforcement"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-ordinary-customers"
+  },
+  {
+    "id": "ach-asset-thresholds",
+    "title": "资产成就 1 万 / 10 万严格大于",
+    "category": "meta",
+    "summary": "ACH_SETTLED 要总资产估值 >10000，ACH_RICH >100000，正好等于不算。",
+    "facts": [
+      "ACH_SETTLED 条件：总资产估值严格大于 10,000 信用点。",
+      "ACH_RICH 条件：总资产估值严格大于 100,000 信用点。",
+      "总资产恰好 10,000 或 100,000 都不满足对应成就。",
+      "金额按总资产估值判断，不能只看现金。",
+      "总资产包含库存、设备等估值，单纯攒现金不是最优路径。"
+    ],
+    "actions": [
+      "冲 ACH_SETTLED 时把库存估值一起算进去，目标定在 10,500 以上留余量",
+      "避免停在 10,000 整：多卖一件低值货即可越过",
+      "用 stock_value 与现金一起估算，不单看 money"
+    ],
+    "pitfalls": [
+      "现金刚到 10,000 就以为解锁：估值口径不同且需严格大于",
+      "为成就清空库存：估值反而掉下来"
+    ],
+    "effects": [
+      "总资产估值越过阈值 → 对应成就条件成立（Demo 平台解锁未确认）"
+    ],
+    "guards": [
+      "冲成就期间不卖高估值设备"
+    ],
+    "keywords": [
+      "ACH_SETTLED",
+      "ACH_RICH",
+      "总资产估值",
+      "10000",
+      "100000"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/achievements"
+    ],
+    "related": [
+      "ach-shop-quality-tiers",
+      "ach-demo-steam-status",
+      "insurance-fee-formula"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/achievements"
+  },
+  {
+    "id": "ach-shop-quality-tiers",
+    "title": "吸引力 1000 与机器品质 250",
+    "category": "meta",
+    "summary": "三个硬门槛成就：吸引力 ≥1000、调整后机器品质 ≥250、自有机器 ≥10 台。",
+    "facts": [
+      "ACH_SHINY：店铺吸引力 ≥ 1,000（含等于）。",
+      "ACH_OVERLOAD：机器调整后品质 ≥ 250（含等于，按调整后算不是裸值）。",
+      "ACH_INDUSTRIOUS：被相应查询收集到的自有机器数量 ≥ 10。",
+      "吸引力受脏乱惩罚影响，garbage_level 每超 2 一级扣基础吸引力 5%。",
+      "机器品质需先装模组调整，才可能达到 250。"
+    ],
+    "actions": [
+      "冲 ACH_SHINY 前先 clear_trash 把垃圾等级压回 2 以下",
+      "冲 ACH_OVERLOAD 先装高品质模组再看调整后数值",
+      "冲 ACH_INDUSTRIOUS 前算清每台机器的独立耗电"
+    ],
+    "pitfalls": [
+      "吸引力 1000 但垃圾等级高：结算时被扣回 1000 以下",
+      "用裸机品质算 250：要调整后"
+    ],
+    "effects": [
+      "指标达标 → 对应成就条件成立"
+    ],
+    "guards": [
+      "机器 ≥10 台前先确认总供电足够"
+    ],
+    "keywords": [
+      "ACH_SHINY",
+      "ACH_OVERLOAD",
+      "ACH_INDUSTRIOUS",
+      "吸引力",
+      "调整后品质"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.economy.attractiveness",
+          "op": "gte",
+          "value": 1000
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/achievements"
+    ],
+    "related": [
+      "ach-asset-thresholds",
+      "attractiveness-dirt-penalty",
+      "garbage-level-attractiveness-penalty",
+      "module-effects-and-nodes"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/achievements"
+  },
+  {
+    "id": "ach-steam-stat-counters",
+    "title": "三个 Steam 统计类成就各 10 次",
+    "category": "meta",
+    "summary": "完美鉴定、举报罪犯、击杀改造体各累计 10 次，是 Steam 账号统计不在存档面板。",
+    "facts": [
+      "ACH_MASTER_APPRAISER：Steam 完美鉴定累计统计达到 10。",
+      "ACH_MODEL_CITIZEN：Steam 举报罪犯累计统计达到 10。",
+      "ACH_AUG_HUNTER：Steam 击杀改造体累计统计达到 10。",
+      "三者是 Steam 用户统计计数，不是某个存档面板上的同名数值。",
+      "ACH_LUCKY 走另一套：幸运检查收到头奖标记，或刮刮乐奖金 ≥350 会传入该标记。"
+    ],
+    "actions": [
+      "完美鉴定走 appraise 全对流程，累计到 10 次",
+      "举报只对 is_wanted 为真的顾客做，避免误报中断累计",
+      "击杀改造体需 enter_shooting_mode 后 shoot"
+    ],
+    "pitfalls": [
+      "在存档里找「完美鉴定 10」的进度条：不存在",
+      "以为误报也计入举报统计"
+    ],
+    "effects": [
+      "Steam 统计到 10 → 对应成就条件成立（需平台支持）"
+    ],
+    "guards": [
+      "无枪与弹时不进入射击模式"
+    ],
+    "keywords": [
+      "ACH_MASTER_APPRAISER",
+      "ACH_MODEL_CITIZEN",
+      "ACH_AUG_HUNTER",
+      "ACH_LUCKY",
+      "刮刮乐"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/achievements"
+    ],
+    "related": [
+      "ach-asset-thresholds",
+      "appraisal-accept-range",
+      "wanted-bounty-table",
+      "shop-shooting-flow"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/achievements"
+  },
+  {
+    "id": "ach-demo-steam-status",
+    "title": "21 个成就标识，Demo 解锁未确认",
+    "category": "meta",
+    "summary": "共 21 个标识，12 个未闭环验证；Demo 商店页未声明 Steam 成就支持。",
+    "facts": [
+      "成就标识合计 21 个：9 个有明确数值门槛 + 12 个仅有检查入口。",
+      "未闭环的 12 个：ACH_TUTORIAL、ACH_BUYOUT、ACH_HONEST_MERCHANT、ACH_AUTHORIZED、ACH_RATS、ACH_RAG_TO_RICHES、ACH_NOTHING_TO_RICHES、ACH_PERFECT_MEDIATOR、ACH_LAB_PURE、ACH_HUGE_NUTRIFRUIT、ACH_PRODIGIOUS、ACH_LOWER_LEVELS_SPECIAL。",
+      "这 12 个不能据英文名编造额外次数、限定天数或路线要求。",
+      "解锁需三件事同时成立：Steam 初始化、用户统计可用、成就保存接口。",
+      "当前 Demo 商店页未提供 Steam 成就支持说明，Demo 平台解锁状态为「未确认」。",
+      "游戏文件里有成就代码不等于 Demo 会弹出成就。"
+    ],
+    "actions": [
+      "在 Demo 里不把成就当经营目标",
+      "做成就规划时只依赖 9 个已确认门槛",
+      "涉及 12 个未知标识时不预设条件"
+    ],
+    "pitfalls": [
+      "为 ACH_TUTORIAL 之类反复重开存档：条件未核实",
+      "以为有代码就会弹：Demo 平台状态未确认"
+    ],
+    "effects": [
+      "满足条件且平台可用 → 成就写入；平台不可用 → 无提示"
+    ],
+    "guards": [
+      "Demo 内不为成就牺牲 rent_due 现金流"
+    ],
+    "keywords": [
+      "ACH_TUTORIAL",
+      "ACH_BUYOUT",
+      "ACH_HONEST_MERCHANT",
+      "ACH_AUTHORIZED",
+      "Steam 统计"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/achievements"
+    ],
+    "related": [
+      "ach-asset-thresholds",
+      "ach-shop-quality-tiers",
+      "ach-steam-stat-counters",
+      "game-modes-and-failures"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/achievements"
+  }
+]

@@ -1,0 +1,63 @@
+{
+  "id": "mortgage-weekly-payment",
+  "title": "按揭周供（正式版新增的第二套负债）",
+  "category": "economy",
+  "summary": "正式版买店走「首付 + 按周还款」，首付与期数按难度算；它与 7 天租约互相独立，两条都不能断。",
+  "facts": [
+    "房价 = propertyBasePrice(12000) + 累计涨幅；第 50 天起每日上涨（PROPERTY_INCREASE_START_DAY = 50，PlayerStore.cs:671；判定 PlayerStore.cs:3901），涨幅 25/50/50/100（cozy/normal/hard/challenge），封顶 3000/5000/10000/20000。",
+    "首付 = max(500, round(房价 × 难度首付比例 / 500) × 500)，不是固定值——PlayerStore.LEGACY_DOWN_PAYMENT=3000 只是历史常量，源码里**从未被引用**。",
+    "首付比例 mortgageDownPaymentShare：cozy 0.2 / normal 0.15 / hard 0.125 / challenge 0.2。",
+    "按揭期数 mortgageWeeks：cozy 8 / normal 12 / hard 16 / challenge 16 周。",
+    "按揭利率 mortgageInterestRate：25 / 50 / 75 / 100（%）。",
+    "周供 = CalculateWeeklyPayment(扣掉首付后的贷款额, 难度利率, 期数)。",
+    "申请门槛：CanBeOfferedMortgage() 要求现金 ≥ 2 × 首付。",
+    "/state 的 mortgage 段给 weeks_left / weekly_payment / total_weeks；首付与房价要自己按上面公式算（接口未暴露）。",
+    "租约是另一套：rent_value + day_until_rent + rent_due（每期上涨），与按揭互不抵扣。",
+    "2026-11-13 校正：旧结论「首付固定 3000、固定 14 期」→ 新结论「首付 = max(500, 房价×难度比例对齐 500)、期数 8/12/16/16」，依据 tools/decompile_full/PlayerStore.cs:3913-3917（GetMortgageDownPayment）+ :3919-3922（GetMortgageWeeks）+ Difficulty.cs:232/276/320/364。"
+  ],
+  "actions": [
+    "每周结算前先看 mortgage.weeks_left 与 weekly_payment，再决定进货预算",
+    "现金紧张时优先保租约与按揭，不要把钱压成库存"
+  ],
+  "pitfalls": [
+    "按固定 3000 估算首付——实际 = max(500, 房价×难度比例 对齐 500)，比例 cozy 0.2/normal 0.15/hard 0.125/challenge 0.2；例如 12000 房价下 cozy 2500、normal 2000、hard 1500",
+    "只看首付不看周供：期数越短周供越高（cozy 8 周最紧）。",
+    "现金刚好够首付就去申请——门槛是 2 倍首付。",
+    "以为买店后就不用交租：租约与按揭是两笔账。"
+  ],
+  "effects": [],
+  "guards": [
+    "现金 < weekly_payment 且本周要扣款时，禁止大额进货"
+  ],
+  "keywords": [
+    "按揭",
+    "周供",
+    "首付",
+    "房产权",
+    "mortgage",
+    "每周还款"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.mortgage.weeks_left",
+        "op": "gte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "decompile_full/PlayerStore.cs (LEGACY_DOWN_PAYMENT/BASE_COST/LEGACY_MORTGAGE_WEEK_COUNT/PayWeeklyMortgage)"
+  ],
+  "confidence": 0.92,
+  "verified_at": "2026-11-10",
+  "related": [
+    "rent-lease",
+    "difficulty-rules"
+  ],
+  "source": "decompile:PlayerStore.cs",
+  "review_note": "2026-11-10 对照源码订正：删除废弃常量结论，改为难度比例算法。",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false
+}

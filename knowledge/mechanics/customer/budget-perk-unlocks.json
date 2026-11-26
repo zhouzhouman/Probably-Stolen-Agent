@@ -1,0 +1,58 @@
+{
+  "id": "budget-perk-unlocks",
+  "title": "两项预算特权与门槛",
+  "category": "customer",
+  "summary": "好评如潮+25%B需上层区100，可靠供应商+50%B需治安部80；声望只通过解锁生效。",
+  "facts": [
+    "「好评如潮」给 B 的 25% 加成，解锁条件为声望上层区达到 100。",
+    "「可靠供应商」给 B 的 50% 加成，解锁条件为治安部达到 80。",
+    "两项合计最多 +75% B（以 B 为基数分别取整后相加）。",
+    "预算加成不按买家派系筛选；声望不逐点折现为现金，只通过「是否解锁特权」生效。",
+    "当前观测层没有「特权解锁状态」字段，需扩展后才能按条件触发。",
+    "「好评如潮」的加成参数为 25、解锁门槛上层区 ≥100，与本页 +25% B 的数值一致（wiki-economy 交叉核对）。"
+  ],
+  "actions": [
+    "解锁声望特权",
+    "确认特权是否已解锁"
+  ],
+  "pitfalls": [
+    "以为声望越高预算越高 → 未解锁对应特权前加成恒为 0。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "好评如潮",
+    "可靠供应商",
+    "上层区",
+    "治安部",
+    "perk"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.reputations.value",
+        "op": "gte",
+        "value": 60
+      },
+      {
+        "field": "visible_info.reputations.value",
+        "op": "lte",
+        "value": -60
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/customer-budgets"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "budget-formula",
+    "budget-attractiveness-tiers",
+    "nego-rep-multiplier-tiers"
+  ],
+  "source": "wiki:/zh/wiki/terms/customer-budgets",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

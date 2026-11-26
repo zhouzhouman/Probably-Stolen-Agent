@@ -1,0 +1,51 @@
+{
+  "id": "discount-boosts-budget",
+  "title": "打折会抬高顾客预算",
+  "category": "trade",
+  "summary": "让利同时提高顾客预算与声望收益，清库存时打折可能比高价少卖更赚。",
+  "facts": [
+    "出售侧提供折扣会「增加其预算」并提高交易声望收益：预算变大后同一顾客能吃下更多件。",
+    "抬价方向相反：抬高售价会「减少其预算」，可能导致顾客连原本买得起的货也买不起。",
+    "清库存场景下需比较「打折卖完的总收入」与「高价只卖少量的总收入」，而不是比较单件价格。",
+    "只有提出条件但没有实际成交，不能算已获得声望。"
+  ],
+  "actions": [
+    "出售侧提供折扣",
+    "打折批量清货"
+  ],
+  "pitfalls": [
+    "只看单件毛利就抬价 → 客户预算被压低，整单成交量下降。"
+  ],
+  "effects": [
+    "让利成交后：单件收入下降，budget_left 上升，可连续成交更多件。"
+  ],
+  "guards": [],
+  "keywords": [
+    "budget_left",
+    "让利",
+    "清库存",
+    "总收入"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/trading-and-bargaining"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "related": [
+    "nego-four-directions",
+    "nego-rep-multiplier-tiers",
+    "budget-formula"
+  ],
+  "source": "wiki:/zh/wiki/terms/trading-and-bargaining",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

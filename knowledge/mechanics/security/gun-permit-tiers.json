@@ -1,0 +1,64 @@
+{
+  "id": "gun-permit-tiers",
+  "title": "枪证：300/600/900 三级链式前置",
+  "category": "security",
+  "summary": "三级枪证按违禁等级授权（300/600/900 信用点，逐级依赖）；持证清违禁标记，吊销移除许可且不自动补发。正式版 lockInDemo 判定零调用者，故不存在「Demo 锁」。",
+  "facts": [
+    "GUN_PERMIT_I 300、GUN_PERMIT_II 600（需 I）、GUN_PERMIT_III 900（需 II）（NetworkUpgradeList.cs:76/78/80）。",
+    "卡内原有的「下发声望 30 / 60 / 90」与源码常量不符：正式版常量是 GUN_PERMIT_I_REP=20 / II_REP=50 / III_REP=80（NetworkUpgradeList.cs:150/152/154）。但这三个常量除声明外零引用，且只用于描述文案（NetworkUpgrade.ArgsGunPermitI/II/III），因此「20/50/80 是否真的是购买门槛」尚未被代码证明——按声望攒 20/50/80 也不能保证解锁。",
+    "持有后的吊销线是低于 0 / 30 / 60，由上门警官在对话结束时判定。",
+    "下层区特权「下层区传奇」解锁后，全部网络项目按基础费用的 85% 结算。",
+    "持证后仍需维持对应声望；犯罪证据另行结算，与枪证吊销是两条独立线。",
+    "覆盖按违禁等级而非武器清单：I 级覆盖低级违禁枪械与弹药、II 级中级、III 级高级；高危级没有对应许可。",
+    "持证后店内「等级与类型都匹配」的物品转为受限状态并清除违禁标记——同一件货在持证前后属于不同风险类别。",
+    "吊销会同时移除许可记录与许可物品，并把受限物品重新标为违禁；恢复声望不会自动补发，需要重新购买。",
+    "同一段吊销对话会三档一起判，可能一次失去多张许可；警官上门触发时机未定位。",
+    "许可必须放进展示柜，才会提高枪械买家的到访概率。",
+    "三级都带 lockInDemo=true（NetworkUpgradeList.cs:925/937/949），但判定函数 NetworkUpgrade.IsLockedInDemo()（NetworkUpgrade.cs:654-668）在整个正式版解包里零调用者。实际购买判定走 IsReady()（NetworkUpgrade.cs:844-859）= 前置已解锁 + 冷却结束 + state==1；三个枪证工厂都设 state=1（NetworkUpgradeList.cs:918-951），且 WildNetworkUI.cs:394-419 里原用于 Demo 锁的 flag3 已恒为 false。因此「三级均不可购买」不成立，正式版应可购买，但仍需实机点一次确认。",
+    "2026-11-13 校正：旧结论「三级均标不可购买、下发声望 30/60/90」→ 新结论「购买判定不读 lockInDemo（零调用者），声望常量 20/50/80 存在但零引用、不能当门槛」，依据 NetworkUpgrade.cs:654-668 / 844-859、NetworkUpgradeList.cs:150/152/154、WildNetworkUI.cs:394-419。"
+  ],
+  "actions": [
+    "枪证可以买：两级前置满足、钱够 300/600/900 即可购（购买判定只走 IsReady()，NetworkUpgrade.cs:844-859），实际能否买到需实机确认",
+    "先买盘查预警 300 降低被查风险"
+  ],
+  "pitfalls": [
+    "把「Demo 锁」当现行规则：lockInDemo=true 只是数据标记，判定函数 IsLockedInDemo()（NetworkUpgrade.cs:654-668）零调用者，不能据此断言买不到",
+    "以为持证就免查：检查与证据是独立流程",
+    "把「吊销线 0/30/60」当成「下发线」：源码声望常量是 20/50/80（NetworkUpgradeList.cs:150/152/154，零引用、不能当门槛），吊销线才是 0/30/60（StoreClientListSecurity.cs:150-162），不要再引用 30/60/90"
+  ],
+  "effects": [
+    "购买成功 → 解锁许可，持证清除对应等级的违禁标记"
+  ],
+  "guards": [
+    "不要因为卡上写着 lockInDemo 就放弃购买枪证：该标记无生效路径；但购买前仍应确认前置（II 需 I、III 需 II）与 /state 中的实际状态"
+  ],
+  "keywords": [
+    "GUN_PERMIT_I",
+    "GUN_PERMIT_II",
+    "GUN_PERMIT_III",
+    "EVIDENCE_REMOVAL",
+    "INSPECTION_INFORMANT"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client.gun_order",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/upgrades/security-network"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "network-security-table",
+    "shop-shooting-flow",
+    "wanted-report"
+  ],
+  "source": "wiki:/zh/wiki/upgrades/security-network",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

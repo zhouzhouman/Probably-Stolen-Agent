@@ -1,0 +1,53 @@
+{
+  "id": "inspection-bribe-formula",
+  "title": "贿赂金额随声望降低",
+  "category": "risk",
+  "summary": "贿赂＝100+(店铺天数−治安部声望)×2，夹在 40–400，与货物价值无关。",
+  "facts": [
+    "贿赂公式：100 ＋（店铺天数 − 治安部声望）× 2，结果限制在 40–400 信用点。",
+    "贿赂金额与物品价值无关，只跟天数与声望有关。",
+    "天数增加会更贵，治安声望提高会更便宜；低声望存档的贿赂最贵。",
+    "贿赂与藏匿是两条并行路径，不能抵扣罚款。",
+    "当前观测层无「治安部声望/贿赂报价」字段，需扩展。"
+  ],
+  "actions": [
+    "高声望存档被查时优先算贿赂是否比罚款便宜",
+    "低天数阶段贿赂最便宜，早用早省"
+  ],
+  "pitfalls": [
+    "按货物价值估算贿赂：公式里没有货物价值项",
+    "声望很低时还以为贿赂便宜：会顶到 400 上限"
+  ],
+  "effects": [
+    "支付贿赂后本次盘查跳过处置"
+  ],
+  "guards": [
+    "现金 < 400 时不要赌贿赂可用"
+  ],
+  "keywords": [
+    "贿赂",
+    "治安部声望",
+    "店铺天数"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk.crime_count",
+        "op": "gte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/inspections"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "inspection-severity-ladder"
+  ],
+  "source": "wiki:/zh/wiki/terms/inspections",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

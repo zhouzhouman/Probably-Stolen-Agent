@@ -1,0 +1,55 @@
+{
+  "id": "scavenge-loot-table",
+  "title": "拾荒掉落池：垃圾占 55.25%",
+  "category": "economy",
+  "summary": "类别先抽再抽物品，垃圾类 65%×85%=55.25%，废金属只有 1.875%，矿石概率为 0。",
+  "facts": [
+    "类别概率：垃圾与杂物 65%、材料 15%、医疗用品 5%、日用品 4.75%、食品饮料 4.75%、工具 2%、简易武器 2%、随机模组 1%、其他模组 0.5%。",
+    "垃圾在杂物类内占 85%，实际概率 65%×85%=55.25%；废金属 15%×12.5%=1.875%。",
+    "铅管同时出现在杂物 3% 与武器 25% 两处，合计 65%×3%+2%×25%=2.45%。",
+    "普通金属矿石与稀有金属矿石不在掉落表中，直接拾荒概率 0%，扫描仪重抽也不会出。",
+    "医疗用品只有三种绷带，各 33.3333%。",
+    "2026-11-13 校正：本卡的类别/物品概率抓自 2026-10-24 试玩版 wiki，正式版未复核；其中「期望价值 11.6392」属 docs/25 §0.3-12 记载已被正式版删除的拾荒期望收益模型，不得作决策依据。"
+  ],
+  "actions": [
+    "要废金属靠等离子切割机的 10% 独立判定，不要靠表内 1.875%",
+    "按品类概率给拾荒收益做期望，不按单次结果"
+  ],
+  "pitfalls": [
+    "指望拾荒出矿石：概率为 0",
+    "把一次捡到贵重物当稳定产出",
+    "拿 11.6392 这类期望值给拾荒做预算：该模型出自 Demo 期 wiki，正式版页面已不再提供，按它会系统性高估拾荒价值"
+  ],
+  "effects": [
+    "单次成功搜索的基础期望价值 11.6392（由 2026-10-24 Demo 期 wiki 掉落表推算，正式版已删除该期望模型，不得作决策依据）"
+  ],
+  "guards": [],
+  "keywords": [
+    "scrap_metal",
+    "junk",
+    "pipe_weapon",
+    "metal_scanner"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.night.scavenging_attempts",
+        "op": "gte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/junkyard-scavenging"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "scavenge-tool-extra-drops",
+    "scavenge-expected-value"
+  ],
+  "source": "wiki:/zh/wiki/terms/junkyard-scavenging",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

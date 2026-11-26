@@ -1,0 +1,54 @@
+{
+  "id": "afterhour-events",
+  "title": "夜间事件会关地点、改规则",
+  "category": "night",
+  "summary": "外出地点可能被当晚事件关闭，或价格/规则被临时改写；不看事件就 go_out 会白跑一趟。",
+  "facts": [
+    "事件定义含 locationId / durationDays / dailyChancePercent / weekdays / closesLocation。",
+    "closesLocation=true 表示该地点当晚关闭，去不了。",
+    "生效判定用 AfterhourEvents.IsActive(id)，剩余天数用 GetDaysLeft(id)。",
+    "/state 的 afterhour_events 只列「生效中」或「会关地点」的事件，其余省略。",
+    "事件也会被 mod 注册（source 字段区分 vanilla）。",
+    "/state 的事件还带 effects[]：text（人话说明）/ polarity（正负）/ modifier_key + modifier_value（机器可读修正）。"
+  ],
+  "actions": [
+    "每晚出门前先读 afterhour_events，确认目标地点 available 且没被 closes_location 关掉",
+    "地点关闭时改去别的地点，或直接 stay_home 睡觉"
+  ],
+  "pitfalls": [
+    "按习惯直接 go_out 到常去地点，结果当晚被事件关闭。",
+    "把 afterhour_events 当成历史记录，忽略 active 字段。"
+  ],
+  "effects": [],
+  "guards": [
+    "go_out 前校验目标地点 available 且未被 closes_location 命中"
+  ],
+  "keywords": [
+    "夜间事件",
+    "事件",
+    "关闭地点",
+    "afterhour",
+    "外出受阻"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.afterhour_events",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "decompile_full/AfterhourEvents.cs / AfterhourEventDefinition.cs"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-11-08",
+  "related": [
+    "night-out-cost",
+    "scavenge-stow"
+  ],
+  "source": "decompile:AfterhourEvents.cs",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false
+}

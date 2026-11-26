@@ -1,0 +1,59 @@
+{
+  "id": "npc-officer-lun-storyline",
+  "title": "伦警官六个 D 值剧情节点",
+  "category": "quest",
+  "summary": "D=11 购食到 D=24 突击盘查，D=20/24 各有额外状态门槛，无尽模式跳过。",
+  "facts": [
+    "D=11 巡逻购食、D=12 受伤求药、D=16 复岗，三段是非无尽模式的固定剧情。",
+    "D=13 出现的「涉及袭击者的来客」不是伦本人，不能当作他改名或换身份。",
+    "D=20 的盈余物资出售要求伦的成瘾等级 > 0，否则不出现。",
+    "D=24 的突击盘查还要求他尚未被逮捕。",
+    "伦的角色生成归入治安部，肖像被其他治安部键共用，认人要看显示名称与对话。",
+    "D=12 与复岗后的求药都要求「强效止痛药」，任意医疗标签物品或任意注射器不算。"
+  ],
+  "actions": [
+    "D=12 前留一支强效止痛药，别把它卖光",
+    "D=20 前不要给他注射，除非确定要走盈余物资分支",
+    "D=24 前保持他不被逮捕"
+  ],
+  "pitfalls": [
+    "拿普通医疗品或随便一支注射器交差：不被接受",
+    "把 D=13 的来客当伦：交易对象判断错"
+  ],
+  "effects": [
+    "提交合格止痛药 → 推进剧情；D=24 触发突击盘查对话"
+  ],
+  "guards": [
+    "无尽模式下不安排伦警官相关采购"
+  ],
+  "keywords": [
+    "伦警官",
+    "强效止痛药",
+    "赛纳普斯",
+    "成瘾等级",
+    "突击盘查"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-officer-lun"
+  ],
+  "related": [
+    "npc-visit-state-rules",
+    "inspection-schedule-band",
+    "addiction-withdrawal",
+    "wanted-bounty-table"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-officer-lun",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

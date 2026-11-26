@@ -1,0 +1,54 @@
+{
+  "id": "scavenge-attempt-cap",
+  "title": "拾荒次数上限 5，受天赋加减",
+  "category": "night",
+  "summary": "基础每晚 5 次搜索，熟练拾荒客 +2、骨关节炎每周 −1，算后不足 3 直接归零。",
+  "facts": [
+    "搜索次数上限基础为 5；剩余次数 = 上限 − 已用次数，拾荒结束时已用次数重置。",
+    "起始天赋「熟练的拾荒客」上限 +2（即 7）。",
+    "起始天赋「退行性骨关节炎」上限减去 floor((D−1)÷7)，D 为内部日计数：第一周不减，此后每周少 1 次。",
+    "下限保护：计算后上限小于 3 则归 0，此时完全无法拾荒。",
+    "受伤状态下无法继续拾荒，伤势处理后才可继续。"
+  ],
+  "actions": [
+    "出门前先算剩余次数，再决定带几件工具",
+    "骨关节炎存档在 D≥15 后不要再规划拾荒收入"
+  ],
+  "pitfalls": [
+    "以为每周固定 −1：实际是 floor((D−1)÷7)，第一周不减",
+    "上限算到 2 仍按 2 次规划：实际归 0"
+  ],
+  "effects": [
+    "每次搜索 scavenging_attempts 递减；离场重置"
+  ],
+  "guards": [
+    "计算后上限 < 3 时禁止规划拾荒"
+  ],
+  "keywords": [
+    "scavenging_attempts",
+    "熟练的拾荒客",
+    "退行性骨关节炎"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.night.scavenging_attempts",
+        "op": "lte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/junkyard-scavenging"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "scavenge-injury-formula",
+    "scavenge-tool-extra-drops"
+  ],
+  "source": "wiki:/zh/wiki/terms/junkyard-scavenging",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

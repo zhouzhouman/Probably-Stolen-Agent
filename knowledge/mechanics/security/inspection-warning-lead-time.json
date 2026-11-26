@@ -1,0 +1,56 @@
+{
+  "id": "inspection-warning-lead-time",
+  "title": "盘查预警倒计时三档",
+  "category": "security",
+  "summary": "预警只在倒计时 3/2/1 各发一条日志，10 信用点，且不覆盖突击检查。",
+  "facts": [
+    "购买盘查预警后，线人在「两天后」「明天」「即将开始」各发一条夜间日志，对应内部倒计时 3/2/1。",
+    "预警只覆盖常规盘查，突击盘查不在其中；贵宾不受盘查，也就没有预警。",
+    "检查预警服务费 10 信用点/晚。",
+    "预警之后要做的是：核对许可、库存、暗格实际位置与既有证据，尤其别把违禁品留在展示柜。",
+    "提前收到消息只是准备时间，不等于免检或免罚。",
+    "当前观测层无「盘查倒计时/预警日志」字段，需扩展。"
+  ],
+  "actions": [
+    "收到「两天后」日志就开始转移违禁品与补许可",
+    "预警当晚不要新增违禁品进货"
+  ],
+  "pitfalls": [
+    "以为有预警就安全：突击检查不预告",
+    "收到日志却只挪货不检查暗格标签是否还在"
+  ],
+  "effects": [
+    "夜间日志新增检查预警条目"
+  ],
+  "guards": [
+    "现金 <10 时预警不可用"
+  ],
+  "keywords": [
+    "检查预警",
+    "Wild's Fixers",
+    "突击检查",
+    "夜间日志"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.services[]",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/contact-services",
+    "wiki: /zh/wiki/terms/inspections"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "inspection-schedule-band",
+    "showcase-contraband-ban"
+  ],
+  "source": "wiki:/zh/wiki/services/contact-services",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

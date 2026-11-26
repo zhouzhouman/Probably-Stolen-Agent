@@ -1,0 +1,48 @@
+{
+  "id": "budget-attractiveness-tiers",
+  "title": "吸引力预算加成六档",
+  "category": "customer",
+  "summary": "吸引力按档位给 B 的 0%~100% 加成，同档内再提升不加钱，卡档才有效。",
+  "facts": [
+    "吸引力 < 300：+0% B。",
+    "300–449：+10% B；450–599：+25% B。",
+    "600–749：+50% B；750–899：+75% B。",
+    "≥ 900：+100% B。",
+    "吸引力加成只取当前最高档，同档内继续提升不增加预算，只有跨档才改变该项。"
+  ],
+  "actions": [
+    "提升吸引力",
+    "核对吸引力所处档位"
+  ],
+  "pitfalls": [
+    "在 620 继续堆装饰期待加钱：仍按 +50%，等于零收益，应直接冲 750。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "attractiveness",
+    "吸引力",
+    "预算档位"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/customer-budgets"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "budget-formula",
+    "attractiveness-dirt-penalty"
+  ],
+  "source": "wiki:/zh/wiki/terms/customer-budgets",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

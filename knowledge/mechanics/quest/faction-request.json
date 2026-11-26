@@ -1,0 +1,47 @@
+{
+  "id": "faction-request",
+  "title": "派系委托：能填就填",
+  "category": "quest",
+  "summary": "委托要求特定物品与数量，可交付就 fill_request；奖励信用点与派系声望。",
+  "facts": [
+    "requests 含 required_item / required_count / duration / credit_reward / reputation_reward / can_fill。",
+    "fill_request 一次性交付所有可完成委托，奖励信用点+声望；过期未交白丢奖励。",
+    "v3.0 起 requests 已进入 visible_info（按 can_fill 优先排序，最多 6 条），AI 可直接看到可交付项。",
+    "声望已进入 visible_info.reputations（id/faction/value），举报前可核对该派系当前声望。"
+  ],
+  "actions": [
+    "能填就 fill_request",
+    "按派系声望权衡举报/放行"
+  ],
+  "pitfalls": [
+    "为 75 悬赏把关键派系声望打穿",
+    "委托到期未交付：白丢奖励"
+  ],
+  "keywords": [
+    "fill_request",
+    "委托",
+    "reputation_reward",
+    "can_fill"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.requests.can_fill",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "/state.requests 与 /state.reputations 实测",
+    "观察层 build_observation 未包含这两个字段"
+  ],
+  "confidence": 0.8,
+  "verified_at": "2026-10-24",
+  "effects": [
+    "fill_request：扣除 required_count 件物品，获得 credit_reward + reputation_reward"
+  ],
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "source": "live:/state.requests 与 /state.reputations 实测"
+}

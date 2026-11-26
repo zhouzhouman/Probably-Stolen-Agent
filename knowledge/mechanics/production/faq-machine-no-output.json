@@ -1,0 +1,55 @@
+{
+  "id": "faq-machine-no-output",
+  "title": "机器不产出的四个原因",
+  "category": "production",
+  "summary": "按换日、通电、原料入机、工序与空间四步排查，买了机器不等于自动通电。",
+  "facts": [
+    "第一步排查是否已睡觉进入下一天，并看夜间日志有无停电或异常。",
+    "第二步排查供能方式与实际电源：买了机器不等于自动通电，需要电池等实际电源供应。",
+    "第三步排查正确原料是否放进机器内部，而不是放在旁边或储物容器里。",
+    "第四步排查设备状态、当前工序与可用空间；机器模组不是所有生产的统一必需品。",
+    "同类排查逻辑：暗灯要放展示柜、警报要启用并配独立电源、远征补给要放补给箱，仅持有不等于已启用。"
+  ],
+  "actions": [
+    "查看夜间日志",
+    "检查电源与供电",
+    "把原料放进机器内部"
+  ],
+  "pitfalls": [
+    "把「没换日」当「机器坏了」→ 重复买机器。",
+    "材料放机器旁边 → 隔夜零产出。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "夜间日志",
+    "电源",
+    "机器内部",
+    "机器模组",
+    "补给箱",
+    "is_power_on"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.rent.is_power_on",
+        "op": "falsy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/common-questions",
+    "wiki: /zh/wiki/terms/basic-controls"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "morning-log-audit",
+    "counter-transfer-flow",
+    "close-vs-sleep"
+  ],
+  "source": "wiki:/zh/wiki/terms/common-questions",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,54 @@
+{
+  "id": "ll-perk-thresholds",
+  "title": "下层区特权 20 起每 20 一档",
+  "category": "customer",
+  "summary": "下层区正向 20/40/60/80/100，负向 −20 到 −100；100 档让网络费用按 85% 结算。",
+  "facts": [
+    "有口皆碑 LLREFERAL ≥ 20；稀有货物 LLRAREGOOD ≥ 40；市井传言 LLTIPS ≥ 60；守口如瓶 LLTIGHTLIPS ≥ 80；下层区传奇 LLPILLAR ≥ 100。",
+    "差评 LLPOORREVIEWS ≤ −20；遭到猜疑 LLDISTRUSTED ≤ −40；沦为猎物 LLTARGET ≤ −60；狗嫌人厌 LLAVOIDED ≤ −80；暴民私刑 LLLYNCH ≤ −100。",
+    "守口如瓶的证据倍率为 0.5；沦为猎物的保险倍率为 2（效果参数，非门槛）。",
+    "有口皆碑与差评的描述参数为 100% 概率、1 名顾客，消费点未定位。",
+    "下层区传奇使网络项目费用按 85% 结算。",
+    "正向 5 档要求 ≥、负向 5 档要求 ≤，均为「达到即启用」的开门线。"
+  ],
+  "actions": [
+    "刷到 20 拿有口皆碑，冲 100 拿网络 85 折",
+    "死守 > −20，避免差评"
+  ],
+  "pitfalls": [
+    "掉到 −20 及以下触发差评，评价与来客同时变差"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "LLREFERAL",
+    "LLPILLAR",
+    "LLTARGET",
+    "下层区传奇",
+    "85%"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.reputations.value",
+        "op": "gte",
+        "value": 20
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/reputation/lower-level-perks",
+    "wiki: /zh/wiki/factions/lower-levels"
+  ],
+  "confidence": 0.93,
+  "verified_at": "2026-10-24",
+  "related": [
+    "rep-clamp-22-grades",
+    "ll-network-discount",
+    "insurance-rep-effects"
+  ],
+  "source": "wiki:/zh/wiki/reputation/lower-level-perks",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,58 @@
+{
+  "id": "npc-suspect-customer-evidence",
+  "title": "可疑顾客不等于通缉犯",
+  "category": "risk",
+  "summary": "可疑措辞或穿着不构成证据，举报前必须比对海报与外观。",
+  "facts": [
+    "可疑的顾客、扒手、来买东西的小偷是三个不同名称的犯罪相关来客。",
+    "可疑措辞或穿着不是完整通缉证据，要同比对海报与外观。",
+    "举报走 report_client，误报有独立代价（见 false-report-penalty）。",
+    "展示柜陈列会影响来客类型，摆贵重货会吸引更危险的人。",
+    "举报成功会让对方阵营声望下降，且不等于店铺自身记录清除。"
+  ],
+  "actions": [
+    "先看 visible_info.client.is_wanted 再决定是否 report_client",
+    "无 is_wanted 时不举报，正常议价走完",
+    "报了之后按阵营声望代价重算后续采购"
+  ],
+  "pitfalls": [
+    "凭外观举报：误报代价",
+    "以为举报能顺手洗掉自己的犯罪记录"
+  ],
+  "effects": [
+    "report_client 成功 → 赏金/声望变化；失败 → 误报惩罚"
+  ],
+  "guards": [
+    "client.is_wanted 为 false 时禁止 report_client"
+  ],
+  "keywords": [
+    "可疑的顾客",
+    "扒手",
+    "is_wanted",
+    "report_client",
+    "通缉海报"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client.is_wanted",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-ordinary-customers"
+  ],
+  "related": [
+    "wanted-bounty-table",
+    "false-report-penalty",
+    "report-seller-payout",
+    "npc-security-officer-enforcement"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-ordinary-customers",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

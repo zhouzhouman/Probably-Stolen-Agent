@@ -1,0 +1,50 @@
+{
+  "id": "contact-seller-referral",
+  "title": "卖家介绍 10/晚，需留现金空间",
+  "category": "trade",
+  "summary": "每晚 10 换次日一个卖家，但不保证给到你要的原料；启用前必须预留收购现金和储物空间。",
+  "facts": [
+    "卖家介绍服务基础费用 10 信用点/晚，次日介绍卖家。",
+    "需要预留收购现金与储物空间，且不保证一定提供你想要的原料。",
+    "网络端解锁项为卖家推荐服务 SELL_REFERAL，200 信用点，Demo 可用，无前置无冷却。",
+    "解锁购买与按晚启用是两个状态，未在睡前开启则当晚无效。"
+  ],
+  "actions": [
+    "启用当晚把现金留到能吃得下一批货的水平",
+    "清空一格储物再睡"
+  ],
+  "pitfalls": [
+    "现金全压在库存上 → 卖家来了收不了",
+    "期待指定原料：wiki 明确不保证"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "SELL_REFERAL",
+    "卖家介绍",
+    "wholesale_cost"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.phone.contacts",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/contact-services",
+    "wiki: /zh/wiki/upgrades/contacts-network"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "contact-buyer-referral",
+    "network-contacts-table",
+    "wholesale-direction"
+  ],
+  "source": "wiki:/zh/wiki/services/contact-services",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,63 @@
+{
+  "id": "npc-retired-experts-table",
+  "title": "退休专家引荐价目与开放状态",
+  "category": "trade",
+  "summary": "水商 300、酿酒 200、养鼠 750 开放；农夫 350、枪匠 650、化学 1000、废料 300 全锁。",
+  "facts": [
+    "已开放：退休水商 WATER_TRADER 300、退休酿酒师 WINEMAKER 200、退休养鼠人 RETIRED_RANCHER 750。",
+    "未开放：退休农夫 RETIRED_FARMER 350、退休枪匠 RETIRED_GUNSMITH 650、退休化学家 RETIRED_CHEMIST 1000、退休废料客 RUINED_MACHINE_UNLOCK 300。",
+    "退休水产养殖户走 Wilds 水产养殖引荐，基础 400，前置水资源交易，每周来访，卖设备与受精鱼卵。",
+    "水产养殖 II 基础 1,200，前置水产养殖，使商人增加大型鱼种，已开放。",
+    "表中费用是网络基础费用，不是每件货物售价；下层区传奇折扣另作用于结算。",
+    "顺序固定：先买引荐，再等对应来客上门；人物有定义不等于入口已开放。"
+  ],
+  "actions": [
+    "只对 300/200/750/400/1200 这五档做采购计划",
+    "水产养殖 II 前先确认已买水资源交易与水产养殖",
+    "买完引荐后按每周节奏等来客，不要当天就备大额现金"
+  ],
+  "pitfalls": [
+    "攒 350/650/1000 买未开放引荐：入口关闭",
+    "把基础费用当货价",
+    "买了设备却没备电、原料、容器、许可"
+  ],
+  "effects": [
+    "购买引荐 → 对应来客进入每周来访池，出售相关物资"
+  ],
+  "guards": [
+    "引荐未开放时不列入现金流计划"
+  ],
+  "keywords": [
+    "RETIRED_FARMER",
+    "RETIRED_GUNSMITH",
+    "RETIRED_CHEMIST",
+    "RUINED_MACHINE_UNLOCK",
+    "WATER_TRADER",
+    "WINEMAKER",
+    "RETIRED_RANCHER",
+    "水产养殖"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.phone.contacts",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-retired-experts"
+  ],
+  "related": [
+    "network-industry-table",
+    "lower-legend-85-discount",
+    "fish-species-table",
+    "water-grade-tiers"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-retired-experts",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

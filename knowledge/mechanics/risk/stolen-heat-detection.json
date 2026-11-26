@@ -1,0 +1,57 @@
+{
+  "id": "stolen-heat-detection",
+  "title": "赃物热度即认出率",
+  "category": "risk",
+  "summary": "热度百分比就是盘查认出概率，柜台/展柜被认出直接把热度打到 100。",
+  "facts": [
+    "盘查按热度掷点，热度百分比即认出概率。",
+    "赃物若同时带违禁标记，则不再单独掷这一次点（直接按违禁品处理）。",
+    "「把热度直接设为 100」的调用已在柜台与展示柜治安检查中确认；普通容器扫描是否也走同一重置路径尚未证实。",
+    "热度越高越容易被认出，同时买入折价越大——便宜货与安全货是矛盾的。",
+    "藏匿只处理位置，不清除治安档案里已积累的调查进度。",
+    "当前观测层无「赃物热度/被认出状态」字段，需扩展。"
+  ],
+  "actions": [
+    "高热度货不要放柜台或展示柜",
+    "认出后热度变 100，只能靠降温循环慢慢洗"
+  ],
+  "pitfalls": [
+    "把高热度赃物摆在柜台议价：一被查就锁死 100 热度"
+  ],
+  "effects": [
+    "柜台/展示柜检查认出：该件热度置 100"
+  ],
+  "guards": [
+    "热度 ≥75 的货禁止上柜台/展柜"
+  ],
+  "keywords": [
+    "热度",
+    "认出概率",
+    "柜台",
+    "展示柜",
+    "赃物标记"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk.crime_value",
+        "op": "gte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/stolen-goods",
+    "wiki: /zh/wiki/terms/inspections"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "stolen-heat-discount",
+    "showcase-contraband-ban"
+  ],
+  "source": "wiki:/zh/wiki/terms/stolen-goods",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,50 @@
+{
+  "id": "expedition-supply-box",
+  "title": "补给箱 5 个槽位，必须先摆上柜台",
+  "category": "quest",
+  "summary": "箱子 5 行×2 列、5 个槽位；雇工走完招募对话才摆上柜台，出发时又撤走。",
+  "facts": [
+    "槽位：0 主武器（单格）、1 副武器（单格）、2 口袋 #1（2×4）、3 口袋 #2（2×4）、4 背包（单格）。",
+    "装填顺序为先试背包槽，装不下才退到箱子本体，都装不下时记录「无法携带」。",
+    "箱子初始在店铺侧；只有雇工本人来店并走完招募对话，箱子才摆到柜台；出发时又从商店侧撤走。",
+    "每名雇工一个箱子，用归属标签绑定雇工 id。",
+    "未使用装备退还未找到显式代码，只能确认箱子本身没被销毁。",
+    "2026-11-13 标注：本卡内容全部来自 2026-10-24 Demo 期静态解包/wiki；1.0 正式版未实装远征与雇工（demo-occupations/远征代码仍存在，唯一解锁入口是开局天赋 expedition_organizer，StartingPerkContent.cs:93-96），官方 Roadmap 将 Junker+远征列为 post-launch。"
+  ],
+  "actions": [
+    "【post-launch 未实装，勿执行】雇工到店后立刻装填箱子再派遣",
+    "【post-launch 未实装，勿执行】优先把装备放背包槽，装不下再放本体"
+  ],
+  "pitfalls": [
+    "把东西放柜台没进箱子：等于没携带",
+    "以为剩余装备会退回：无显式代码"
+  ],
+  "effects": [
+    "箱子上柜台 → 可装填；出发 → 箱子撤走"
+  ],
+  "guards": [
+    "1.0 正式版未实装远征/雇工系统（官方 Roadmap 列为 post-launch，12 月中旬起）：不要按本卡派遣、招人或备货，本卡仅作战后参考。",
+    "箱子不在柜台上时禁止派遣"
+  ],
+  "keywords": [
+    "expedition_box",
+    "背包槽",
+    "归属标签"
+  ],
+  "triggers": {},
+  "evidence": [
+    "wiki: /zh/wiki/terms/expedition-supplies"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "crew-recruit-conditions",
+    "expedition-no-supply-drain"
+  ],
+  "source": "wiki:/zh/wiki/terms/expedition-supplies",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "gated_until": "post-launch",
+  "keyword_only": true
+}

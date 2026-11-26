@@ -1,0 +1,56 @@
+{
+  "id": "rat-breeding-genetics",
+  "title": "养鼠：留种与繁殖",
+  "category": "production",
+  "summary": "留种看两份等位基因；配对取双方繁殖力较低值，产仔 2–4 只要留周转位。",
+  "facts": [
+    "基因扫描仪可看两份等位基因；养肉优先看生长速度，其次饥饿速度、免疫力、繁殖力、产仔数。",
+    "一次配对按双方当前繁殖力的较低值结算，一只状态差的亲鼠就会拖慢整窝。",
+    "默认预期产仔数 3 的母鼠实际可能生 2–4 只，必须预留周转笼位，不能只留 3 个位置。",
+    "少量公鼠配多只母鼠可作起步安排，但 1∶3 不是产量保证；剪线钳可绝育。",
+    "临时药效抬高面板不等于后代继承，选种要看基础基因。"
+  ],
+  "actions": [
+    "用基因扫描仪比较两份等位基因",
+    "按较低繁殖力的一方决定是否配对",
+    "产前腾出 2–4 个幼鼠位"
+  ],
+  "pitfalls": [
+    "只看单只高数值选种",
+    "把 1∶3 当固定产量",
+    "产前没腾位导致幼鼠无处放"
+  ],
+  "effects": [
+    "配对成功：进入怀孕进度，临产前需腾空间",
+    "近亲/低繁殖力：产仔数与存活率下降"
+  ],
+  "keywords": [
+    "基因扫描仪",
+    "等位基因",
+    "繁殖力",
+    "产仔数",
+    "绝育",
+    "gene_scanner"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.machines",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki:/zh/guides/rat-ranching-feeding-breeding-and-meat"
+  ],
+  "related": [
+    "rat-husbandry-feeding",
+    "rat-meat-yield"
+  ],
+  "confidence": 0.82,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/guides/rat-ranching-feeding-breeding-and-meat",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

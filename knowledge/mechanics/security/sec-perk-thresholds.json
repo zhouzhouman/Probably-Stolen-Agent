@@ -1,0 +1,63 @@
+{
+  "id": "sec-perk-thresholds",
+  "title": "治安部特权 0 到 100 六档",
+  "category": "security",
+  "summary": "治安正向 0/20/40/60/80/100，负向 −20 到 −100；盯防调查×1.2、通缉×1.5。",
+  "facts": [
+    "征用令 SEC_REQUISITION ≥ 0；治安部盈余 SEC_SURPLUS ≥ 20；治安部庇护 SEC_PROTECTION ≥ 40；值得信赖 SEC_TRUSTED ≥ 60；可靠供应商 SEC_RELIABLE_VENDOR ≥ 80；VIP SEC_VIP ≥ 100。",
+    "重点盯防 SEC_WATCHLIST ≤ −20；应该是风声吧 SEC_ALARM_IGNORED ≤ −40；头号通缉 SEC_PRIORITY ≤ −60；彻底查抄 SEC_THOROUGH_INSPECTION ≤ −80；不择手段 SEC_IMMEDIATE_ARREST ≤ −100。",
+    "重点盯防调查倍率 1.2，头号通缉调查倍率 1.5。",
+    "毫不留情 SEC_CONTRABAND_TOLERANCE 代码中无门槛（无特权工厂）。",
+    "枪证相关是 2 套不同数字：源码声望常量 20/50/80（NetworkUpgradeList.cs:150/152/154，零引用、未经证明为门槛），吊销线为低于 0/30/60（StoreClientListSecurity.cs:150-162，有实际判定点）。",
+    "可靠供应商（治安 ≥80）的描述参数 50 表示顾客预算 +50% B；好评如潮（上层 ≥100）为 +25% B，2 项分别取整后相加，不是连乘。",
+    "值得信赖 SEC_TRUSTED（≥60）使盘查强度减半（crime-and-investigation 口径，wiki-risk 核对）。",
+    "2026-11-13 校正：旧结论「枪证下发声望为 30/60/90」→ 新结论「源码常量为 20/50/80 且零引用、不能当门槛」，依据 NetworkUpgradeList.cs:150/152/154。"
+  ],
+  "actions": [
+    "把治安稳在 0 以上吃征用令，40 以上吃庇护",
+    "绝不低于 −20，否则调查频率上升"
+  ],
+  "pitfalls": [
+    "把枪证吊销线记成「跌破 30/0」：实际是 <0 撤销枪证 I、<30 撤销 II、<60 撤销 III（StoreClientListSecurity.cs:150-162）；源码下发声望常量 20/50/80 零引用、不能当门槛（NetworkUpgradeList.cs:150/152/154）",
+    "把 +50% 与 +25% 连乘当 +87.5% → 实际分别取整后相加"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "SEC_WATCHLIST",
+    "SEC_PROTECTION",
+    "SEC_VIP",
+    "枪证",
+    "调查倍率"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.reputations.value",
+        "op": "gte",
+        "value": 20
+      },
+      {
+        "field": "visible_info.reputations.value",
+        "op": "lte",
+        "value": -20
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/reputation/security-perks",
+    "wiki: /zh/wiki/factions/security"
+  ],
+  "confidence": 0.93,
+  "verified_at": "2026-10-24",
+  "related": [
+    "budget-perk-unlocks",
+    "gun-permit-tiers",
+    "sec-inspection-multipliers",
+    "wanted-report"
+  ],
+  "source": "wiki:/zh/wiki/reputation/security-perks",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

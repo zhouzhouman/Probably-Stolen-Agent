@@ -1,0 +1,56 @@
+{
+  "id": "shop-shooting-flow",
+  "title": "店内射击：解锁＋枪＋口径弹，四条件分离",
+  "category": "security",
+  "summary": "射击要先解锁并用匹配口径弹药，物品窗会隐藏；非致命弹不保证免责。",
+  "facts": [
+    "店内射击需先解锁对应操作，并准备适用的枪械与匹配口径的弹药。",
+    "进入射击模式后可射击或收枪，商店物品窗口暂时隐藏，退出后恢复。",
+    "射击解锁、持有许可、当前弹药、顾客身份是四个彼此独立的条件。",
+    "原版弹药分普通、非致命、穿甲三类；「非致命」不保证安全、不保证眩晕、也不免除法律后果。",
+    "护甲、武器模组、机器模组是三种不同的升级系统；站点不提供统一伤害表与命中公式。",
+    "7 把枪械全部带违禁品标签，价格 40 / 120 / 160 / 190 / 200 / 280 / 310 信用点。"
+  ],
+  "actions": [
+    "开枪前先确认已解锁、弹口径匹配、顾客身份已核实",
+    "处理疑似改造体先用改造体扫描仪"
+  ],
+  "pitfalls": [
+    "持证就当免责：检查与证据链独立",
+    "用「非致命」弹打人以为没事：仍可能被通缉"
+  ],
+  "effects": [
+    "进入射击模式 → 物品窗隐藏；收枪 → 恢复"
+  ],
+  "guards": [
+    "无匹配口径弹药时禁止进入射击模式"
+  ],
+  "keywords": [
+    "aug_scanner",
+    "非致命",
+    "穿甲",
+    "违禁品"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.unlocks.shooting",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/combat-and-weapons",
+    "wiki: /zh/items/t/firearm"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "related": [
+    "gun-permit-tiers",
+    "wanted-report"
+  ],
+  "source": "wiki:/zh/wiki/terms/combat-and-weapons",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

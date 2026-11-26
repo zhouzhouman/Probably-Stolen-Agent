@@ -1,0 +1,56 @@
+{
+  "id": "fixer-crime-reduction",
+  "title": "摆平者削减公式",
+  "category": "risk",
+  "summary": "每项犯罪额变成 max(0, n−⌊n×15%⌋−50)，25 克雷迪一晚，必须逐项算。",
+  "facts": [
+    "摆平者（人脉服务）公式：每项当前犯罪额 n → max(0, n − 舍去小数(n × 15%) − 50)。",
+    "必须逐项计算，不能把多项合并后只减一次固定 50。",
+    "算例：两项 400 与 200 → 分别变 290 与 120，总值 600 → 410。",
+    "摆平者不直接扣调查进度，只通过降低犯罪总值影响后续增长与判罚档位。",
+    "基础费用每晚 25 克雷迪；网络解锁与当晚启用另行检查。",
+    "当前观测层无「各项犯罪额/摆平者报价」字段，需扩展。"
+  ],
+  "actions": [
+    "犯罪额破 300（监禁档）时立刻连开摆平者几晚",
+    "优先削减金额最小的一项以更快清零（固定 −50 对小额更有效）"
+  ],
+  "pitfalls": [
+    "把 600 合并算成 600−90−50=460：正确是 290+120=410",
+    "以为摆平者清调查进度：它只降犯罪总值"
+  ],
+  "effects": [
+    "各项犯罪额下降，次日调查进度档位与判罚档位随之下降"
+  ],
+  "guards": [
+    "现金 <25×N 晚时优先保租金"
+  ],
+  "keywords": [
+    "摆平者",
+    "Wild's Fixers",
+    "人脉服务",
+    "清案"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk.crime_value",
+        "op": "gte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/crime-and-investigation"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "investigation-daily-growth",
+    "sentence-threshold"
+  ],
+  "source": "wiki:/zh/wiki/terms/crime-and-investigation",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,47 @@
+{
+  "id": "network-upgrade-demo-lock",
+  "title": "【已废弃】Demo 锁定项攒钱也买不到（正式版不成立）",
+  "category": "store",
+  "summary": "【已废弃】试玩版结论：部分网络升级项即使钱够也买不到。正式版的 lockInDemo 判定已无调用者，此卡仅作历史参考。",
+  "facts": [
+    "标为「不可购买」的项目在当前试玩版中无法取得，即使费用足够也不会开放。",
+    "前置未满足时游戏会列出缺失条件；冷却只出现在个别项目上。",
+    "费用只是投入的一部分：关联设备仍要补料、服务可能继续收费、许可可能要求持续声望。",
+    "下层区特权「下层区传奇」解锁后，全部网络项目费用按基础费用的 85% 结算。",
+    "2026-11-13 校正：旧废弃理由「正式版 PlayerStore 已无 networkUpgrade 字段」→ 新理由「字段仍在，但 lockInDemo 判定函数零调用者」，依据 PlayerStore.cs:319/775/813/1006/1153/1157 与 NetworkUpgrade.cs:654-668 / 844-859。"
+  ],
+  "actions": [
+    "不要照本卡规划购买：正式版 networkUpgrade 仍存在但 lockInDemo 判定零调用者，能否购买一律以 /state 与网络界面实际状态为准",
+    "把 85% 折扣算进预算再决定买哪条链"
+  ],
+  "pitfalls": [
+    "照本卡以为某项被永久锁定而放弃：lockInDemo 只是数据标记，IsLockedInDemo()（NetworkUpgrade.cs:654-668）在正式版零调用者",
+    "只按价格排序规划路线，忽略前置链"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "Wilds Network",
+    "下层区传奇",
+    "前置"
+  ],
+  "triggers": {},
+  "evidence": [
+    "wiki: /zh/wiki/upgrades",
+    "wiki: /zh/wiki/upgrades/industry-network"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-11-07",
+  "related": [
+    "lower-legend-85-discount",
+    "network-shop-table",
+    "network-industry-table"
+  ],
+  "source": "wiki:/zh/wiki/upgrades",
+  "deprecated": true,
+  "deprecated_reason": "试玩版专属结论，且原废弃理由有误：正式版 PlayerStore 仍有 networkUpgrade 字段（PlayerStore.cs:319 声明、:775/:813 初始化、:1006 补齐、:1153/:1157 读取）。真正变化的是「Demo 锁定」的判定函数 NetworkUpgrade.IsLockedInDemo()（NetworkUpgrade.cs:654-668）在正式版里零调用者，购买判定改为 IsReady()（NetworkUpgrade.cs:844-859）。故「标了不可购买就永远买不到」不再成立，此卡仅作历史参考，网络升级一律以 /state 与建筑界面为准。",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "keyword_only": true
+}

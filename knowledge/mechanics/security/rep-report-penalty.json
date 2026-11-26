@@ -1,0 +1,55 @@
+{
+  "id": "rep-report-penalty",
+  "title": "举报顾客的阵营声望代价",
+  "category": "security",
+  "summary": "举报顾客扣目标阵营声望：首次 −8、之后每次 −2、下限 −20，与治安部误报 −8 是两个池。",
+  "facts": [
+    "faction-standing 页「单笔交易换算与倍率」表原文：举报顾客首次 −8，之后每次再 −2，下限 −20，记在被举报顾客所属阵营。",
+    "该 −20 是「阵营池」这个动作的累计扣分下限，不是声望下限；声望本身钳制 −200 到 200。",
+    "治安部误报固定 −8（余额 ≥100 时另罚款 50）属另一个计数器，两池各扣一次、不合并计算。",
+    "「之后每次 −2」与卖家分支的「额外 −2」是否同一触发条件，wiki 未区分。",
+    "每次交易只结算 1 个对应派系的声望，两侧分别记账。",
+    "声望已进入观察层：`visible_info.reputations`（列表，元素含 id/faction/value）。"
+  ],
+  "actions": [
+    "反复举报同一顾客时预期每次只再掉 2 点阵营声望",
+    "举报前先看目标属于哪个阵营，别把治安部账算进阵营账"
+  ],
+  "pitfalls": [
+    "把阵营 −8 与治安部误报 −8 相加算成 −16 → 实际是两个池各扣一次",
+    "把「下限 −20」当成声望下限 → 声望真正下限是 −200"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "举报",
+    "wanted",
+    "reputation",
+    "阵营池",
+    "误报"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client.is_wanted",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/faction-standing",
+    "wiki: /zh/wiki/terms/wanted-and-reporting（经 wiki-risk 核对）"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "wanted-report",
+    "false-report-penalty",
+    "report-seller-payout",
+    "rep-clamp-22-grades"
+  ],
+  "source": "wiki:/zh/wiki/terms/faction-standing",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

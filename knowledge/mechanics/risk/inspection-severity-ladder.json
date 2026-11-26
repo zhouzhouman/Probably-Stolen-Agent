@@ -1,0 +1,61 @@
+{
+  "id": "inspection-severity-ladder",
+  "title": "盘查按最高等级处置",
+  "category": "risk",
+  "summary": "处置看查获物里最严重的一件，罚款却按单位价值逐件相加。",
+  "facts": [
+    "处置按「被查获物品中最严重的一件」结算：高危级 → 无宽限时查封店铺并逮捕；有宽限时改走宽限对话并扣声望，但不保证保留查获货物。",
+    "高级 → 没收并罚款；中级 → 没收；只有赃物 → 没收赃物；低级 → 口头警告；什么都没查到 → 治安部声望 +3。",
+    "罚款算法：被查获物品的「单位价值」逐件相加，不是只看最严重那件。",
+    "盘查按容器逐层扫描；带藏匿标签的容器整棵子树只登记「已藏匿」，内部物品不进扣押清单。",
+    "上锁或锁在柜台后的物品同样计入藏匿。",
+    "赃物按热度掷点决定是否被认出（热度越低越可能漏检）；另有幸运判定可能让整次盘查忽略全部违禁品——都不能当稳定方案。",
+    "当前观测层无「盘查事件/查获清单」字段，需扩展。",
+    "治安部声望 ≤ −100 会启用「不择手段」SEC_IMMEDIATE_ARREST（立即逮捕）；「毫不留情」SEC_CONTRABAND_TOLERANCE 在代码中没有门槛定义，不代表效果不存在。"
+  ],
+  "actions": [
+    "高危级货必须进暗格或柜台后上锁",
+    "被查前先算清罚款总额：Σ(单位价值)"
+  ],
+  "pitfalls": [
+    "只藏最严重那件：其余违禁品仍按单位价值累加罚款",
+    "靠幸运判定赌零查获"
+  ],
+  "effects": [
+    "高危级无宽限：店铺查封 + 逮捕；有宽限：走宽限对话"
+  ],
+  "guards": [
+    "持有高危级违禁品时禁止开店营业"
+  ],
+  "keywords": [
+    "宽限",
+    "查封",
+    "没收",
+    "罚款",
+    "藏匿标签"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk.crime_value",
+        "op": "gte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/inspections",
+    "wiki: /zh/wiki/terms/contraband",
+    "wiki: /zh/wiki/reputation/security-perks"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "inspection-reputation-points",
+    "smuggler-bay-variants"
+  ],
+  "source": "wiki:/zh/wiki/terms/inspections",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,54 @@
+{
+  "id": "intent-and-rejection",
+  "title": "先读来意再报价",
+  "category": "customer",
+  "summary": "is_buying/is_selling 定方向，buying_tags 定品类；别用真假猜身份。",
+  "facts": [
+    "顾客「购买」来意 = 向你买货；「出售」= 把货卖给你；议价按钮文案主语相反，需按按钮判断。",
+    "报价前必须核对三项：顾客要的品类（buying_tags）、拒收范围、剩余预算（budget_left）。",
+    "鉴定服务、采购交货、以物易物各有独立流程，不能套用普通零售报价。",
+    "身份类判定用 is_wanted（罪犯）与 is_aug（改造体）：敲诈针对罪犯、威胁针对改造体；对非罪犯敲诈必定失败。",
+    "不能用商品真假推断顾客身份。"
+  ],
+  "actions": [
+    "读顾客来意（买/卖）",
+    "核对 buying_tags",
+    "核对 budget_left"
+  ],
+  "pitfalls": [
+    "把「购买」当自己买 → 议价方向反了。",
+    "对普通顾客用威胁 → 必定失败并损失声望。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "is_buying",
+    "is_selling",
+    "is_wanted",
+    "is_aug",
+    "buying_tags",
+    "budget_left"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/trading-and-bargaining"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "nego-four-directions",
+    "confrontation-goods-check",
+    "budget-formula"
+  ],
+  "source": "wiki:/zh/wiki/terms/trading-and-bargaining",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

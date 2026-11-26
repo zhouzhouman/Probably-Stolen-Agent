@@ -1,0 +1,59 @@
+{
+  "id": "npc-security-officer-enforcement",
+  "title": "警官负责罚款逮捕，卖货不清记录",
+  "category": "security",
+  "summary": "警官四类来访：执法/罚款/逮捕/执行；卖掉违禁品不消除已成型的犯罪记录。",
+  "facts": [
+    "警官来访含普通执法、罚款、逮捕、执行四类工厂，与盘查员的检查职责分开。",
+    "违法证据、调查、判刑是有先后的状态链，不能跳步。",
+    "卖掉某件违禁品不一定清除已形成的犯罪记录。",
+    "对普通顾客举报成功，不等于店铺自身记录自动消失。",
+    "仅凭人物工厂不能推算「固定多少天必然处决」。",
+    "原版另有吊销枪证与清查人物定义，其结算条件与枪证下发条件不是同一组数字，完整触发链未核实。"
+  ],
+  "actions": [
+    "被罚款时优先 pay_rent 保住房租，再处理罚款",
+    "举报顾客前先算自身犯罪记录会不会被顺带翻出",
+    "枪证相关来访无法预测时按最坏情况备现金"
+  ],
+  "pitfalls": [
+    "卖光违禁品就以为洗白：记录仍在",
+    "以为举报成功等于自身清白"
+  ],
+  "effects": [
+    "逮捕对话 → 进入调查/判刑链；执行 → 结局判定"
+  ],
+  "guards": [
+    "犯罪额接近判刑阈值时停止新增违禁交易"
+  ],
+  "keywords": [
+    "治安部警官",
+    "罚款",
+    "逮捕",
+    "执行",
+    "吊销枪证"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client.sec_button_lit",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-security-officers"
+  ],
+  "related": [
+    "inspection-severity-ladder",
+    "sentence-threshold",
+    "report-seller-payout",
+    "crime-ledger-entry"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-security-officers",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

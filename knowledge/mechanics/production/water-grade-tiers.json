@@ -1,0 +1,56 @@
+{
+  "id": "water-grade-tiers",
+  "title": "水质六档与纯度算法",
+  "category": "production",
+  "summary": "六档以 90/96/98/99/99.9 为界；纯度由水组分占比算，98.99% 仍只是基础水。",
+  "facts": [
+    "六档：沟渠水 <90%、铁锈水 90%~<96%、幽灵水 96%~<98%、基础水 98%~<99%、优质水 99%~<99.9%、纯水 ≥99.9%。",
+    "判定包含各档下限：98.00% 已是基础水、99.00% 已是优质水、99.90% 已是纯水。",
+    "纯度整数 = 向下取整（水组分量 × 10,000 ÷ 液体总量）；结果 9,899 表示 98.99%，仍归基础水。",
+    "空容器的纯度计算返回 0，不代表空容器里是沟渠水。",
+    "无过滤混合可按体积加权估算，但混合本身不移除污染物；净化去掉污染组分时总液量可能减少，原料体积不等于成品体积。",
+    "沟渠水剧毒严禁饮用；幽灵水未经处理饮用不安全，清澈外观不能证明它与优质水同质。"
+  ],
+  "actions": [
+    "进货后先测水质再定价，不按标签判断",
+    "处理完再测一次，按真实档位销售"
+  ],
+  "pitfalls": [
+    "把 98.99% 当优质水卖：档位差一档，属于错标",
+    "以为混合能稀释污染：混合不减少污染物总量"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "沟渠水",
+    "铁锈水",
+    "幽灵水",
+    "基础水",
+    "优质水",
+    "纯水",
+    "AquaScan"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.machines",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/water-purification",
+    "wiki: /zh/wiki/occupations/occupation-water-merchant"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "water-machine-quality",
+    "micro-purifier-durability",
+    "brewing-quality-score"
+  ],
+  "source": "wiki:/zh/wiki/terms/water-purification",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,50 @@
+{
+  "id": "crew-recruit-conditions",
+  "title": "招募需远征解锁＋招募牌在展示柜",
+  "category": "quest",
+  "summary": "两个条件缺一不可，且只有状态「可用」的雇工才生成招募客户。",
+  "facts": [
+    "招募条件：远征系统已解锁，且招募牌确实放在展示柜内。",
+    "只有「可用 0」状态的雇工生成招募客户；「受伤 2」只后台休养，「远征中 1」不处理。",
+    "「已完成 3」的雇工生成归来客户，对话结束后生成探险日志并结算状态。",
+    "招到人后仍需安排地点与补给，并确认目标地点已解锁。",
+    "探险供应商是另一条客户线（下层区阵营、固定食物需求），与雇工招募无关。",
+    "2026-11-13 标注：本卡内容全部来自 2026-10-24 Demo 期静态解包/wiki；1.0 正式版未实装远征与雇工（demo-occupations/远征代码仍存在，唯一解锁入口是开局天赋 expedition_organizer，StartingPerkContent.cs:93-96），官方 Roadmap 将 Junker+远征列为 post-launch。"
+  ],
+  "actions": [
+    "【post-launch 未实装，勿执行】把招募牌放展示柜并保持",
+    "【post-launch 未实装，勿执行】招募后立刻确认地点解锁与箱子在柜台"
+  ],
+  "pitfalls": [
+    "以为远征解锁就能招人：还要招募牌",
+    "把探险供应商当雇工线：两条客户线不同"
+  ],
+  "effects": [
+    "招募牌在展示柜 → 生成招募客户"
+  ],
+  "guards": [
+    "1.0 正式版未实装远征/雇工系统（官方 Roadmap 列为 post-launch，12 月中旬起）：不要按本卡派遣、招人或备货，本卡仅作战后参考。",
+    "远征未解锁或招募牌不在展示柜时，不要等雇工"
+  ],
+  "keywords": [
+    "招募牌",
+    "展示柜",
+    "EXPEDITION"
+  ],
+  "triggers": {},
+  "evidence": [
+    "wiki: /zh/wiki/terms/hiring-crew"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "expedition-return-settlement",
+    "expedition-supply-box"
+  ],
+  "source": "wiki:/zh/wiki/terms/hiring-crew",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "gated_until": "post-launch",
+  "keyword_only": true
+}

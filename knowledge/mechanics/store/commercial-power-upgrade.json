@@ -1,0 +1,52 @@
+{
+  "id": "commercial-power-upgrade",
+  "title": "商用级供电 350 提升充电 100%",
+  "category": "store",
+  "summary": "350 信用点把夜间回电翻倍（3→6、2→4），但不免电费，属于供电紧张期的效率投资。",
+  "facts": [
+    "商用级供电单元（COMMERCIAL_POWER）基础解锁费用 350 信用点，无冷却、无前置，Demo 可用。",
+    "效果是充电量提高 100%：充电器每块电池每晚 3 → 6 点，能量方块 2 → 4 点。",
+    "它不免除电费，仍需满足当晚供电与摆放条件。",
+    "上述充电量与费用于 2026-10-22 对原版 Demo Steam Build 26017150 静态核对，未做游戏内实测。"
+  ],
+  "actions": [
+    "电池经常见底时优先买 350 的商用级供电，而不是加买电池",
+    "买前确认当晚供电稳定，否则升级无效"
+  ],
+  "pitfalls": [
+    "以为买了它就不用交电费",
+    "在经常停电的存档里先买它：断电时充电量为 0"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "COMMERCIAL_POWER",
+    "commercial_power",
+    "recharger",
+    "powerblock"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "OPEN"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/power-service",
+    "wiki: /zh/wiki/upgrades/shop-network"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "recharger-powerbloc-charge-rate",
+    "network-shop-table",
+    "power-service-fee-formula"
+  ],
+  "source": "wiki:/zh/wiki/services/power-service",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,55 @@
+{
+  "id": "appraisal-accept-range",
+  "title": "估价必须落在 50%–150%",
+  "category": "trade",
+  "summary": "提交估价 E 须在 V 的 50%–150% 内；完美档 T(95)–T(105) 给 15%，越界顾客提异议。",
+  "facts": [
+    "先算出真实鉴定基础价值 V，再提交整数估价 E。",
+    "可接受区间：E 必须落在 V 的 50% 到 150% 分界线之间（含两端），否则顾客提出异议。",
+    "完美档：T(95) ≤ E ≤ T(105)，奖金比例 15%；T(x) 表示 V 的 x% 截去小数。",
+    "极佳档以 T(90) 为下界，奖金比例 12%。",
+    "整数边界要单算：V=30 时完美估价是 28–31。",
+    "鉴定服务语义是「你给顾客估价」，不是寄给公会代定价。",
+    "当前观测层没有「鉴定界面/基础价值 V」字段，需扩展后才能按条件触发。"
+  ],
+  "actions": [
+    "先算鉴定基础价值 V",
+    "提交整数估价 E"
+  ],
+  "pitfalls": [
+    "用议价后的零售标价当答案 → 直接偏出区间。",
+    "按四舍五入算 T(105)：V=30 时 31.5 截去小数应为 31，完美档 28–31。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "鉴定基础价值",
+    "T(95)",
+    "T(105)",
+    "完美档",
+    "极佳档",
+    "待鉴定物品"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.appraisal.rank",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/appraisal-tips"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "appraisal-fee-formula",
+    "appraisal-overbid-trick",
+    "confrontation-goods-check"
+  ],
+  "source": "wiki:/zh/wiki/terms/appraisal-tips",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

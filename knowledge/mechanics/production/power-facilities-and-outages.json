@@ -1,0 +1,52 @@
+{
+  "id": "power-facilities-and-outages",
+  "title": "供电设施充能与停机排查",
+  "category": "production",
+  "summary": "能量阵列每晚 +2（商用 4）、充能器 +3（商用 6）；停机先分清欠费断电与全站停电。",
+  "facts": [
+    "能量阵列：店铺有电时每晚为相邻电池或相邻可充电机器中的电池恢复 2 电量；解锁商用级供电后为 4，可叠加。",
+    "充能器：店铺有电时每晚为其中每块电池恢复 3 电量；商用级供电后为 6。",
+    "普通涡轮增压器立即完成一次耗时工序并消耗；高级版可自动充能复用，充能所需天数未给出。",
+    "夜间停工的两种成因：欠缴电费被断电（结清电费恢复）与全站停电事件（等事件结束，「偷接私电」能力可跳过），两者都写进夜间日志。",
+    "无产物排查顺序：是否开始 → 能源与实际投料位置 → 设备损坏/工序是否适用 → 夜间停工日志 → 设备自身电源与状态。",
+    "模组是可选性能调整，不是所有生产都必须装；停产先查能源与材料，不要先买新模组。"
+  ],
+  "actions": [
+    "断电先看夜间日志确认是欠费还是全站停电",
+    "缺电时优先加能量阵列/充能器，而不是换模组"
+  ],
+  "pitfalls": [
+    "把全站停电当欠费去交钱：不解决问题，只能等事件结束或用偷接私电"
+  ],
+  "effects": [],
+  "guards": [
+    "rent.is_power_on 为 false 时不要启动过夜生产"
+  ],
+  "keywords": [
+    "能量阵列",
+    "充能器",
+    "涡轮增压器",
+    "偷接私电",
+    "商用级供电"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.rent.is_power_on",
+        "op": "falsy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/machine-operation"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "machine-power-slot"
+  ],
+  "source": "wiki:/zh/wiki/terms/machine-operation",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

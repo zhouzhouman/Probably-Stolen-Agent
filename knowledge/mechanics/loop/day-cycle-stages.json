@@ -1,0 +1,61 @@
+{
+  "id": "day-cycle-stages",
+  "title": "一日四阶段固定顺序",
+  "category": "loop",
+  "summary": "每天按早晨整理、开门接客、打烊准备、睡觉结算推进；顺序错了会漏结算或漏补货。",
+  "facts": [
+    "一日的固定顺序为四段：早晨整理 → 开门接客 → 打烊准备 → 睡觉结算，打烊与睡觉是两个独立步骤。",
+    "早晨必做四件事：看夜间日志（机器产物/失物/服务状态/伤口）、看报纸确认生效事件、核对现金与租金到期、再决定进货。",
+    "开门前三件事：把要卖的商品放进展示柜、整理柜台与储物空间、最后才打开卷帘门。",
+    "营业中按铃接待下一位顾客，接待顺序固定为「先读来意 → 再处理买卖/鉴定/订单/检查」。",
+    "打烊后睡前检查五块：生产（材料入机器内部）、夜间服务（逐晚开关、核对费用）、防盗（警报已启用且备独立电源）、健康（伤口/成瘾）、外出安排。",
+    "营业状态（OPEN）下不能睡觉，必须先把店铺关闭（CLOSED）才能用睡袋。"
+  ],
+  "actions": [
+    "看报纸核对当前生效事件",
+    "打开卷帘门营业",
+    "按铃接待下一位",
+    "关闭卷帘门打烊"
+  ],
+  "pitfalls": [
+    "开门后才把货放展示柜：当天不生效，白摆一轮（展示物次日才生效）。",
+    "营业中直接想换日：必须先打烊，多一步操作。"
+  ],
+  "effects": [
+    "睡觉成功后：day +1，自动存档，夜间产物/服务/事件结果在次日日志可见。"
+  ],
+  "guards": [
+    "现金 < 下次 rent_due 时不得把备用金换成库存"
+  ],
+  "keywords": [
+    "夜间日志",
+    "报纸",
+    "卷帘门",
+    "睡袋",
+    "Clientele",
+    "store_state"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "MORNING"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/daily-cycle"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "close-vs-sleep",
+    "morning-log-audit",
+    "counter-transfer-flow"
+  ],
+  "source": "wiki:/zh/wiki/terms/daily-cycle",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

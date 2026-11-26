@@ -1,0 +1,55 @@
+{
+  "id": "black-lamp-success",
+  "title": "暗灯销赃成功率",
+  "category": "trade",
+  "summary": "成功率＝灯数×基础值+黑市声望÷2，夹在 0–95，灯必须真在展柜里。",
+  "facts": [
+    "目标基础成功率：小偷 10、扒手 20、食物窃贼 30、未知目标 15。",
+    "最终成功率 = 灯数 × 对应基础值 ＋ 黑市声望 ÷ 2，限制在 0–95。",
+    "灯必须实际放在展示柜里才计入；放在别处不算。",
+    "黑市声望同时影响卖赃物时的交易声望倍率。",
+    "暗灯不能当「保证替你买走赃物」的招牌，响应是概率。",
+    "当前观测层无「黑市声望/展柜内灯数」字段，需扩展。"
+  ],
+  "actions": [
+    "要清赃物库存：先堆黑市声望，再按目标类型选灯数",
+    "食物窃贼基础值最高（30），优先处理食品类赃物"
+  ],
+  "pitfalls": [
+    "把暗灯放储藏区：灯数不计入成功率",
+    "按 100% 成功率规划现金回笼"
+  ],
+  "effects": [
+    "销赃客来访并可能买走赃物"
+  ],
+  "guards": [
+    "成功率上限 95，永远留 5% 失败"
+  ],
+  "keywords": [
+    "black_lamp",
+    "黑市声望",
+    "食物窃贼",
+    "扒手"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.table.nego_open",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/stolen-goods"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "stolen-heat-discount",
+    "showcase-buyer-slots"
+  ],
+  "source": "wiki:/zh/wiki/terms/stolen-goods",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

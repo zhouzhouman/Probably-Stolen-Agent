@@ -1,0 +1,54 @@
+{
+  "id": "scavenge-expected-value",
+  "title": "【Demo 期模型，勿用于决策】拾荒 5 次期望 106 收益",
+  "category": "economy",
+  "summary": "【Demo 期模型，正式版不得作决策依据】旧 wiki 的拾荒期望收益模型：满级扫描仪下 5 次搜索期望 110.52。",
+  "facts": [
+    "只带满级扫描仪：5 次期望掉落 110.52、治疗支出 4.20、净 106.33；7 次为 152.68 / 6.72 / 145.96。",
+    "满级扫描仪＋全部工具：5 次 134.70 / 2.11 / 132.59；7 次 187.37 / 3.39 / 183.99。",
+    "单次成功搜索期望价值：普通表 11.6392；满级扫描仪抽两件并加 0.85（1% 磁带 35 + 1% 捕鼠夹 50）≈ 24.13；带齐工具 ≈ 28.13。",
+    "治疗支出按每次受伤 10 信用点估算（wiki 预算假设，非硬编码数值）。",
+    "以上未计市场/零售/议价修正，也未扣工具购置、扫描仪升级与次日迟开店成本。",
+    "2026-11-13 校正说明：docs/25 §0.3-12 记载正式版页面已删除该「拾荒期望收益模型」，不得再作为决策依据（本仓库未联网复核该页面，故不标 deprecated，只标 needs_verify 并保留原数值供追溯）。改用：谨慎拾荒客、周三权重 ×0.5/伤害 ×1.25、开场保护、正负幸运分支等经 1.0 复核的结论（见 economy/scavenge-loot-table 与本目录其余拾荒卡）。"
+  ],
+  "actions": [
+    "不要用本卡的 106/110.52 做日预算：该期望模型正式版已不再提供，拾荒收益改按 economy/scavenge-loot-table 的掉落概率与实际结算记账",
+    "先买手电筒再升级扫描仪，降低治疗拖累"
+  ],
+  "pitfalls": [
+    "把 132 当净赚：还没扣工具钱和次日少 1 名顾客的损失",
+    "拿这套 110.52/152.68 的期望值算收益：这是 Demo 期模型，正式版已不再提供，按它会系统性高估拾荒价值"
+  ],
+  "effects": [
+    "净收益 ≈（N−W）×单次期望 − 10W"
+  ],
+  "guards": [
+    "现金 < 账单需求时不要为拾荒购物料"
+  ],
+  "keywords": [
+    "metal_scanner",
+    "flashlight",
+    "期望价值"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.night.scavenging_attempts",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/junkyard-scavenging"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "scavenge-loot-table",
+    "night-out-cost"
+  ],
+  "source": "wiki:/zh/wiki/terms/junkyard-scavenging",
+  "game_version": "demo",
+  "verify_basis": "wiki_snapshot",
+  "needs_verify": true
+}

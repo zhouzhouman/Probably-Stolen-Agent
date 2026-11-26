@@ -1,0 +1,58 @@
+{
+  "id": "rent-increase-rate",
+  "title": "租金每期涨 5%/10% 并截断",
+  "category": "economy",
+  "summary": "租金 7 天一期，下期只按本期租金乘 1.05（困难 1.10）后截去小数，欠租不进基数。",
+  "facts": [
+    "租金周期为 7 天，每期结算一次。",
+    "下期租金 = 本期租金 × 难度倍率后截去小数：cozy ×1.025、normal ×1.05、hard ×1.10、challenge ×1.10（PlayerStore.RentIncrease 用 (int) 强转截断）。",
+    "算例：本期租金 205 → cozy 210（205×1.025=210.125）、normal 215、hard 225；均截断，非四舍五入。",
+    "临时欠租只影响本次付款：下期租金仍按本期 rent_value 的 1.05/1.10 计算，不叠加欠款。",
+    "困难模式除涨租为 10% 外，部分服务费用也更高。",
+    "原卡只写 1.05/1.10 两档，正式版是四档难度，cozy 的 2.5% 涨幅此前缺失。",
+    "2026-11-13 校正：旧结论「只有普通 ×1.05 与困难 ×1.10 两档」→ 新结论「四档：cozy ×1.025 / normal ×1.05 / hard ×1.10 / challenge ×1.10」，依据 tools/decompile_full/Difficulty.cs:211（rentIncreaseMultiplier 1.025f）+ PlayerStore.cs:1465-1468（(int) 强转截断）。"
+  ],
+  "actions": [
+    "每期交租后立刻按 ×1.05 预估下期 rent_due",
+    "把预算按困难模式 ×1.10 做上限"
+  ],
+  "pitfalls": [
+    "把开局租金当成全程固定支出，实际每 7 天按 5% 递增"
+  ],
+  "effects": [
+    "pay_rent 成功：租期重置为 7 天，下期租金按 1.05/1.10 上浮并截断"
+  ],
+  "guards": [
+    "现金 < 下期租金预估 ×3 时禁止大额进货"
+  ],
+  "keywords": [
+    "rent_value",
+    "rent_due",
+    "pay_rent",
+    "涨租",
+    "day_until_rent"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.rent.day_until_rent",
+        "op": "lte",
+        "value": 2
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/rent-and-loans"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "rent-lease",
+    "rent-grace-once",
+    "purchase-budget-formula"
+  ],
+  "source": "wiki:/zh/wiki/terms/rent-and-loans",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false
+}

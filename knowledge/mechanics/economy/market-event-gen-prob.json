@@ -1,0 +1,51 @@
+{
+  "id": "market-event-gen-prob",
+  "title": "市场事件生成概率阶梯",
+  "category": "economy",
+  "summary": "按已有事件数 50%/35%/25% 决定是否新增，达到 3 条即停止；前 5 内部日不判定。",
+  "facts": [
+    "内部天数 D ≤ 5 且未跳过开场时，不进入普通事件随机判定。",
+    "已有 0 个非装饰性事件：50% 概率新增 1 个。",
+    "已有 1 个：35%；已有 2 个：25%；已有 3 个及以上：不再生成。",
+    "通过概率判定后固定生成 1 个普通事件，不会一次生成多个。",
+    "活跃事件总数不足 2 条时，系统会尝试补入装饰性新闻（不是固定补两条）。",
+    "当前观测层没有「市场事件」字段，需扩展后才能按条件触发。"
+  ],
+  "actions": [
+    "核对活跃事件数",
+    "等内部日超过 5 天再评估事件"
+  ],
+  "pitfalls": [
+    "开局前 5 天盯着事件表等行情：此时完全不判定。",
+    "以为事件会堆到 3 条以上：3 条即封顶。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "非装饰性事件",
+    "生成判定",
+    "装饰性新闻"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.afterhour_events",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/market-events",
+    "wiki: /zh/wiki/terms/news-and-events"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "market-event-weights",
+    "decorative-news-pool"
+  ],
+  "source": "wiki:/zh/wiki/terms/market-events",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

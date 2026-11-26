@@ -1,0 +1,55 @@
+{
+  "id": "ras-power-and-tank",
+  "title": "循环水养殖耗电与缸体",
+  "category": "production",
+  "summary": "RAS 耗电 max(1,5+2W+3H−2E)，缸最大 12×8，水箱恒定 12,000ml。",
+  "facts": [
+    "鱼缸初始 8×4 格，横向、纵向各可升级 4 次、每次 +1 格，最大 12×8 格；储水箱固定 12,000 毫升，增加格子不提高水箱容量。",
+    "显示耗电量 = max(1, 5 + 2W + 3H − 2E)，W/H/E 为横向/纵向/节能升级次数；初始耗电 5。",
+    "节能升级用电子元件（普通），每次 −2 耗电、最多 12 次、下限 1；扩宽用废金属、增高用金属锭，各最多 4 次。",
+    "算例：横向、纵向各升级 1 次且节能 2 次 → 5 + 2 + 3 − 4 = 6。",
+    "开缸必须把水加入储水箱并装入电池与滤水器；仅把水瓶摆在鱼缸里不等于已经供水。",
+    "解锁费用：水产养殖 400 信用点（前置水资源交易 300），水产养殖 II 1,200 信用点（前置水产养殖商人）。"
+  ],
+  "actions": [
+    "扩缸前同时确认电池容量与储水量，不要只补格子",
+    "优先点节能升级压耗电，再考虑扩格"
+  ],
+  "pitfalls": [
+    "以为扩缸会加水箱容量：固定 12,000ml",
+    "只补水不装电池/滤水器：系统不算已供水"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "循环水养殖系统",
+    "储水箱",
+    "废金属",
+    "金属锭",
+    "电子元件",
+    "水产养殖 II",
+    "水资源交易"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.aquaculture.items",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/aquaculture",
+    "wiki: /zh/wiki/terms/machine-operation"
+  ],
+  "confidence": 0.93,
+  "verified_at": "2026-10-24",
+  "related": [
+    "fish-species-table",
+    "fish-water-damage"
+  ],
+  "source": "wiki:/zh/wiki/terms/aquaculture",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

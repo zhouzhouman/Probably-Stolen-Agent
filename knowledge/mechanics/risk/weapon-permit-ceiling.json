@@ -1,0 +1,57 @@
+{
+  "id": "weapon-permit-ceiling",
+  "title": "枪证只覆盖到高级",
+  "category": "risk",
+  "summary": "枪证 I–III 只覆盖低/中/高级违禁枪械，高危级武器永远无法合法化。",
+  "facts": [
+    "枪证三级分别覆盖低级、中级、高级违禁枪械。",
+    "高危级武器没有任何许可可以合法化——只能藏或不出手。",
+    "营业许可是对话授予的一件物品；枪证记录在存档许可表与网络升级状态里，两者互不替代。",
+    "陈列枪械许可证只能吸引买枪顾客，不能替代有效持证条件。",
+    "当前观测层无「持证等级」字段，需扩展。",
+    "枪证的三级售价 300/600/900 与吊销线 0/30/60 归 gun-permit-tiers；声望常量在源码里是 20/50/80（NetworkUpgradeList.cs:150/152/154）但零引用，本卡不重复这些数字。",
+    "「Demo 内枪证全部不可购买」这一说法在正式版构建里找不到生效路径：NetworkUpgrade.IsLockedInDemo()（NetworkUpgrade.cs:654-668）零调用者，购买判定走 IsReady()（NetworkUpgrade.cs:844-859）。故正式版枪证应可购买，高违禁等级仍无法合法化这一点不变。",
+    "2026-11-13 校正：删去「Demo 内枪证全部不可购买」的断言 → 改为「lockInDemo 判定零调用者，正式版应可购买（待实机确认）」，依据 NetworkUpgrade.cs:654-668 / 844-859。"
+  ],
+  "actions": [
+    "收枪前核对枪证等级 ≥ 该枪违禁等级",
+    "高危级枪械只走暗格，不上架"
+  ],
+  "pitfalls": [
+    "有营业许可就当能卖枪：两套记录分开核对"
+  ],
+  "effects": [
+    "持对应枪证时，盘查不把该等级枪械计为违禁"
+  ],
+  "guards": [
+    "无对应枪证时禁止收购违禁枪械"
+  ],
+  "keywords": [
+    "枪证",
+    "weapon-permits",
+    "营业许可",
+    "business_permit"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client.gun_order",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/contraband",
+    "wiki: /zh/wiki/reputation/security-perks"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "contraband-tier-markup",
+    "gun-permit-tiers"
+  ],
+  "source": "wiki:/zh/wiki/terms/contraband",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

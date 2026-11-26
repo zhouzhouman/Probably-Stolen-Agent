@@ -1,0 +1,46 @@
+{
+  "id": "lower-legend-85-discount",
+  "title": "下层区传奇：全部网络项目 85 折",
+  "category": "economy",
+  "summary": "解锁下层区传奇后所有 Wilds 网络项目按基础费用 85% 结算，大额升级应等折扣再买。",
+  "facts": [
+    "下层区特权「下层区传奇」解锁后，全部网络项目费用按基础费用的 85% 结算。",
+    "该规则在产业、店铺、安全、人脉四组升级页中重复出现，适用于该组全部项目。",
+    "示例换算：1000 的项目折后 850，500 的项目折后 425。"
+  ],
+  "actions": [
+    "大额升级（≥500）尽量等到特权解锁后再买",
+    "按 85% 重算预算表"
+  ],
+  "pitfalls": [
+    "特权解锁前买 1000 的项目，多付 150"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "下层区传奇",
+    "Wilds Network"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.reputations.value",
+        "op": "gte",
+        "value": 80
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/upgrades/shop-network",
+    "wiki: /zh/wiki/upgrades/security-network"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "network-upgrade-demo-lock"
+  ],
+  "source": "wiki:/zh/wiki/upgrades",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

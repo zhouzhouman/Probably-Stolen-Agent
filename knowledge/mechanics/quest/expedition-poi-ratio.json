@@ -1,0 +1,49 @@
+{
+  "id": "expedition-poi-ratio",
+  "title": "兴趣点按收益÷(收益+危险)排序",
+  "category": "quest",
+  "summary": "三个拾荒兴趣点收益 10/20/40、危险均 10、成功率均 85%，比值 0.5/0.667/0.8，代码取最高。",
+  "facts": [
+    "Worthless Junk Pile：收益 10、危险 10、成功率 85%；Scrap Pile：20/10/85%；Fresh Scrap Pile：40/10/85%。",
+    "排序比值 = 收益 ÷（收益 + 危险）：0.5 / 0.667 / 0.8，代码取排序后第一个访问，即 Fresh Scrap Pile 优先。",
+    "三个兴趣点全部属于拾荒类型，且都可重复。",
+    "兴趣点被抽中的权重在资产表里，当前未取到。",
+    "选点时不必人工挑：系统已按比值排序自动访问第一个。",
+    "2026-11-13 标注：本卡内容全部来自 2026-10-24 Demo 期静态解包/wiki；1.0 正式版未实装远征与雇工（demo-occupations/远征代码仍存在，唯一解锁入口是开局天赋 expedition_organizer，StartingPerkContent.cs:93-96），官方 Roadmap 将 Junker+远征列为 post-launch。"
+  ],
+  "actions": [
+    "【post-launch 未实装，勿执行】接受系统自动排序结果，不用手动抢点",
+    "【post-launch 未实装，勿执行】按 85% 成功率估成功次数，不按 100%"
+  ],
+  "pitfalls": [
+    "以为可以自选兴趣点：代码取排序后第一个",
+    "把 40 收益当保底：成功率只有 85%"
+  ],
+  "effects": [
+    "每次访问按 85% 判定成功"
+  ],
+  "guards": [
+    "1.0 正式版未实装远征/雇工系统（官方 Roadmap 列为 post-launch，12 月中旬起）：不要按本卡派遣、招人或备货，本卡仅作战后参考。"
+  ],
+  "keywords": [
+    "Fresh Scrap Pile",
+    "Scrap Pile",
+    "Worthless Junk Pile"
+  ],
+  "triggers": {},
+  "evidence": [
+    "wiki: /zh/wiki/terms/expedition-locations"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "expedition-run-structure",
+    "expedition-location-dumping-grounds"
+  ],
+  "source": "wiki:/zh/wiki/terms/expedition-locations",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "gated_until": "post-launch",
+  "keyword_only": true
+}

@@ -1,0 +1,60 @@
+{
+  "id": "confrontation-goods-check",
+  "title": "对质只指认已确认缺陷",
+  "category": "risk",
+  "summary": "对质按品类逐项指认，全勾会被否认；敲诈对罪犯、威胁对改造体，别用真假猜身份。",
+  "facts": [
+    "对质前提是指出真实存在的货物问题，且真假、损坏、无法使用三类不能混为一谈。",
+    "海明威香烟检查项：字母印刷、颜色、防伪标、商标、包装盒；需比对色卡，不能只凭盒子颜色相近判真。",
+    "食品券检查项：印刷、商标、防伪标、面值、芯片；低于 160 信用点本来就没有防伪标；芯片坏了可能是真券但不可用。",
+    "免疫宁检查项：指示灯、标签、序列号、瓶体；过期、空针、召回批次都不能按正常可用药收购。",
+    "交涉后必须重新读报价；wiki 不承诺固定降幅或必定赔偿，降价也不会修复坏芯片/裂针/撕开的包装。",
+    "身份类施压属议价系统：敲诈针对罪犯（is_wanted），威胁针对改造体（is_aug）；对非罪犯敲诈必定失败。"
+  ],
+  "actions": [
+    "按品类逐项验货",
+    "只勾已确认的对质项",
+    "交涉后重读报价"
+  ],
+  "pitfalls": [
+    "把能想到的选项全勾 → 错误指控被否认，交涉失败。",
+    "只凭盒子颜色接近就判海明威假货 → 误判真品。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "对质",
+    "海明威色卡",
+    "食品券",
+    "免疫宁",
+    "敲诈",
+    "威胁"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client.is_buying",
+        "op": "truthy"
+      },
+      {
+        "field": "visible_info.client.is_selling",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/confrontation",
+    "wiki: /zh/wiki/terms/trading-and-bargaining"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "intent-and-rejection",
+    "appraisal-accept-range",
+    "nego-four-directions"
+  ],
+  "source": "wiki:/zh/wiki/terms/confrontation",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

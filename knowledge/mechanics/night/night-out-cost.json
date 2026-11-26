@@ -1,0 +1,58 @@
+{
+  "id": "night-out-cost",
+  "title": "夜间外出代价：次日迟开＋少 1 客",
+  "category": "night",
+  "summary": "打烊后可外出，但次日迟开店且固定少 1 名顾客，携带空间不够的货物会丢。",
+  "facts": [
+    "夜间外出的固有代价是次日迟开店，并少来 1 名顾客，与去哪个地点无关。",
+    "背包是网格容器：36 格不等于能装 36 件任意形状的货物，形状不合就装不下。",
+    "离场时留在地点地面的货物会被丢弃，出发前必须把地面与随身容器清空。",
+    "夜间外出与远征是两套流程：外出是店主本人出发，远征走雇工派遣。",
+    "重伤状态会限制外出；外出要带背包与绷带。"
+  ],
+  "actions": [
+    "出门前把地面货物全部拾起",
+    "按背包网格形状挑货，不按件数估容量",
+    "次日迟开店期间不安排必须早到的进货"
+  ],
+  "pitfalls": [
+    "按 36 件估容量：形状不符会带不走",
+    "为一件高价值货牺牲次日 1 名顾客与早市时段"
+  ],
+  "effects": [
+    "次日开店推迟",
+    "次日客流 −1"
+  ],
+  "guards": [
+    "visible_info.night.seriously_wounded 为 true 时禁止外出拾荒"
+  ],
+  "keywords": [
+    "afterhours",
+    "backpack_small",
+    "seriously_wounded",
+    "夜间外出"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "CLOSED"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/afterhours",
+    "wiki: /zh/wiki/terms/daily-cycle"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "night-sleep-gate",
+    "scavenge-attempt-cap"
+  ],
+  "source": "wiki:/zh/wiki/terms/afterhours",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

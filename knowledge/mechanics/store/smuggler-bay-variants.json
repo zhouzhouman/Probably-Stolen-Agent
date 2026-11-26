@@ -1,0 +1,65 @@
+{
+  "id": "smuggler-bay-variants",
+  "title": "三种暗格与容量口径",
+  "category": "store",
+  "summary": "暗格分 300/250/850 三档，容量不在代码里，只能看物品界面。",
+  "facts": [
+    "走私者暗格 smuggler_bay 基础价值 300；迷你走私舱 smuggler_bay_mini 250；走私者暗格（改进）smuggler_bay_mod 850。",
+    "三个变体的容量数值不在代码里，以物品界面显示的可用空间为准。",
+    "判定只认三个标签：藏匿标签（暗格容器）、锁后标签（放柜台后并上锁）、上锁标签（处于上锁状态）。",
+    "盘查遇到藏匿标签容器时整棵子树只登记「已藏匿」，内部违禁品不进扣押清单。",
+    "代码中存在一处摆放回调会移除暗格的藏匿标签，静态证据无法归因到「拆除」还是「移走」；搬运/重摆后必须按实际标签与位置复核。",
+    "暗格内的物品会被普通夜间盗窃候选筛选排除。",
+    "普通储物舱、机器库存、柜台没有暗格效果。",
+    "当前观测层无「暗格标签/暗格可用空间」字段，需扩展。",
+    "社区实测（非官方）：扩建储藏区格子数 17×10；改造走私者暗格后 20×16。",
+    "社区实测：改造暗格可放 4 个满级鼠笼，另多出一块 2×8 独立格子，总容量高于扩建储藏区。",
+    "桌上最多可放 6 个仓储，但为方便收购/卖出一般只放 4 个。"
+  ],
+  "actions": [
+    "每次整理库存后复核违禁品是否仍在暗格内",
+    "取出原料加工/取出商品议价后立刻放回暗格"
+  ],
+  "pitfalls": [
+    "搬动暗格后不复查：藏匿标签可能已被移除，货等于裸放",
+    "把改进版图标名 smuggler_bay_large 当成另一个物品 id",
+    "把社区实测的 17×10 / 20×16 当官方数值——未经本地版本复核"
+  ],
+  "effects": [
+    "货在暗格内：盘查跳过、夜间不被选为盗窃候选"
+  ],
+  "guards": [
+    "容量以界面显示为准，不要按基础价值推算格数"
+  ],
+  "keywords": [
+    "smuggler_bay",
+    "smuggler_bay_mini",
+    "smuggler_bay_mod",
+    "smuggler_bay_large",
+    "锁后标签",
+    "上锁标签"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "OPEN"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/concealing-goods",
+    "wiki: /zh/wiki/terms/shop-layout"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "related": [
+    "inspection-severity-ladder",
+    "night-theft-threshold"
+  ],
+  "source": "wiki:/zh/wiki/terms/concealing-goods",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,56 @@
+{
+  "id": "network-industry-table",
+  "title": "产业供货 12 项全价目表",
+  "category": "production",
+  "summary": "产业网络 12 个基础项目 200–1000，全部无冷却；唯一硬前置链是沟渠水→铁锈水与水资源→水产养殖。",
+  "facts": [
+    "BREWER 200（NetworkUpgradeList.cs:607）；CHEMIST 250（:618）；PHARMA 300（:629）；MINER 250（:640）。",
+    "GUTTERFLOW_TAP 250，前置 WATER_TRADER（NetworkUpgradeList.cs:865/867）；RUSTWATER_TAP 350，前置 GUTTERFLOW_TAP（:877/879）；WATER_TRADER 300（:980）。",
+    "WINEMAKER 200（NetworkUpgradeList.cs:1071）；RETIRED_FARMER 350（:901）；RETIRED_GUNSMITH 650（:912）；RETIRED_CHEMIST 1000（:958）；RETIRED_RANCHER 750（:969）。「Demo 不可购买」在正式版没有生效路径：这些项确实带 lockInDemo=true，但判定函数 NetworkUpgrade.IsLockedInDemo()（NetworkUpgrade.cs:654-668）零调用者，购买判定走 IsReady()（NetworkUpgrade.cs:844-859 = 前置已解锁+冷却结束+state==1），而这些工厂都设 state=1。故正式版应可购买，实际可买性仍需实机点一次确认。",
+    "本组全部项目冷却为「无」。",
+    "水产养殖 400，前置水资源交易（NetworkUpgradeList.cs:1057/1059）；水产养殖 II 1,200，前置水产养殖（:1045/1047）。wiki 说前者给入门设备+退休水产养殖户每周来访，后者给两条幼年鳗鱼+商人增加大型鱼种（这两条效果未在解包中逐条核对）。",
+    "水产养殖前置须依次满足，400 不含此前购买水资源交易的 300。",
+    "2026-11-13 校正：旧结论「CHEMIST/PHARMA/RETIRED_FARMER/RETIRED_GUNSMITH/RETIRED_CHEMIST 不可购买」→ 新结论「lockInDemo 判定零调用者，正式版应可购买（待实机确认）」；另补 GUTTERFLOW_TAP 的真实前置是 WATER_TRADER，依据 NetworkUpgradeList.cs:865/867 与 NetworkUpgrade.cs:654-668/844-859。"
+  ],
+  "actions": [
+    "要产酒先买 BREWER 200，要矿石先买 MINER 250",
+    "想做水产按 300→400→1200 三段预算"
+  ],
+  "pitfalls": [
+    "直接买 400 水产养殖而没买 300 水资源交易",
+    "按「CHEMIST/PHARMA 在 Demo 锁定」就不攒钱：正式版 lockInDemo 判定零调用者（NetworkUpgrade.cs:654-668），两者无前置、应可直接购买"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "BREWER",
+    "MINER",
+    "GUTTERFLOW_TAP",
+    "RUSTWATER_TAP",
+    "WATER_TRADER",
+    "WINEMAKER",
+    "RETIRED_RANCHER",
+    "水产养殖"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.machines[]",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/upgrades/industry-network"
+  ],
+  "confidence": 0.93,
+  "verified_at": "2026-10-24",
+  "related": [
+    "network-upgrade-demo-lock",
+    "fish-farm"
+  ],
+  "source": "wiki:/zh/wiki/upgrades/industry-network",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

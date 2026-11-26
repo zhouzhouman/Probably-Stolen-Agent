@@ -1,0 +1,54 @@
+{
+  "id": "network-security-table",
+  "title": "安全升级 7 项价目与冷却",
+  "category": "security",
+  "summary": "安全组 7 项，两个带冷却（租金宽限 15 天 100、清除证据 14 天 500）；三级枪证 300/600/900 链式前置，正式版无 Demo 锁生效路径。",
+  "facts": [
+    "LANDLORD_GRACE 100，冷却 15 天（NetworkUpgradeList.cs:683/686）；EVIDENCE_REMOVAL 500，冷却 14 天（:753/754）。",
+    "SEC_GRACE 250（NetworkUpgradeList.cs:696）；INSPECTION_INFORMANT 300（:707）；均无前置、无冷却记录。",
+    "GUN_PERMIT_I 300 / II 600 / III 900，链式前置（NetworkUpgradeList.cs:923/936/934/948）。「Demo 不可购买」在正式版没有生效路径：这些项确实带 lockInDemo=true，但判定函数 NetworkUpgrade.IsLockedInDemo()（NetworkUpgrade.cs:654-668）零调用者，购买判定走 IsReady()（NetworkUpgrade.cs:844-859 = 前置已解锁+冷却结束+state==1），而这些工厂都设 state=1。故正式版应可购买，实际可买性仍需实机点一次确认。",
+    "枪证相关是 2 套不同口径：源码声望常量 20/50/80（NetworkUpgradeList.cs:150/152/154，零引用、不能当门槛）；吊销线为低于 0/30/60（StoreClientListSecurity.cs:150-162，有实际判定点，由上门警官在对话结束时执行）。",
+    "已取得某项不代表当前库存和历史证据都失去风险。",
+    "2026-11-13 校正：旧结论「三级枪证 Demo 均不可购买、下发声望 30/60/90」→ 新结论「lockInDemo 零调用者、声望常量为 20/50/80 且零引用」，依据 NetworkUpgradeList.cs:150/152/154/923/934/936/948 与 NetworkUpgrade.cs:654-668/844-859。"
+  ],
+  "actions": [
+    "租金紧张的存档优先 100 的 15 天宽限",
+    "证据压力大再买 500 清除证据，用完等 14 天"
+  ],
+  "pitfalls": [
+    "把 30/60/90 当下发声望：源码常量是 20/50/80 且零引用（NetworkUpgradeList.cs:150/152/154），吊销线是 0/30/60（StoreClientListSecurity.cs:150-162）",
+    "以为攒够 900 也买不到 3 级枪证：lockInDemo 判定零调用者（NetworkUpgrade.cs:654-668），应按前置（III 需 II）与 /state 实际状态判断"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "LANDLORD_GRACE",
+    "SEC_GRACE",
+    "INSPECTION_INFORMANT",
+    "EVIDENCE_REMOVAL",
+    "GUN_PERMIT_I"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "OPEN"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/upgrades/security-network"
+  ],
+  "confidence": 0.92,
+  "verified_at": "2026-10-24",
+  "related": [
+    "network-upgrade-demo-lock",
+    "contact-inspection-warning",
+    "rent-lease"
+  ],
+  "source": "wiki:/zh/wiki/upgrades/security-network",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

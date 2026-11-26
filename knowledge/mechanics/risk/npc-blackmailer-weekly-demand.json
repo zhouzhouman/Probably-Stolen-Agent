@@ -1,0 +1,60 @@
+{
+  "id": "npc-blackmailer-weekly-demand",
+  "title": "敲诈者每周索款，付一次不算了结",
+  "category": "risk",
+  "summary": "首访说下周来收第一笔，之后按动态金额要钱；付款后下周还来，可举报可逮捕。",
+  "facts": [
+    "初次对话说明下周回来收第一笔费用，并警告不要叫治安部。",
+    "后续对话要求支付本次「动态金额」，没有公开的固定公式。",
+    "付款后他仍说下周再来，一次付款不等于永久解除。",
+    "威胁不是系统禁用举报的证明，原版存在他的逮捕对话。",
+    "该人物生成会设置通缉相关状态，举报按通缉与举报流程处理。",
+    "是否继续来访与金额变化受当前天赋与已有状态影响。",
+    "随机拾荒客外观不构成他的固定私人身份，同脸不代表每次都是敲诈者。"
+  ],
+  "actions": [
+    "把敲诈支出单独列预算，不占 rent_due 那份钱",
+    "决定拒付时同步准备举报材料",
+    "开局天赋含额外负担类时预留每周现金"
+  ],
+  "pitfalls": [
+    "付一次就以为结束：下周照来",
+    "为付敲诈挪用租金"
+  ],
+  "effects": [
+    "付款 → 现金减少，下周再来；拒付 → 走后续分支；举报 → 通缉流程"
+  ],
+  "guards": [
+    "现金 − 敲诈额 < rent_due 时优先付租"
+  ],
+  "keywords": [
+    "敲诈者",
+    "动态金额",
+    "额外负担",
+    "通缉",
+    "逮捕"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-blackmailer"
+  ],
+  "related": [
+    "wanted-bounty-table",
+    "starting-perk-numbers",
+    "rent-increase-rate",
+    "confrontation-goods-check"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-blackmailer",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

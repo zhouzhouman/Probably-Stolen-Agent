@@ -1,0 +1,57 @@
+{
+  "id": "machine-power-slot",
+  "title": "每台机器独立耗电与电池槽",
+  "category": "production",
+  "summary": "每台机器按自身 machinery_drawn_power 标签扣电，只吃自己外接电池槽的电，槽空就完全不能开工。",
+  "facts": [
+    "每台机器各带运行时耗电标签 machinery_drawn_power（挂在机器物品上的数据标签，非文案键），系统按该整数扣电，不是全店统一值。",
+    "机器只能从自己的外接电池槽取电，槽位为空即无法开工，不是降速。",
+    "每轮扣电直接把该标签数值扣掉。",
+    "机器另有内部蓄电池与「充能中／充能已暂停／电力不足无法充能／低功耗模式」状态，装了电池却不动时先查这几项。",
+    "开工三条件：有能量或电力设施、原料必须放在机器库存中、设备状态与工序可执行。",
+    "拆机器只有两种工具：等离子切割机回收废金属、剪线钳回收线缆；螺丝刀拆不动机器，它拆报废模组并提高垃圾场螺丝产量。"
+  ],
+  "actions": [
+    "开工前确认外接电池槽有电且有电量",
+    "无产出时先查能源与实际投料位置，再查设备状态"
+  ],
+  "pitfalls": [
+    "以为整店有电机器就能跑：单机电池槽为空照样停",
+    "用螺丝刀拆机器：无效"
+  ],
+  "effects": [
+    "电池槽装电后机器可进入充能/工作状态，按 machinery_drawn_power 每轮扣电"
+  ],
+  "guards": [
+    "外接电池槽为空时不要投入原料期待产出"
+  ],
+  "keywords": [
+    "machinery_drawn_power",
+    "外接电池槽",
+    "能量电池",
+    "低功耗模式",
+    "等离子切割机",
+    "剪线钳"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.machines",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/machine-operation"
+  ],
+  "confidence": 0.92,
+  "verified_at": "2026-10-24",
+  "related": [
+    "power-facilities-and-outages",
+    "module-power-formula"
+  ],
+  "source": "wiki:/zh/wiki/terms/machine-operation",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

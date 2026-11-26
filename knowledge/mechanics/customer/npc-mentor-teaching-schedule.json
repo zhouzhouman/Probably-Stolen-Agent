@@ -1,0 +1,57 @@
+{
+  "id": "npc-mentor-teaching-schedule",
+  "title": "导师七次教学按 D 值排",
+  "category": "customer",
+  "summary": "导师在 D=1/2/3/5/7/8/14 分七次讲完开店系统，纯教学不发放许可。",
+  "facts": [
+    "已核实顺序：D=1 初次教学、D=2 夜间外出、D=3 目视检查、D=5 展示柜、D=7 新闻与事件、D=8 议价、D=14 结束介绍。",
+    "D=2 的夜间外出介绍额外检查广场恐惧症状态，处于该状态则这次介绍不发生。",
+    "导师线全程只是教学对话，不发许可、不解锁设备、不给货物。",
+    "犯罪记录提醒、展示柜提醒、许可与武器对话另有生成定义，不在上述固定顺序内。",
+    "D 是内部店铺日计数，不等于界面显示日期；剧情来客开关关闭或无尽模式下整条线跳过。"
+  ],
+  "actions": [
+    "D=2 前若需夜间外出，先确认天赋是否含广场恐惧症",
+    "把 D=5 展示柜介绍当成陈列系统的开课点，之前别急着摆展柜",
+    "dialog_advance 推完教学；遇到许可/武器提醒时另走许可流程"
+  ],
+  "pitfalls": [
+    "以为听过导师讲许可就已持证：许可证要单独向贸易委员会官员购买 1500",
+    "把 D 值当界面天数去等某个 NPC"
+  ],
+  "effects": [
+    "教学对话结束 → 对应系统提示已解锁，但不产生物品、许可或设备"
+  ],
+  "guards": [
+    "剧情来客总开关关闭时不安排依赖导师的节奏"
+  ],
+  "keywords": [
+    "导师",
+    "导师契约",
+    "mentor_contract",
+    "广场恐惧症",
+    "剧情来客"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.day",
+        "op": "lte",
+        "value": 14
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-mentor"
+  ],
+  "related": [
+    "npc-visit-state-rules",
+    "npc-georgio-schedule"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-mentor",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

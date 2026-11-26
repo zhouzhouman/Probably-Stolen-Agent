@@ -1,0 +1,50 @@
+{
+  "id": "wild-fixers-evidence",
+  "title": "善后人 25/晚清未收证据",
+  "category": "security",
+  "summary": "每晚 25 让善后人清理治安部尚未收集的证据、处理目击者并加快嫌疑下降，但不清零已收集证据。",
+  "facts": [
+    "Wild's Fixers 基础费用 25 信用点/晚。",
+    "作用：清理治安部尚未收集的证据、处理目击者、加快犯罪嫌疑下降。",
+    "不能据此推定已被收集的证据或处罚全部清零。",
+    "它不是修理机器或普通供货服务，不要按旧译名「修理工／销赃人」判断用途。"
+  ],
+  "actions": [
+    "嫌疑刚起、证据还没被收走时启用最划算",
+    "证据已被收走后不要指望它翻盘"
+  ],
+  "pitfalls": [
+    "把它当机器维修服务",
+    "已立案后仍只靠它降嫌疑"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "WILD_FIXER",
+    "Wild's Fixers",
+    "证据"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.services[]",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/contact-services",
+    "wiki: /zh/wiki/upgrades/contacts-network"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "contact-inspection-warning",
+    "network-security-table",
+    "wanted-report"
+  ],
+  "source": "wiki:/zh/wiki/services/contact-services",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

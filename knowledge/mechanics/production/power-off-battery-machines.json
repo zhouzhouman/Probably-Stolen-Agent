@@ -1,0 +1,53 @@
+{
+  "id": "power-off-battery-machines",
+  "title": "断电时电池机器仍可运行",
+  "category": "production",
+  "summary": "不缴电费只关掉照明与电网设备，装能量电池的机器仍能干活；警报则必须有独立电源。",
+  "facts": [
+    "未付电费时灯光变暗，但使用能量电池供电的机器仍可运行，前提是自身电池有电且满足工作条件。",
+    "警报系统需要自己的独立电源，缴纳店铺电费不能替代安装电源。",
+    "机器、充电器、能量方块三种供能方式需分别检查，不能只看电费是否已付。"
+  ],
+  "actions": [
+    "停工时先看夜间日志区分「欠费断电」和「停电」",
+    "只有一台设备不转就查该设备，多台同时出问题再查服务与停电"
+  ],
+  "pitfalls": [
+    "断电后以为全部机器停工而放弃生产",
+    "以为缴了电费警报就有电"
+  ],
+  "effects": [
+    "未付电费：照明关闭，电池机器照常产出，警报若未装独立电源则失效"
+  ],
+  "guards": [
+    "警报投资前先确认有独立电源与电量"
+  ],
+  "keywords": [
+    "energy_credit",
+    "security_alarm",
+    "is_power_on",
+    "PowerBloc"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.rent.is_power_on",
+        "op": "eq",
+        "value": false
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/power-service"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "power-service-fee-formula",
+    "recharger-powerbloc-charge-rate"
+  ],
+  "source": "wiki:/zh/wiki/services/power-service",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

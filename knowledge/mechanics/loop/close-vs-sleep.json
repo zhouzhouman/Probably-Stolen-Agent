@@ -1,0 +1,54 @@
+{
+  "id": "close-vs-sleep",
+  "title": "打烊与睡觉是两步",
+  "category": "loop",
+  "summary": "关店不等于换日；睡觉才推进一天并自动存档，夜间结算要次日核对。",
+  "facts": [
+    "打烊（关闭卷帘门）与睡觉（使用睡袋）是两个步骤，只关店不会推进天数。",
+    "睡觉时游戏自动存档，夜间生产、夜间服务与随机事件的结果在次日才可核对。",
+    "睡眠同时结算伤口、戒断与哨兵疾病三类状态。",
+    "打烊后外出会使次日少来 1 名顾客。"
+  ],
+  "actions": [
+    "关闭卷帘门打烊",
+    "用睡袋睡觉"
+  ],
+  "pitfalls": [
+    "只打烊不睡觉：机器不结算、事件不推进，误判为机器故障。",
+    "打烊后外出：次日客流 −1。"
+  ],
+  "effects": [
+    "睡觉成功：day +1 并自动存档；次日夜间日志出现产物/失物/服务记录。"
+  ],
+  "guards": [],
+  "keywords": [
+    "睡袋",
+    "打烊",
+    "自动存档",
+    "afterhours",
+    "store_state"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "CLOSED"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/daily-cycle",
+    "wiki: /zh/wiki/terms/basic-controls"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "day-cycle-stages",
+    "morning-log-audit"
+  ],
+  "source": "wiki:/zh/wiki/terms/daily-cycle",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

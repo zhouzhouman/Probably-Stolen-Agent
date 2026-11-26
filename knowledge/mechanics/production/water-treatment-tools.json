@@ -1,0 +1,58 @@
+{
+  "id": "water-treatment-tools",
+  "title": "净水工具分工：谁能除什么",
+  "category": "production",
+  "summary": "滤水器去杂质/微塑料/有机物，药片去微生物与部分化学物，UV 只杀菌。",
+  "facts": [
+    "水罐+滤水器：过滤杂质、微塑料、有机废物，消耗耐久；沟渠水很伤普通滤芯；不能除去所有污染物。",
+    "净水药片：大幅减少微生物、部分减少化学污染物，对其他污染物无效。",
+    "紫外线灯：只处理微生物，不负责全面除杂。",
+    "微型净水器：把低于 98% 的原水提到基础水级别，不会继续升成优质水；耐久不足时整份不处理。",
+    "混合只是把两种纯度折中，不能凭空净化；过滤会损失部分液体。",
+    "改标签不改变水质，虚标可能成为治安调查证据。"
+  ],
+  "actions": [
+    "先检测水质档位，再选工具",
+    "处理后复测，够目标档位就停",
+    "按污染物类型换工具，不重复无效操作"
+  ],
+  "pitfalls": [
+    "用滤水器处理微生物/化学污染 → 除不掉",
+    "对已达标的水继续过滤 → 白耗耐久",
+    "改标签冒充高檔水 → 积累治安证据"
+  ],
+  "effects": [
+    "处理成功：水质档位提升，液体总量可能减少"
+  ],
+  "keywords": [
+    "滤水器",
+    "净水药片",
+    "紫外线灯",
+    "微型净水器",
+    "水质扫描仪",
+    "water_filter"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.inventory.owned.features",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki:/zh/guides/water-merchant-production-and-trading",
+    "wiki:/zh/wiki/terms/water-purification"
+  ],
+  "related": [
+    "water-grade-tiers",
+    "micro-purifier-durability",
+    "water-auto-vending-markup"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/guides/water-merchant-production-and-trading",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

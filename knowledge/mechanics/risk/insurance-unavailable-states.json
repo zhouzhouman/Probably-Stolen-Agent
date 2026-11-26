@@ -1,0 +1,52 @@
+{
+  "id": "insurance-unavailable-states",
+  "title": "保险不可用的四种情形",
+  "category": "risk",
+  "summary": "未介绍、黑市拒保、卡特尔保护已解锁都会让普通保险退出，此时不再走普通未投保掷骰。",
+  "facts": [
+    "服务尚未介绍、黑市拒保、卡特尔保护已解锁，都会影响普通保险可用性。",
+    "黑市「拒保」直接使保险服务不可用；费用变高（被针对 ×2）和无法投保是两种不同状态。",
+    "普通未投保分支第 1 步先看状态：保险服务未解锁、卡特尔保护启用或拥有 Alert 天赋即提前返回，不进入失窃掷骰。",
+    "提前返回不等于安全：检查、没收等其他损失照常发生。"
+  ],
+  "actions": [
+    "买保险前先确认服务已由联系人介绍过",
+    "黑市关系变差时改为投资警报而不是加保费"
+  ],
+  "pitfalls": [
+    "黑市拒保后仍按普通未投保公式估风险",
+    "以为卡特尔保护跳过盗窃就免检"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "拒保",
+    "Alert",
+    "卡特尔保护",
+    "insurance_days_without"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.economy.insurance_days_without",
+        "op": "gte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/insurance-service",
+    "wiki: /zh/wiki/terms/theft-and-insurance"
+  ],
+  "confidence": 0.88,
+  "verified_at": "2026-10-24",
+  "related": [
+    "insurance-fee-formula",
+    "cartel-protection-mandatory",
+    "night-theft-threshold"
+  ],
+  "source": "wiki:/zh/wiki/services/insurance-service",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,57 @@
+{
+  "id": "janitorial-fee-formula",
+  "title": "清洁费随日涨，破坏后 75 起",
+  "category": "night",
+  "summary": "清洁费白天数缓涨，但店铺被破坏后跳到 75+，黑市不受信任再翻倍，睡前必须按当前报价留钱。",
+  "facts": [
+    "门面未遭破坏：清洁费 3＋floor(D÷10) 信用点，D＝20 时为 5。",
+    "门面遭破坏：75＋floor(D÷10)，D＝20 时为 77。",
+    "Sawyer Crew 天赋未遭破坏为 0；遭破坏为 30＋floor(D÷5)（分母为 5）。",
+    "黑市「不受信任」把上表结果再乘 2，并禁止使用地下交易所。",
+    "该重算分支没有额外的困难模式清洁倍率，不要把开局初始化加价当每晚固定叠加。",
+    "2026-11-14 校正：开局首日不是这个公式的值——ApplyDifficultyStart()（StoreService.cs:214-216，PlayerStore.cs:815 调用）一次性加 startJanitorialCostBonus（cozy/normal 0、hard 3、challenge 3，Difficulty.cs:216/260/304/348），次日起 UpdateCost()（StoreService.cs:244-252）按 3＋floor(D÷10) 重算覆盖。1.0 实机 challenge 第 1 天：JANITORIAL_SERVICE cost=6（＝基础 3＋3）。"
+  ],
+  "actions": [
+    "睡前读当前报价而不是记常数",
+    "店铺被破坏当晚按 ≥75 预留清洁费"
+  ],
+  "pitfalls": [
+    "遭破坏后仍按 5 信用点留钱 → 当晚清洁失败",
+    "把黑市不受信任期间的费用当日程基价"
+  ],
+  "effects": [
+    "支付成功：垃圾桶清空、门面清理、脏乱等级 G 清零"
+  ],
+  "guards": [
+    "现金 < 75 且门面已破坏时，先卖货再睡"
+  ],
+  "keywords": [
+    "janitorial-service",
+    "garbage_level",
+    "Sawyer Crew",
+    "floor"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.rent.garbage_level",
+        "op": "gte",
+        "value": 4
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/janitorial-service"
+  ],
+  "confidence": 0.93,
+  "verified_at": "2026-10-24",
+  "related": [
+    "garbage-level-attractiveness-penalty",
+    "trashcan-permanent-removal",
+    "power-service-fee-formula"
+  ],
+  "source": "wiki:/zh/wiki/services/janitorial-service",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

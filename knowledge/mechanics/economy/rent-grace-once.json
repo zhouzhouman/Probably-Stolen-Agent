@@ -1,0 +1,55 @@
+{
+  "id": "rent-grace-once",
+  "title": "宽限只有一次且不是免租",
+  "category": "economy",
+  "summary": "标准租约仅 1 次宽限，未付租金并入下周，下期要付本周+上周欠租；困难模式 0 次。",
+  "facts": [
+    "标准租约只写有 1 次宽限，本次未付租金加到下周账单。",
+    "宽限后下次需付「本周租金 + 上周欠租」，即约为单期租金的 2 倍。",
+    "困难模式开局宽限次数为 0，当周不付即进入驱逐流程。",
+    "Wilds 的「房东宽限」是另 1 次一次性人情，不能与租约宽限叠加成 2 次拖欠许可。",
+    "连续拖欠不在设计内：原文要求先确认存档中实际剩余且尚可使用的宽限次数。"
+  ],
+  "actions": [
+    "把本期宽限当作最后手段，只在现金 < rent_due 时使用",
+    "用宽限后立刻停掉所有非必要服务"
+  ],
+  "pitfalls": [
+    "以为每周都能拖 → 下期账单约 2 倍，直接触驱逐",
+    "把网络房东宽限当成永久免租"
+  ],
+  "effects": [
+    "使用宽限：本期不扣款，欠租累加进下期 rent_due"
+  ],
+  "guards": [],
+  "keywords": [
+    "rent_due",
+    "宽限",
+    "landlord",
+    "驱逐"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.rent.day_until_rent",
+        "op": "lte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/rent-and-loans",
+    "wiki: /zh/wiki/terms/npc-landlord"
+  ],
+  "confidence": 0.92,
+  "verified_at": "2026-10-24",
+  "related": [
+    "rent-lease",
+    "rent-increase-rate",
+    "rent-default-evicted"
+  ],
+  "source": "wiki:/zh/wiki/terms/rent-and-loans",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

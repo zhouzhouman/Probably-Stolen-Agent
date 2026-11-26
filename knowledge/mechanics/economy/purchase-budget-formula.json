@@ -1,0 +1,64 @@
+{
+  "id": "purchase-budget-formula",
+  "title": "进货预算=现金−账单−预留",
+  "category": "economy",
+  "summary": "可进货资金等于现金减近期到期账单再减服务与补料预留，库存和预期收益算 0。",
+  "facts": [
+    "可安排进货资金 = 当前现金 − 下次回款前到期的账单 − 必要服务和补料预留。",
+    "算例：现金 600、账单 200、预留 100 → 可安排 300 进货。",
+    "未卖掉的库存与预期收益按 0 计入，不计为可支付现金。",
+    "投保生效的夜晚不会失窃（免除判定），所以不存在任何「待返还物」；缴租资金只能用当前现金算。",
+    "该公式是记账口径，原文注明 600/200/100 只是示例而非保证值。",
+    "单笔成交额参考上限：B=240、吸引力 600、已解锁好评如潮（≥100）时单个顾客预算 420；这是单客的钱，不是每日进货总额（customer-budgets 页口径）。",
+    "2026-11-13 校正：旧结论「保险返还的是夜间被盗物品」→ 新结论「投保当晚不失窃、无返还环节」，依据 PlayerStore.cs:2060-2141。"
+  ],
+  "actions": [
+    "每天开张前用该公式重算可进货额",
+    "把下期 rent_due 与周供都算进「近期账单」",
+    "备货量按「当日预计来客数 × 客单价」估，不要拿 420 当进货上限"
+  ],
+  "pitfalls": [
+    "把库存市值算进现金 → 超买后付不出租金",
+    "把 420 当每日进货总额 → 只够 1 位客人，放走第 2~4 位（展示柜最多 4 个名额）"
+  ],
+  "effects": [],
+  "guards": [
+    "现金 − rent_due − 周供 < 0 时禁止进货"
+  ],
+  "keywords": [
+    "rent_due",
+    "stock_value",
+    "预算",
+    "预算公式",
+    "预算加成"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.client.is_buying",
+        "op": "truthy"
+      },
+      {
+        "field": "visible_info.table.nego_open",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/rent-and-loans",
+    "wiki: /zh/wiki/terms/customer-budgets（经 wiki-trade 抓取）"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "budget-formula",
+    "bill-reserve-first",
+    "rent-increase-rate",
+    "mortgage-weekly-payment",
+    "rent-lease"
+  ],
+  "source": "wiki:/zh/wiki/terms/rent-and-loans",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

@@ -1,0 +1,64 @@
+{
+  "id": "crime-ledger-entry",
+  "title": "犯罪入账与派系折减",
+  "category": "risk",
+  "summary": "违禁按议定价值入账，赃物按议定价值×热度÷100，再吃派系与天赋修正。",
+  "facts": [
+    "销售带违禁标签物品：以该物品的议定价值计入对应走私罪名。",
+    "销售赃物：先算「议定价值 × 赃物热度 ÷ 100」，取整后计入销赃。",
+    "同一件货同时是赃物与违禁品时，两部分都可能入账。",
+    "派系修正（入账前，舍去小数）：黑市 ÷2；革命军 ÷3；下层区且已解锁「守口如瓶」÷2；卡特尔归零；其它普通分支保留原值。",
+    "天赋修正：「威慑」×约 0.67 取整；「大嘴巴」×约 1.33 取整；同时具备按上述顺序分别取整。",
+    "取整规则：常规取最近整数，恰落半整数取偶数（2.5→2、3.5→4）。",
+    "减免属于记录计算，不改变商品违禁属性或持证要求。",
+    "已定位入账来源只有违禁品走私、赃物销赃、无证经营；脏水/错标水/伪劣化工/贿赂/劣质弹药有独立字段但未确认累计。",
+    "当前观测层无「犯罪总值/罪名分录」字段，需扩展。",
+    "「守口如瓶」LLTIGHTLIPS 需下层区声望 ≥ 80，证据倍率参数为 0.5（与 ÷2 一致）；「盗亦有道」BM_HONOR 恒定生效，字段记录 1.5，但黑市负向变化在 ModReputation 分支里直接翻倍。"
+  ],
+  "actions": [
+    "优先卖卡特尔顾客（归零）或黑市顾客（÷2）",
+    "有「威慑」天赋时把违禁大单放在当晚最后一笔"
+  ],
+  "pitfalls": [
+    "把脏水/伪劣化工算进犯罪总值：字段存在≠实际入账",
+    "把半整数按四舍五入：2.5 应取 2"
+  ],
+  "effects": [
+    "犯罪记录写入治安档案，参与次日调查进度计算"
+  ],
+  "guards": [
+    "守卫按下一档阈值（100/300/850…）反推可卖量"
+  ],
+  "keywords": [
+    "议定价值",
+    "销赃",
+    "守口如瓶",
+    "威慑",
+    "大嘴巴",
+    "银行家舍入"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk.crime_value",
+        "op": "gte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/crime-and-investigation",
+    "wiki: /zh/wiki/reputation/lower-level-perks",
+    "wiki: /zh/wiki/reputation/black-market-perks"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "investigation-daily-growth",
+    "stolen-heat-discount"
+  ],
+  "source": "wiki:/zh/wiki/terms/crime-and-investigation",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

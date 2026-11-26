@@ -1,0 +1,60 @@
+{
+  "id": "inspection-schedule-band",
+  "title": "盘查排期按犯罪额分档",
+  "category": "security",
+  "summary": "走私+销赃累计≥50 才排期，750 以上 1–2 天一次，藏不住就天天被查。",
+  "facts": [
+    "排期门槛：走私＋销赃累计犯罪额 ≥ 50 信用点；低于 50 不排期。",
+    "间隔分档：<150 → 3–5 天；150–299 → 3–4；300–449 → 3–3；450–599 → 2–3；600–749 → 2–2；≥750 → 1–2。",
+    "三项治安部特权改写间隔：彻底检查更频繁、信任更稀少、贵宾完全不再接受盘查。",
+    "原文对特权的表述为「信任在此基础上上下限各 +2 / +4，彻底检查各 −1，最终下限不低于 1 天、上限不低于 2 天」——哪一端对应 +2/+4 未逐一对应，实施勿硬编码。",
+    "盘查不是固定日程，金额越高间隔越短。",
+    "另有两个独立 1000 门槛：走私+销赃累计 ≥1000 追加一次盘查；四类违禁品贩运记录合计严格 >1000 触发钓鱼执法。",
+    "当前观测层无「累计犯罪额/盘查倒计时」字段，需扩展。",
+    "三项改写间隔的治安部特权已定位门槛：彻底查抄 SEC_THOROUGH_INSPECTION 声望 ≤ −80（更频繁）、值得信赖 SEC_TRUSTED 声望 ≥ 60（更稀少）、贵宾 SEC_VIP 声望 ≥ 100（不再盘查）。",
+    "治安部声望被限制在 −200 到 200 之间；负向特权按「≤ 门槛」启用，正向按「≥ 门槛」启用。"
+  ],
+  "actions": [
+    "把累计犯罪额压在 150 以下以维持 3–5 天间隔",
+    "犯罪额破 750 前必须清案或用摆平者降值"
+  ],
+  "pitfalls": [
+    "把两个 1000 门槛当同一个：一个含赃物用「达到」，一个只算四类违禁品用「严格大于」"
+  ],
+  "effects": [
+    "达到门槛后排入治安官来访队列"
+  ],
+  "guards": [
+    "累计犯罪额 ≥750 时停止收购违禁品"
+  ],
+  "keywords": [
+    "盘查",
+    "钓鱼执法",
+    "彻底检查",
+    "贵宾",
+    "犯罪额"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk.trafficking_crimes",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/inspections",
+    "wiki: /zh/wiki/terms/wanted-and-reporting",
+    "wiki: /zh/wiki/reputation/security-perks"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "crime-ledger-entry",
+    "inspection-warning-lead-time"
+  ],
+  "source": "wiki:/zh/wiki/terms/inspections",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

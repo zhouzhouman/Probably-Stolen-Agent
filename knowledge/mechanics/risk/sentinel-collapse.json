@@ -1,0 +1,53 @@
+{
+  "id": "sentinel-collapse",
+  "title": "哨兵病：注射计数与累积 20 结局",
+  "category": "risk",
+  "summary": "不可治愈；未注射计数 6 夜起症状、14 夜起每夜 +3 累积，达 20 触发崩溃结局。",
+  "facts": [
+    "哨兵崩溃综合征不可治愈；选该天赋时获得 1 支免疫宁。",
+    "未注射计数每次睡眠 +1：第 6 夜起提示轻度症状；7–9 夜每夜累积 +1；10–13 夜 +2；14 夜及以后 +3。",
+    "疾病累积达到 20 即触发哨兵崩溃结局。",
+    "注射只重设未注射计数（真品 0、过期品 3、假冒品 3/4/5），不清零已累积的疾病值。",
+    "免疫宁需验货：真品/过期/假冒分别重设为 0 / 3 / 3、4、5。"
+  ],
+  "actions": [
+    "按每周注射安排补货并留验货时间",
+    "第 6 夜出现症状立刻注射，不要拖到 14 夜后"
+  ],
+  "pitfalls": [
+    "拖到最后再注射：已累积的疾病值不会清零",
+    "凭「感觉好一些」判断真假：假冒品也会短期缓解"
+  ],
+  "effects": [
+    "注射 → 未注射计数按药效重设；累积值保留"
+  ],
+  "guards": [
+    "累积接近 20 时优先注射而不是扩张经营"
+  ],
+  "keywords": [
+    "免疫宁",
+    "哨兵崩溃综合征",
+    "injector_guide",
+    "赛纳普斯注射器"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/health-and-addiction"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "addiction-withdrawal"
+  ],
+  "source": "wiki:/zh/wiki/terms/health-and-addiction",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

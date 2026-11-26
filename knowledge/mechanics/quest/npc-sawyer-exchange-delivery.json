@@ -1,0 +1,59 @@
+{
+  "id": "npc-sawyer-exchange-delivery",
+  "title": "索耶交货：垃圾桶+清洁次日报",
+  "category": "quest",
+  "summary": "D=10 索耶介绍地下交易所；交货要按当期清单投垃圾桶再用清洁服务，次日早晨结算。",
+  "facts": [
+    "索耶在 D=10 的普通开店介绍来访，人物生成归入黑市阵营。",
+    "交货流程三步：确认地下交易所已开放 → 查看当期清单 → 把所需货物放进垃圾桶并使用清洁服务。",
+    "回报在次日早晨处理，不是当场结算。",
+    "清单每期会变，上一批的需求不能沿用。",
+    "清洁会清空垃圾桶内所有物品，交货前必须先把要保留的货取出。",
+    "若开局已属清道夫组织，流程绕过普通介绍，走专门的地下交易所介绍分支。"
+  ],
+  "actions": [
+    "交货前一晚把要留的货从垃圾桶取出，再放清单货物",
+    "把清洁费算进当晚支出后再决定是否交货",
+    "次日早晨核对回报是否到账"
+  ],
+  "pitfalls": [
+    "把要留的货留在垃圾桶 → 清洁时永久删除",
+    "沿用上期清单备货 → 品类数量对不上，白投",
+    "把「不被治安部追踪」理解成店内其他赃物也免检"
+  ],
+  "effects": [
+    "投放清单货物并使用清洁服务 → 次日早晨结算交付回报"
+  ],
+  "guards": [
+    "现金 < 当晚清洁费时不投放清单货物"
+  ],
+  "keywords": [
+    "索耶",
+    "清道夫",
+    "地下交易所",
+    "垃圾桶",
+    "清洁服务"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-sawyer"
+  ],
+  "related": [
+    "npc-visit-state-rules",
+    "janitorial-fee-formula",
+    "trashcan-permanent-removal"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-sawyer",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

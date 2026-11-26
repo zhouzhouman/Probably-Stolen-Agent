@@ -1,0 +1,55 @@
+{
+  "id": "addiction-withdrawal",
+  "title": "戒断：计数3起−8%，20清除",
+  "category": "risk",
+  "summary": "尼古丁/酒精/麻醉品未摄入计数 ≥3 触发 −8% 交易，每夜 +1，到 20 成瘾消失。",
+  "facts": [
+    "三种成瘾（尼古丁、酒精、麻醉品）机制同构：未摄入计数 ≥3 触发戒断，单项交易惩罚 8%。",
+    "计数在睡眠时 +1；计数达到 20 时移除该成瘾（自然治愈）。",
+    "三种惩罚相加，全部戒断时为 24%。",
+    "开局选这三种成瘾时计数直接初始化为 3，所以第一天就处于戒断状态，同时发放对应物品。",
+    "摄入对应物质只是压制戒断并按物品抑制量重设计数，不是当场治愈；形成新成瘾所需次数尚未核实。",
+    "赌博成瘾不走这套计数，另见彩票与赌博机制。"
+  ],
+  "actions": [
+    "要养新成瘾就先算清 20 夜的空窗期",
+    "戒断期间把交易加价空间预留 8%–24%"
+  ],
+  "pitfalls": [
+    "以为吸一次就治好：只重设计数",
+    "开局带 3 成瘾却按无惩罚定价：一开局就 −24%"
+  ],
+  "effects": [
+    "睡眠 → 计数 +1；达 20 → 移除成瘾"
+  ],
+  "guards": [
+    "戒断未解除时不要接低毛利大单"
+  ],
+  "keywords": [
+    "尼古丁",
+    "酒精",
+    "麻醉品",
+    "戒断"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/health-and-addiction"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "sentinel-collapse",
+    "wound-night-settlement"
+  ],
+  "source": "wiki:/zh/wiki/terms/health-and-addiction",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

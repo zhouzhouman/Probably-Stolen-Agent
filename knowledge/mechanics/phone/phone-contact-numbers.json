@@ -1,0 +1,55 @@
+{
+  "id": "phone-contact-numbers",
+  "title": "六个电话联系人号码",
+  "category": "phone",
+  "summary": "8376 王尔德、8815 红魔鬼、56371 矿业（科尔森）、4615 药剂、3319 化学、51189 革命商人。",
+  "facts": [
+    "六个独立号码：Wilds 8376、Red Imp 8815、矿业 56371、药剂 4615、化学 3319、革命商人 51189。",
+    "56371 在电话簿显示为「科尔森」，即 GP 采矿合作社负责人，与「矿业」是同一对象。",
+    "配给站另有电话对话但没有独立号码，不能补出第七个。",
+    "四个供货号码分别对应红魔鬼酿酒厂、下层区化学家、上层区药商、GP 采矿合作社四项升级。",
+    "王尔德（8376）是服务入口、革命商人（51189）走访问分支，两者都不是供货商订单。"
+  ],
+  "actions": [
+    "按号码直接拨，不用猜联系人",
+    "供货优先拨 8815/56371/4615/3319"
+  ],
+  "pitfalls": [
+    "把 8376 当供货商：它是服务入口，不能下单",
+    "在配给站找第七个号码：不存在"
+  ],
+  "effects": [
+    "拨通 → 联系人状态转入回应/首次介绍"
+  ],
+  "guards": [],
+  "keywords": [
+    "8376",
+    "8815",
+    "56371",
+    "4615",
+    "3319",
+    "51189",
+    "StorePhoneClient"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.phone.open",
+        "op": "eq",
+        "value": true
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/phone-contacts"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "phone-cooldown-orders"
+  ],
+  "source": "wiki:/zh/wiki/terms/phone-contacts",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

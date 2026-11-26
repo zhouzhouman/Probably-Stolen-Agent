@@ -1,0 +1,63 @@
+{
+  "id": "npc-ordinary-customer-types",
+  "title": "来客显示名对应七类意图",
+  "category": "customer",
+  "summary": "公民/拾荒客/患病者/工程师/游客/小偷/农场主是类型模板，名字推不出预算。",
+  "facts": [
+    "下层区公民、上层区公民是居民类型，不能据名字推算现金或固定货单。",
+    "拾荒客、老拾荒客、贫穷的拾荒客是拾荒变体，不都属于乔治奥剧情。",
+    "患病的下层区公民、患病的拾荒客属健康需求，按当次接受条件选药。",
+    "空间站工程师、烦躁的工程师是工程变体，不自动等于内利斯。",
+    "游客、空间站游客不等于觅食游客的专门订单。",
+    "可疑的顾客、扒手、来买东西的小偷属可疑/犯罪类，但交易与举报仍需具体证据。",
+    "农场主、水培农场主不自动等于退休农夫引荐。",
+    "同一外观池用于多次普通来访；名字、意图、派系、通缉记录是四种不同信息。"
+  ],
+  "actions": [
+    "先读 client.is_buying / is_selling 与 buying_tags，再决定摆什么",
+    "患病类来客才拿药，普通顾客不要浪费医疗库存",
+    "可疑顾客先比对通缉海报再决定 report_client"
+  ],
+  "pitfalls": [
+    "按名字猜预算：预算由基础公式+吸引力档+特权算",
+    "见「可疑的顾客」就举报：误报有代价"
+  ],
+  "effects": [
+    "call_next → 生成来客，类型决定 buying_tags 与预算"
+  ],
+  "guards": [
+    "无证据时不报告普通顾客"
+  ],
+  "keywords": [
+    "下层区公民",
+    "上层区公民",
+    "拾荒客",
+    "患病的拾荒客",
+    "空间站工程师",
+    "可疑的顾客",
+    "水培农场主"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-ordinary-customers"
+  ],
+  "related": [
+    "base-budget-by-buyer",
+    "budget-formula",
+    "false-report-penalty",
+    "npc-georgio-schedule"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-ordinary-customers",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

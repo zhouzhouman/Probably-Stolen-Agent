@@ -1,0 +1,52 @@
+{
+  "id": "rep-clamp-22-grades",
+  "title": "声望钳制 −200~200 共 22 档",
+  "category": "customer",
+  "summary": "每个派系声望独立，钳制在 −200 到 200，按 10 点一档分 22 级，两端另加一档。",
+  "facts": [
+    "声望取值范围被钳制在 −200 到 200 之间，超出不累计。",
+    "等级共 22 档，以 10 点为一档，两端各加一档。",
+    "正向档位示例：20–29 小有名气、60–69 值得信赖、100–200 声威赫赫。",
+    "负向档位示例：−19–−10 褒贬不一、−99–−90 避之不及、−200–−150 黑名单。",
+    "6 个派系各自独立记录，不是 1 条全局好感度，也不是势力力量条。",
+    "声望已进入观察层：`visible_info.reputations`（列表，元素含 id/faction/value）。"
+  ],
+  "actions": [
+    "按档位而非精确分值做决策：跨 20/40/60/80/100 才有质变"
+  ],
+  "pitfalls": [
+    "以为声望是全局值 → 讨好上层区不会提升下层区"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "reputation",
+    "声望等级",
+    "派系"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.reputations",
+        "op": "truthy"
+      },
+      {
+        "field": "visible_info.table.nego_open",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/faction-standing"
+  ],
+  "confidence": 0.93,
+  "verified_at": "2026-10-24",
+  "related": [
+    "rep-per-trade-formula",
+    "faction-objects-six"
+  ],
+  "source": "wiki:/zh/wiki/terms/faction-standing",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

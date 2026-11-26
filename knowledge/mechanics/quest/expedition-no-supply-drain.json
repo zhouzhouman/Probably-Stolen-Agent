@@ -1,0 +1,50 @@
+{
+  "id": "expedition-no-supply-drain",
+  "title": "远征不消耗食物弹药信用点",
+  "category": "quest",
+  "summary": "本版远征过程只改雇工健康、状态、指派地点与日志，不扣食物/药/弹药/钱。",
+  "facts": [
+    "本版远征过程中不消耗食物、药物、弹药或信用点。",
+    "代码只改雇工健康、状态、指派地点与日志四项。",
+    "因此不存在「返回后核对消耗」这一机制，补给箱只负责分配装备。",
+    "雇工基础费用 80 字段存在，但未找到实际扣费代码。",
+    "补给箱内容窗口为 5 行 × 2 列。",
+    "2026-11-13 标注：本卡内容全部来自 2026-10-24 Demo 期静态解包/wiki；1.0 正式版未实装远征与雇工（demo-occupations/远征代码仍存在，唯一解锁入口是开局天赋 expedition_organizer，StartingPerkContent.cs:93-96），官方 Roadmap 将 Junker+远征列为 post-launch。"
+  ],
+  "actions": [
+    "【post-launch 未实装，勿执行】不要把食物弹药算进远征成本",
+    "【post-launch 未实装，勿执行】把预算集中到雇工健康与工具上"
+  ],
+  "pitfalls": [
+    "按其他游戏直觉给远征备粮：白占箱子槽位",
+    "把 80 基础费用当必然支出：代码未扣费"
+  ],
+  "effects": [
+    "派遣前后现金不变"
+  ],
+  "guards": [
+    "1.0 正式版未实装远征/雇工系统（官方 Roadmap 列为 post-launch，12 月中旬起）：不要按本卡派遣、招人或备货，本卡仅作战后参考。"
+  ],
+  "keywords": [
+    "expedition_box",
+    "基础费用",
+    "ammo"
+  ],
+  "triggers": {},
+  "evidence": [
+    "wiki: /zh/wiki/terms/expedition-supplies",
+    "wiki: /zh/wiki/terms/hiring-crew"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "expedition-supply-box",
+    "crew-juan-stats"
+  ],
+  "source": "wiki:/zh/wiki/terms/expedition-supplies",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "gated_until": "post-launch",
+  "keyword_only": true
+}

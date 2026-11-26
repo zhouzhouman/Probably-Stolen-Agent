@@ -1,0 +1,64 @@
+{
+  "id": "npc-supply-channels-table",
+  "title": "四条供货渠道与快递员",
+  "category": "trade",
+  "summary": "红魔鬼 200、GP 采矿 250 抓取时已开放；化学 250、药商 300 抓取时未开放（正式版 lockInDemo 零调用者，应可购，待实机确认）；付款/下单/到货是三步。",
+  "facts": [
+    "红魔鬼酿酒厂 BREWER 基础 200，已开放，对应红魔鬼代表、快递员与酒类供货。",
+    "GP 采矿合作社 MINER 基础 250，已开放，对应 GP 采矿快递员与矿业物资。",
+    "下层区化学家 CHEMIST 250（NetworkUpgradeList.cs:618）、上层区药商 PHARMA 300（:629），两者无前置；抓取时的试玩版未开放，但它们带 lockInDemo=true 而判定函数 IsLockedInDemo()（NetworkUpgrade.cs:654-668）零调用者，正式版应可直接购买（待实机确认）。",
+    "普通供货商不用引荐费，每周来访并以溢价提供店铺所需物资。",
+    "一次网络付款、电话下单、快递员到货是三件不同的事，必须分别完成。",
+    "已下单交付、批发、免费物资是不同生成定义，一次赠送不等于永久免费供货。",
+    "表中「已开放」只指网络入口，不保证该存档已引荐、有电话或已订到货。",
+    "2026-11-13 校正：旧结论「CHEMIST/PHARMA 在 Demo 未开放」→ 新结论「lockInDemo 判定零调用者，正式版应可购买（待实机确认）」，依据 NetworkUpgrade.cs:654-668/844-859 与 NetworkUpgradeList.cs:618/629。"
+  ],
+  "actions": [
+    "买完引荐后 open_phone 拨打 8815（红魔鬼）/56371（矿业）下单",
+    "下单前先清出储物空间",
+    "每次来货读意图，确认数量、价格与货物状态"
+  ],
+  "pitfalls": [
+    "付了 200/250 就等货自动到：不会",
+    "把一次赠送当长期免费供应",
+    "因为「化学/药商 Demo 锁」就不攒钱：正式版该锁无生效路径，两项无前置、应可直接购买（待实机确认）"
+  ],
+  "effects": [
+    "phone_order → 现金支出、货物在若干天后由快递员送达"
+  ],
+  "guards": [
+    "储物空间不足时不批量下单"
+  ],
+  "keywords": [
+    "BREWER",
+    "MINER",
+    "CHEMIST",
+    "PHARMA",
+    "红魔鬼",
+    "GP 采矿合作社",
+    "快递员"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.phone.contacts",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-supply-contacts"
+  ],
+  "related": [
+    "phone-supplier-orders",
+    "phone-contact-numbers",
+    "network-industry-table",
+    "wholesale-batch-deal"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-supply-contacts",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

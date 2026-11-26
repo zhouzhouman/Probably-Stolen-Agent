@@ -1,0 +1,50 @@
+{
+  "id": "risk-values-crime-luck",
+  "title": "犯罪值与幸运值：卖违禁品前的两个数",
+  "category": "risk",
+  "summary": "risk.crime_value 累计犯罪值决定盘查/没收风险；risk.luck 影响随机判定，二者此前都不可见。",
+  "facts": [
+    "/state 的 risk 段：crime_value（累计犯罪值）/ crime_count（犯罪记录条数）/ contraband_crime（违禁品相关）/ trafficking_crimes（走私次数）。",
+    "数据源是 PlayerStore.secData（SecData.GetTotalCrimeValue 等）。",
+    "risk.luck 来自 HealthData.GetLuck()；liquid_luck_days_left 是「液体幸运」剩余天数。",
+    "犯罪值越高，治安部盘查与没收的风险越大（具体阈值未在源码常量中给出，按趋势决策）。"
+  ],
+  "actions": [
+    "卖违禁品/赃物前先看 risk.crime_value 的变化趋势",
+    "被盘查风险高时优先清空违禁品或暂停交易"
+  ],
+  "pitfalls": [
+    "只看现金不看犯罪值，短期赚了但把盘查招来。",
+    "把幸运值当常量：它有临时加成（液体幸运）会随天数衰减。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "犯罪值",
+    "幸运值",
+    "盘查",
+    "risk",
+    "违禁品"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "decompile_full/SecData.cs",
+    "decompile_full/HealthData.cs"
+  ],
+  "confidence": 0.88,
+  "verified_at": "2026-11-10",
+  "related": [
+    "contraband-tier-markup"
+  ],
+  "source": "decompile:SecData.cs",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false
+}

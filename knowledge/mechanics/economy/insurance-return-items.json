@@ -1,0 +1,59 @@
+{
+  "id": "insurance-return-items",
+  "title": "保险免除当晚失窃判定（不是理赔返还）",
+  "category": "economy",
+  "summary": "投保当晚不走失窃判定，货不会被拿走；没有现金赔款，也没有「次晨追回」。",
+  "facts": [
+    "投保并生效的当晚，夜间盗窃判定根本不执行物品移除：代码只把连续未投保计数清零、记一条日志，然后掷 6% 只用于生成「Wild 的人找到小偷」叙述（PlayerStore.cs:2126-2137）。",
+    "未投保才走失窃路径：基础 33（下层区「被针对」改 66），再叠加 5×累计未投保夜数，治安保护再减 16，掷中后随机拿一件（PlayerStore.cs:2085-2121）。",
+    "因此不存在「理赔」环节：既不会按标价赔现金，也不存在先被拿走再还回来的物品流转。",
+    "6% 是叙事日志的判定率，不是丢货率，也不是赔款率；它对库存没有任何影响。",
+    "仅覆盖夜间盗窃，不覆盖检查扣押、垃圾桶清空、生产损耗。",
+    "「无法参保」（黑市拒保，可用保险数 0）与「沦为猎物」的保费 ×2 是两种不同状态：前者不能买，后者只是更贵。",
+    "2026-11-13 校正：旧结论「保险理赔＝次晨把被盗物品还回来、受保分支走追回分支」→ 新结论「投保当晚直接免除失窃判定、无任何物品移除与返还」，依据 PlayerStore.cs:2060-2141。"
+  ],
+  "actions": [
+    "睡前看 /state 的 services 里 INSURANCE 是否 is_using，再决定要不要摆贵重货",
+    "缴租资金只用现金算，不要给保险留「待赔」的想象空间"
+  ],
+  "pitfalls": [
+    "以为买了保险还会丢货：受保分支不进入失窃执行，货不会被拿走",
+    "把保险当万能兜底：检查扣押、垃圾桶清空、生产损耗都不管"
+  ],
+  "effects": [
+    "受保生效夜：dayWithoutInsurance 归零，无物品移除，仅可能生成一条 6% 叙事日志"
+  ],
+  "guards": [
+    "租期临近时不要把现金全花在保费上"
+  ],
+  "keywords": [
+    "Wild",
+    "追回日志",
+    "insurance_days_without",
+    "夜间日志"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "CLOSED"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/insurance-service",
+    "wiki: /zh/wiki/reputation/black-market-perks"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "insurance-fee-formula",
+    "insurance-rep-effects",
+    "night-theft-threshold"
+  ],
+  "source": "wiki:/zh/wiki/services/insurance-service",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false
+}

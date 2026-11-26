@@ -1,0 +1,49 @@
+{
+  "id": "recharger-powerbloc-charge-rate",
+  "title": "充电器 3 点、能量方块 2 点/晚",
+  "category": "production",
+  "summary": "夜间回电速度由设备决定：充电器每块 3 点、PowerBloc 每相邻电池 2 点，商用级升级后翻倍。",
+  "facts": [
+    "充电器（recharger）：店内已供电时，每晚为内部每块电池恢复 3 点电量；商用级供电升级后为 6 点。",
+    "能量方块（PowerBloc）：店内已供电时，每晚给相邻电池或相邻机器内电池恢复 2 点电量；商用级后为 4 点。",
+    "PowerBloc 排除充电器，效果可叠加；充电器与 PowerBloc 是两条独立路径。",
+    "两者都要求店内当晚已供电（已付电费或偷电），断电时不给电。"
+  ],
+  "actions": [
+    "按电池缺口选设备：多块电池用充电器，机器内电池用 PowerBloc",
+    "叠放 PowerBloc 前确认相邻关系"
+  ],
+  "pitfalls": [
+    "断电夜指望充电器补电：不供电就不充",
+    "以为 PowerBloc 能给充电器里的电池加速"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "recharger",
+    "powerblock",
+    "PowerBloc",
+    "energy_credit"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.machines",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/power-service"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "power-service-fee-formula",
+    "commercial-power-upgrade"
+  ],
+  "source": "wiki:/zh/wiki/services/power-service",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

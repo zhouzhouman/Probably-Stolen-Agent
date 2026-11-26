@@ -1,0 +1,51 @@
+{
+  "id": "day-cycle",
+  "title": "一天的标准流程与换日判定",
+  "category": "loop",
+  "summary": "白天经营 → 打烊 → 夜晚服务/外出 → 睡觉 → 次日清晨；打烊后营业动作会被硬拒。",
+  "facts": [
+    "store_state：MORNING（清晨，卷帘门关）→ OPEN（营业）→ CLOSED（已打烊）。",
+    "end_day = 打烊（卷帘门按钮）；end_day_confirm = 确认服务并直接入睡，点完立刻进次日。",
+    "打烊后营业动作（open_shutter/call_next/sell_item…）会被系统硬拒——重新开门会让当天结算回滚、天数卡住。",
+    "每天清晨先关掉日历/夜间报告面板（click_button CloseButton + path _AdvCalendar），否则挡住接待。"
+  ],
+  "actions": [
+    "MORNING：open_shutter 开张",
+    "queue.can_next=false 且店内无人：end_day",
+    "CLOSED：night_services → night_service → end_day_confirm",
+    "次日 MORNING：重复"
+  ],
+  "pitfalls": [
+    "CLOSED 时再点 end_day：重复打烊/报错",
+    "end_day_confirm 之后再做夜晚动作：重复换日、跳天"
+  ],
+  "effects": [
+    "成功后 day +1、store_state=MORNING、day_until_rent −1"
+  ],
+  "keywords": [
+    "打烊",
+    "换日",
+    "MORNING",
+    "CLOSED",
+    "end_day"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "MORNING"
+      }
+    ]
+  },
+  "evidence": [
+    "docs/09 十天连续游玩评估",
+    "r105 实测 end_day → night_services → end_day_confirm 正常 +1 天"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "source": "docs:09-十天连续游玩评估.md + r105 实盘 end_day 链路"
+}

@@ -1,0 +1,51 @@
+{
+  "id": "module-expansion-extraction",
+  "title": "模组提取与舱位扩建",
+  "category": "production",
+  "summary": "基础提取器只有 6 次、扩建最多 2 次每次 +100 机器价值；卡住的模组别硬拆。",
+  "facts": [
+    "基础模组提取器初始 6 次使用，可无损取出卡住的模组，可用电子元件部分翻修，剩余次数看物品显示。",
+    "高级模组提取器无损取出且不损耗，但不负责修复已损坏的模组。",
+    "模组舱扩建套件一次性使用，符合条件的普通机器最多扩建 2 次，每次机器基础价值 +100，不适用化学等特殊机器。",
+    "损坏模组可用电子元件尝试修复，没有已确认的统一成功率。",
+    "报废模组用螺丝刀拆解回收，不能当作完好的加成模组使用。",
+    "化学设备模块装在搅拌机/加热板/化学成品机后，需提取器才能拆除。"
+  ],
+  "actions": [
+    "6 次用完前先规划要拆哪几件模组",
+    "扩建只投在会长期跑的核心机器上"
+  ],
+  "pitfalls": [
+    "把报废模组当加成件装上：0/0/0 且占槽位",
+    "扩建化学机器：套件明确不适用"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "基础模组提取器",
+    "高级模组提取器",
+    "模组舱扩建套件",
+    "化学设备模块",
+    "报废模组"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.inventory.owned.features",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/machine-modules"
+  ],
+  "confidence": 0.88,
+  "verified_at": "2026-10-24",
+  "related": [
+    "module-effects-and-nodes"
+  ],
+  "source": "wiki:/zh/wiki/terms/machine-modules",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,53 @@
+{
+  "id": "game-modes-and-failures",
+  "title": "模式差异与失败来源（Demo 2 档 / 1.0 四档）",
+  "category": "meta",
+  "summary": "困难模式无零售加价、无租金宽限、租金涨幅翻倍；欠租/被捕/哨兵崩溃/被退休都会结束存档。【1.0 为 4 档 cozy/normal/hard/challenge，本卡只覆盖 Demo 的普通/困难/无尽三口径】",
+  "facts": [
+    "困难模式：售货不享受零售加价、开局无租金宽限、部分服务更贵、租金涨幅翻倍。",
+    "普通模式使用常规销售加价、租金与服务规则；无尽模式部分剧情事件与顾客不再出现。",
+    "跳过开场会跳过介绍流程，部分教程奖励改为开局提供。",
+    "已知失败来源：拖欠租金、治安处罚导致被捕或处决、哨兵崩溃、卡特尔关系中的「被退休」。",
+    "买断与偿清抵押各有独立结局文本；同化、爆炸、暗杀、私刑、店铺收回等结局文本存在，但不证明每条剧情在 Demo 可达。",
+    "本页未给出四种模式的倍率数字表，也未给出结局的具体触发天数。",
+    "「租金涨幅翻倍」与租金页的 ×1.10 是同一件事（每期涨幅 5% → 10%），细则见 rent-increase-rate，不要在两张卡里各写一半。",
+    "2026-11-13 校正：旧结论「模式只有普通/困难两档」→ 新结论「1.0 为四档 cozy/normal/hard/challenge，本卡只覆盖 Demo 口径」，依据 tools/decompile_full/Difficulty.cs:15-21 与 :386-389（cozy 100 Price Gouge / normal 200 Mark Up / hard 300 Thin Margins / challenge 400 Red Ink）。"
+  ],
+  "actions": [
+    "困难模式按「无零售加价 + 租金涨幅翻倍」重算首周现金流",
+    "无尽模式不要指望所有剧情顾客出现"
+  ],
+  "pitfalls": [
+    "在困难模式用普通模式 15 的零售加价做定价模型",
+    "把资源里的结局文本当 Demo 可达成目标规划"
+  ],
+  "keywords": [
+    "困难模式",
+    "无尽模式",
+    "零售加价",
+    "被退休"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.difficulty.id",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/game-modes-and-endings",
+    "wiki: /zh/wiki/terms/rent-and-loans（交叉核对租金涨幅）"
+  ],
+  "related": [
+    "water-auto-vending-markup",
+    "addiction-withdrawal-penalty",
+    "rent-increase-rate"
+  ],
+  "confidence": 0.88,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/game-modes-and-endings",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,52 @@
+{
+  "id": "wanted-report",
+  "title": "通缉犯/伪人：举报拿悬赏",
+  "category": "security",
+  "summary": "sec_button_lit/can_report 时 report_client 拿 report_reward，但扣目标派系声望。",
+  "facts": [
+    "举报成功：现金 +report_reward，目标派系声望 −reputation_penalty。",
+    "伪人（is_aug）可先正常交易，再 enter_shooting_mode → shoot，最后 report_client 再拿一次悬赏。",
+    "普通顾客错报会掉声望，别乱按。"
+  ],
+  "actions": [
+    "can_report → report_client",
+    "伪人：交易 → enter_shooting_mode → shoot → report_client"
+  ],
+  "pitfalls": [
+    "对普通顾客举报",
+    "伪人不走举报直接开枪，少拿悬赏"
+  ],
+  "effects": [
+    "现金 +report_reward",
+    "目标派系声望 −penalty"
+  ],
+  "keywords": [
+    "report_client",
+    "is_wanted",
+    "伪人"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client.is_wanted",
+        "op": "truthy"
+      },
+      {
+        "field": "visible_info.client.sec_button_lit",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "r100 实测 +75、声望 -6"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "source": "来源待核实：仅 r100 实盘记录（声誉 −6 / 悬赏 +75），无 wiki 页面或源码可引",
+  "guards": [
+    "本卡数值未经 1.0 核对（source 已标「来源待核实」，仅 r100 单次实盘）：report_reward 与声望惩罚的具体数额不要写死进预算，以实际结算与 /state 为准。"
+  ]
+}

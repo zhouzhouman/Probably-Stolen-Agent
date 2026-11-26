@@ -1,0 +1,47 @@
+{
+  "id": "wholesale-direction",
+  "title": "批发按钮 = 我方付钱买入，不是卖出",
+  "category": "trade",
+  "summary": "AcceptWholesale 的真实语义是收购对方整批货；卖自己的货要用 accept_offer / sell_item。",
+  "facts": [
+    "table.wholesale_cost 是『我要付的金额』（如 162 (-19%) = 付 162，对方让 19%）。",
+    "点 AcceptWholesale 后现金会减少、库存增加；成交后系统自动 transferButton 收纳进储物区。",
+    "卖出自己的货：accept_offer（面板不可用时 sell_item），方向以现金增减为准。"
+  ],
+  "actions": [
+    "算得过来才 click_button AcceptWholesale",
+    "卖货走 accept_offer / sell_item / sell_table"
+  ],
+  "pitfalls": [
+    "把 AcceptWholesale 当卖出按钮：2026-10-24 实测卖 100 元化学品反付 162，净亏 62",
+    "批发后不收纳：前台被占满，下一位顾客物品会被销毁"
+  ],
+  "effects": [
+    "现金减少 = 买入成功；库存 +N",
+    "现金增加 = 卖出成功"
+  ],
+  "guards": [
+    "现金 ≥ rent_due×3 才允许大额进货"
+  ],
+  "keywords": [
+    "AcceptWholesale"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.table.nego_buttons.wholesale",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "r101 实盘：现金 14,425→14,263，换来 4 咖啡因片 + 2 药膏",
+    "tests/test_dead_action.py::test_wholesale_buy_blocked_when_rent_unaffordable"
+  ],
+  "confidence": 0.98,
+  "verified_at": "2026-10-24",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "source": "test:tests/test_dead_action.py:565 + live:r101 实盘"
+}

@@ -1,0 +1,57 @@
+{
+  "id": "alarm-intercept-bonus",
+  "title": "警报拦截率加一个点",
+  "category": "security",
+  "summary": "警报实际拦截率＝显示值+1pp，显示 99 即全拦，但必须自备独立电源。",
+  "facts": [
+    "警报显示值 = 50 ＋ 当前性能加成，最低显示 0。",
+    "实际拦截概率比显示值多 1 个百分点，最高 100%：显示 50 → 实际 51%；显示 99 已能拦截全部随机结果。",
+    "警报需要自己的独立电源与启用状态，缴纳店铺电费不能替代装电源。",
+    "模组效率对应耗电、性能对应防盗率加成；品质对该模组效果无影响。",
+    "警报只影响普通夜间盗窃这一段，不影响盘查、没收。",
+    "下层区「被针对」会把事件阈值从 33 提到 66，警报仍只拦一次。",
+    "治安部声望 ≤ −40 会启用「应该是风声吧」SEC_ALARM_IGNORED；wiki 只给出状态名与门槛，未给效果参数，实战前必须按面板与日志核对警报是否仍生效。"
+  ],
+  "actions": [
+    "睡前检查警报电源槽电量与启用状态",
+    "把性能模组堆到显示 99 以全拦"
+  ],
+  "pitfalls": [
+    "缴了电费就当警报生效：欠费断电时警报无电",
+    "把警报当保险：它只在事件通过后掷一次拦截"
+  ],
+  "effects": [
+    "拦截成功则该晚不丢货；拦截失败进入候选随机选件"
+  ],
+  "guards": [
+    "储能不足时优先保警报电源，不要拿去跑机器"
+  ],
+  "keywords": [
+    "security_alarm",
+    "防盗率",
+    "性能模组",
+    "is_power_on"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.rent.is_power_on",
+        "op": "falsy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/theft-and-insurance",
+    "wiki: /zh/wiki/services/power-service",
+    "wiki: /zh/wiki/reputation/security-perks"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "night-theft-threshold"
+  ],
+  "source": "wiki:/zh/wiki/terms/theft-and-insurance",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

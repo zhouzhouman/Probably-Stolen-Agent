@@ -1,0 +1,62 @@
+{
+  "id": "machine-production-loop",
+  "title": "机器生产闭环：投料→过夜→取产→卖",
+  "category": "production",
+  "summary": "机器槽位含电池/模组/容器/产出；产出必须取出才能卖，过夜结算。",
+  "facts": [
+    "机器在 visible_info.machines 中：i=下标，slots[].s=槽位，槽内 items[].v=价值；常见槽 0 电池、1 模组、其余容器/产出。",
+    "水分收集器放 water_pitcher 过夜产水：实测水罐价值 91 → 119（2026-10-25 实机）。",
+    "循环水养殖槽内有鱼苗/鱼子/饲料/滤芯/储水箱，过夜成长并产出鱼片/鱼子。",
+    "产出留在机器里不能交易：必须 machine_take 取到库存，再按 item_types 卖给匹配买家。",
+    "machine_take 不写 slot 会跳过 energy_credit / system_module_* / postit，只取产出，避免机器停产。",
+    "熔炉配方 2 份废料/矿石 → 1 金属锭，需通电且过夜。"
+  ],
+  "actions": [
+    "machine_take {\"machine\": i, \"slot\": s} 取产出",
+    "machine_put {\"machine\": i, \"slot\": s, \"item\": \"water_pitcher\"} 投料",
+    "打烊+睡觉让机器结算，次日在 machines 里看新产出"
+  ],
+  "pitfalls": [
+    "把电池/模组一起取走 → 机器停产",
+    "产出没取出就直接卖 → 库存里没有该物品",
+    "水罐未装满就卖 → 价值低"
+  ],
+  "effects": [
+    "取产：物品进入主库存或储备区，槽位清空",
+    "过夜：容器填充、鱼成长、矿石熔炼"
+  ],
+  "keywords": [
+    "machines",
+    "machine_take",
+    "machine_put",
+    "water_pitcher",
+    "moisture_farm",
+    "ras",
+    "furnace",
+    "金属锭"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.machines",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "实机 2026-10-25：水罐 91→119；RAS 鱼 3→12",
+    "bridge GET /machines + machine_take"
+  ],
+  "related": [
+    "machine-power-slot",
+    "water-machine-quality",
+    "fish-growth-feed",
+    "furnace-smelting-ratio"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-25",
+  "source": "bridge:/machines + 实机",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,51 @@
+{
+  "id": "water-machine-quality",
+  "title": "净水器与集水器质量分档",
+  "category": "production",
+  "summary": "净水器质量越高上限系数越低（质量 ≥200% 直接 0）；集水器质量决定产水档位与产量。",
+  "facts": [
+    "净水器质量加成分档系数：<15% → 1.0；15–24% → 0.8；25–49% → 0.6；50–74% → 0.3；75–99% → 0.2；100–199% → 0.1；≥200% → 0.0。",
+    "该系数乘的是各液体组分的上限参数，不是每晚净化百分比；0.1 不等于产出 10% 纯度的水。",
+    "水分收集器产水档位由质量加成 Q 决定：<−50% 沟渠水；−50%~<0 铁锈水；0~<50 幽灵水；50~<100 基础水；100~<150 优质水；≥150 纯水，边界按较高档处理。",
+    "水分收集器每次产水 = max(0, 1,000 + 10 × P) 毫升，P 为性能加成数值：P=0 → 1,000ml、P=50 → 1,500ml、P=100 → 2,000ml，实际受容器空余限制。",
+    "净水器需储水容器 + 能量 + 过夜；水分收集器需接水容器 + 能量 + 过夜。"
+  ],
+  "actions": [
+    "要产纯水就把集水器质量堆到 ≥150%",
+    "净水器质量堆到 200% 以上会得到 0.0 系数，别堆过头"
+  ],
+  "pitfalls": [
+    "把 0.1 系数理解成「只净化 10%」：它是组分上限乘数",
+    "以为加格子/加电池能提高集水器水质：只由质量决定"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "净水器",
+    "水分收集器",
+    "质量模组",
+    "储水容器"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.machines",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/water-purification",
+    "wiki: /zh/wiki/occupations/occupation-water-merchant"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "water-grade-tiers",
+    "generic-module-stats"
+  ],
+  "source": "wiki:/zh/wiki/terms/water-purification",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

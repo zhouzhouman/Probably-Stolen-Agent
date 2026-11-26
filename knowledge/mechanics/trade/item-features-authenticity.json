@@ -1,0 +1,56 @@
+{
+  "id": "item-features-authenticity",
+  "title": "物品特性与真伪：known=false 时看到的是表面",
+  "category": "trade",
+  "summary": "真假货的分辨依据是物品特性条目；接口按玩家视角输出，未验出时只给表面描述（可能是假的）。",
+  "facts": [
+    "每件物品可带多条 ItemFeature：featureType（Normale/Event/Special/Temporary…）+ fakeCondition + realCondition。",
+    "ItemCondition 有 display（人话）/ identifier（机器可读）/ modValue（数值修正）。",
+    "判定是否已验出：isFeatureDiscovered（已发现）或 isExposing（正在暴露）任一为真。",
+    "/state 的物品 features[]：known=false 给 publicDisplay + fakeCondition；known=true 给 actualDisplay + realCondition。",
+    "纯度类特性常用 category CATEGORY_CHEMICAL_PURITY（化学品/水的纯度走这一套）。",
+    "容器类物品的 children[] 是箱子里实际装的东西。"
+  ],
+  "actions": [
+    "估价前先看 features[].known，只有 known=true 的条目能作为真伪依据",
+    "交付/收购高价值货前，确认关键特性已 known=true"
+  ],
+  "pitfalls": [
+    "把 known=false 的 text 当成真实品相——那正是假货能骗过你的地方。",
+    "只看 name 判断货好不好（外观名与真实品相可以不一致）。",
+    "忽略 children：箱子/容器里的东西不在主库存列表里。"
+  ],
+  "effects": [],
+  "guards": [
+    "known=false 的关键特性存在时，不要以高价收购或作出真伪结论"
+  ],
+  "keywords": [
+    "真伪",
+    "验货",
+    "品相",
+    "特性",
+    "features",
+    "假货"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.inventory.owned",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "decompile_full/ItemFeature.cs",
+    "decompile_full/ItemCondition.cs"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-11-10",
+  "related": [
+    "appraisal-rank-fees"
+  ],
+  "source": "decompile:ItemFeature.cs",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false
+}

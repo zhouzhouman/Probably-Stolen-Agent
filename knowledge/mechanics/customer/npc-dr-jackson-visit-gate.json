@@ -1,0 +1,59 @@
+{
+  "id": "npc-dr-jackson-visit-gate",
+  "title": "博士设备来访 D≥12 且 D%7=5",
+  "category": "customer",
+  "summary": "设备分支只在 D≥12 且 D 对 7 余 5 时出现；LLAVOIDED 一开就直接停。",
+  "facts": [
+    "D=6 是初次见面，只是见面，不等于当天就有设备库存。",
+    "普通设备生成分支要求 D≥12 且 D 对 7 的余数为 5，即 D=12、19、26…每 7 天一档。",
+    "下层区负向特权 LLAVOIDED 门槛为 −80，启用后这条设备分支直接停止。",
+    "工具箱上柜分支要求 D≥14，并跳过已在所检查物品集合中的同类物品。",
+    "设备库存会检查现有物品与日计数，某次库存快照不是永久货单。",
+    "扩容来访（储物舱、机器区）会检查已拥有的相关扩展，价格以本次交易为准。"
+  ],
+  "actions": [
+    "按 D%7==5 的节奏留出现金等设备来访，别每天干等",
+    "买工具箱前确认 D≥14",
+    "把下层区声望守在 −80 以上"
+  ],
+  "pitfalls": [
+    "把 D=6 初见当成每天都有货",
+    "声望跌破 −80 后还在等博士上门：分支已停"
+  ],
+  "effects": [
+    "满足分支 → 生成设备/模组来访；交易后库存与现金按本次结算"
+  ],
+  "guards": [
+    "visible_info.reputations 中 lower_level ≤ −80 时不排设备采购预算"
+  ],
+  "keywords": [
+    "杰克逊博士",
+    "LLAVOIDED",
+    "工具箱",
+    "模组",
+    "储物舱"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.locations",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-dr-jackson"
+  ],
+  "related": [
+    "npc-visit-state-rules",
+    "ll-perk-thresholds",
+    "generic-module-stats",
+    "network-shop-table"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-dr-jackson",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,56 @@
+{
+  "id": "npc-dr-jackson-investment-tiers",
+  "title": "杰克逊投资 400 与 650",
+  "category": "economy",
+  "summary": "投资 I 基础 400，投资 II 基础 650 需先买 I；两者是否可购买一律看 /state 与界面，wiki 的「Demo 不开放 II」在正式版无生效路径。",
+  "facts": [
+    "投资 I / II 的价目与前置见 network-shop-table，本卡只记 Demo 限制与预算口径。",
+    "投资 II 基础价 650、前置投资 I（NetworkUpgradeList.cs:1116/1118）；它带 lockInDemo=true（:1119），但该判定函数 NetworkUpgrade.IsLockedInDemo()（NetworkUpgrade.cs:654-668）在正式版零调用者，购买判定走 IsReady()（:844-859），故正式版应可购买（待实机确认）。",
+    "投资 I 与投资 II 是两笔独立网络付款，不能合并预算。",
+    "下层区传奇等折扣作用于网络结算，基础费用与实际付款不是两笔费用。",
+    "2026-11-13 校正：旧结论「投资 II 在 Demo 中未开放，攒够 650 也买不到」→ 新结论「lockInDemo 判定零调用者，正式版应可购买（待实机确认）」，依据 NetworkUpgrade.cs:654-668/844-859 与 NetworkUpgradeList.cs:1116/1118/1119。"
+  ],
+  "actions": [
+    "投资 I 400 与投资 II 650 都可计入预算：II 需先买 I（NetworkUpgradeList.cs:1116/1118），lockInDemo 判定零调用者（NetworkUpgrade.cs:654-668）",
+    "买 I 前确认现金 − 400 后仍能覆盖 rent_due"
+  ],
+  "pitfalls": [
+    "认为投资 II（650）买不到：wiki 的「Demo 不开放 II」在正式版无生效路径，可购买但需实机确认",
+    "把 400 与 650 当一次付清"
+  ],
+  "effects": [
+    "购买投资 I → 现金 −400（含折扣另算），项目记录写入"
+  ],
+  "guards": [
+    "现金 − 400 < rent_due 时推迟购买投资 I"
+  ],
+  "keywords": [
+    "杰克逊投资",
+    "投资 I",
+    "投资 II",
+    "400",
+    "650"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.locations",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-dr-jackson"
+  ],
+  "related": [
+    "network-shop-table",
+    "network-upgrade-demo-lock",
+    "npc-dr-jackson-visit-gate"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-dr-jackson",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

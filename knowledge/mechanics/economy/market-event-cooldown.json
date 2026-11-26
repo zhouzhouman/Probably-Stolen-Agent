@@ -1,0 +1,53 @@
+{
+  "id": "market-event-cooldown",
+  "title": "事件冷却 3/5/10 天",
+  "category": "economy",
+  "summary": "冷却在事件移出活跃列表时才开始计时，归零前同一入口不能再抽中；不是固定重现周期。",
+  "facts": [
+    "普通事件默认冷却 3 天；奥克西莫成瘾上升 5 天；下层区暴民私刑 10 天。",
+    "冷却在事件移出活跃列表时登记，随后按日递减，归零前该事件不能由同一随机入口再次抽中。",
+    "冷却不是从事件开始算的固定重现周期；持续 2 天的事件实际再出现间隔 ≈ 2+3 天起。",
+    "事件的重要度（3–10）不能当冷却天数使用。",
+    "营养果丰收（3 天/食物 −20%）与流星雨（3 天/材料 +50%）有定义但未注册进当前随机池。",
+    "当前观测层没有「事件冷却」字段，需扩展后才能按条件触发。"
+  ],
+  "actions": [
+    "记录事件冷却",
+    "不依赖同一事件重演"
+  ],
+  "pitfalls": [
+    "按「重要度 8」推算 8 天冷却 → 实际该事件冷却可能只有 3 天。",
+    "等营养果丰收/流星雨出现 → 当前池不含这两条。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "冷却",
+    "重要度",
+    "营养果丰收",
+    "流星雨",
+    "未注册随机池"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.afterhour_events",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/market-events",
+    "wiki: /zh/wiki/terms/news-and-events"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "market-event-weights",
+    "market-event-price-mods"
+  ],
+  "source": "wiki:/zh/wiki/terms/market-events",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

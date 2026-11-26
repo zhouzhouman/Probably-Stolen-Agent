@@ -1,0 +1,63 @@
+{
+  "id": "investigation-daily-growth",
+  "title": "调查进度日增长",
+  "category": "risk",
+  "summary": "E<80 时每项犯罪额每日−20，再按档位加 0/2/6/9/12/20/33 点，封顶 100。",
+  "facts": [
+    "新一天结算：若结算前 E < 80，每项当前犯罪额分别 −20（最低 0）；E ≥ 80 时停止这种自然衰减。",
+    "再按衰减后总值取基础增长：0–99 → +0；100–299 → +2；300–849 → +6；850–1199 → +9；1200–1499 → +12；1500–2499 → +20；≥2500 → +33。",
+    "特权修正顺序：①「值得信赖」减半并舍去小数 →②「头号通缉」×1.5 取整（无则「重点盯防」×约 1.2 取整）→③「联名检举」×1.5 取整。",
+    "修正后加入 E，达到 100 封顶；案件未派员且总值 >0 时会排入治安官来访，排队不等于当场判罚。",
+    "算例：结算前 340 与 180、E=30、无特权 → 各减 20 得 320+160=480，落 +6 档，结算后 E=36。",
+    "总值达到 2500 也不会让调查停止增长。",
+    "当前观测层无「调查进度 E」字段，需扩展。",
+    "特权门槛已定位：「重点盯防」SEC_WATCHLIST 声望 ≤ −20（×1.2）、「头号通缉」SEC_PRIORITY 声望 ≤ −60（×1.5）、「值得信赖」SEC_TRUSTED 声望 ≥ 60（增长减半）。"
+  ],
+  "actions": [
+    "E≥80 前把每项犯罪额压到 <100 让增长归零",
+    "有「值得信赖」时大额违法交易更安全（增长减半）"
+  ],
+  "pitfalls": [
+    "以为总值 2500 是上限：增长只是到 +33 档",
+    "忽略「先衰减再取档」顺序，会把档位算高"
+  ],
+  "effects": [
+    "结算后 E 增加并封顶 100；E≥80 后不再自然衰减"
+  ],
+  "guards": [
+    "E≥80 时立刻清案或请摆平者"
+  ],
+  "keywords": [
+    "调查进度",
+    "值得信赖",
+    "头号通缉",
+    "重点盯防",
+    "联名检举",
+    "清案"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk.crime_value",
+        "op": "gte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/crime-and-investigation",
+    "wiki: /zh/wiki/reputation/security-perks"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "crime-ledger-entry",
+    "fixer-crime-reduction",
+    "sentence-threshold",
+    "sec-inspection-multipliers"
+  ],
+  "source": "wiki:/zh/wiki/terms/crime-and-investigation",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

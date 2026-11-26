@@ -1,0 +1,66 @@
+{
+  "id": "contraband-tier-markup",
+  "title": "违禁品四级加价",
+  "category": "trade",
+  "summary": "低/中/高/高危默认加价 35/70/100/150%，加价可配置不是常量。",
+  "facts": [
+    "默认加价：低级 +35%、中级 +70%、高级 +100%、高危级 +150%；折扣特征默认 −17%/−35%/−50%/−75%。",
+    "四级加价是存档里可配置的数值，不是写死常量；等级内部按 0–4 取值（无、低级、中级、高级、高危级）。",
+    "交易声望的严重违禁品倍率只从中级开始：中级 ×2.0、高级 ×2.5、高危级 ×3.0；低级没有 ×1.5 这一档。",
+    "等级同时决定盘查处置：低级口头警告、中级没收、高级没收并罚款、高危级查封店铺并立即逮捕。",
+    "管制等级与违禁等级是两套标记：物品可以只是管制，也可以同时是违禁品。",
+    "违禁描述管制属性、赃物描述来源，两者可以同时存在。",
+    "当前观测层无「物品违禁等级」字段（item_types 不含等级），需扩展。",
+    "wiki 明确「零售加价另有合法性、物品和顾客接受条件」，加价不是可任意设定的全局系数。",
+    "retail_markup 由难度决定（cozy 20 / normal 15 / hard 0 / challenge 0）；1.0 实机 cozy 快照为 20，Demo 快照为 15。它与四级违禁加价的映射关系仍未确认，不能当百分比直接相乘。",
+    "当前观测层只暴露 retail_markup 一个数值，没有「违禁等级 → 加价」的映射字段，需扩展观测。",
+    "2026-11-13 校正：旧结论「低级 +35%/中级 +70%/高级 +100%/高危级 +200%，折扣特征 −17/−35/−50/−100」→ 新结论「高危级 +150%、折扣特征最高 −75%」，依据 tools/decompile_full/PlayerStore.cs:100/103/106/109（contrabandMarkupLow 35/Mid 70/High 100/Critial 150）+ ItemFeatureList.cs:593/607/621/635（Discounted*Contraband 取 markup/2）。"
+  ],
+  "actions": [
+    "收违禁品前算「加价 × 能否合法持有 × 有无买家」",
+    "高加价货压库会占用租金/能源/原料现金"
+  ],
+  "pitfalls": [
+    "按 35/70/100/150 硬编码：换版本或存档可能不同",
+    "给低级违禁品算 ×1.5 声望倍率：该档不存在"
+  ],
+  "effects": [
+    "成交后按等级倍率放大交易声望（中/高/高危）"
+  ],
+  "guards": [
+    "现金不足以覆盖下期租金时禁止进高危级货"
+  ],
+  "keywords": [
+    "违禁等级",
+    "管制等级",
+    "折扣特征",
+    "交易声望"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.table.nego_open",
+        "op": "truthy"
+      },
+      {
+        "field": "visible_info.economy.contraband_markup",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/contraband"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "inspection-severity-ladder",
+    "nego-four-directions",
+    "perfume-trade-bonus",
+    "weapon-permit-ceiling"
+  ],
+  "source": "wiki:/zh/wiki/terms/contraband",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

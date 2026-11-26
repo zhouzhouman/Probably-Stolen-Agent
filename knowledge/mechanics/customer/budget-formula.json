@@ -1,0 +1,53 @@
+{
+  "id": "budget-formula",
+  "title": "顾客预算加法公式",
+  "category": "customer",
+  "summary": "最终预算 = B + 三项以 B 为基数的加成各自取整后相加，不是连乘。",
+  "facts": [
+    "最终预算 = B + R(B × 好评加成) + R(B × 供应商加成) + R(B × 吸引力加成)，R 为取最近整数。",
+    "精确落在半整数时取偶数；每项分别取整，三项都以 B 为基数，加成相加而非连乘。",
+    "10% 档使用浮点近似系数，半整数附近可能有 1 点差异。",
+    "算例：B=240、吸引力 600、已解锁「好评如潮」→ 240+60+120=420；再解锁「可靠供应商」→ 再 +120，合计 540。",
+    "预算加成只在生成顾客时算一次，D 取生成当天的内部日计数。"
+  ],
+  "actions": [
+    "按公式估算顾客预算",
+    "提升吸引力"
+  ],
+  "pitfalls": [
+    "用 B 的 (1+25%)×(1+50%) 连乘 → 高估（应为相加：240+60+120=420，非 450）。",
+    "用界面日期代替内部日计数 D 算 B → 偏差。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "最终预算",
+    "R 取整",
+    "好评加成",
+    "供应商加成",
+    "吸引力加成",
+    "budget_left"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/customer-budgets"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "budget-attractiveness-tiers",
+    "budget-perk-unlocks",
+    "base-budget-by-buyer"
+  ],
+  "source": "wiki:/zh/wiki/terms/customer-budgets",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

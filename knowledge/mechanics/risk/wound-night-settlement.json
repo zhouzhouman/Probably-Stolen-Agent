@@ -1,0 +1,54 @@
+{
+  "id": "wound-night-settlement",
+  "title": "伤口睡眠结算：10%恶化/50%稳定",
+  "category": "risk",
+  "summary": "不稳定伤口先 10% 恶化 +1，未恶化再 50% 稳定；已稳定伤口每夜回 4 点。",
+  "facts": [
+    "伤口在睡眠时结算，不是受伤当场结算。",
+    "不稳定伤口先做 10% 恶化判定，成功则伤势 +1；未恶化再做 50% 稳定判定。",
+    "本夜刚稳定的伤口不会立即走恢复分支。",
+    "结算开始时已经稳定的伤口恢复 4 点，最低 0。",
+    "伤势已大于 10 的分支会先限制到 10、稳定伤口，并恢复 1 点。"
+  ],
+  "actions": [
+    "受伤当晚就用绷带处理，避免带着不稳定伤口睡",
+    "把「稳定后每夜 −4」当恢复节奏，不按固定天数算"
+  ],
+  "pitfalls": [
+    "把一次受伤换算成固定休养天数：实际是概率链",
+    "伤势 >10 反复卡在 10，恢复被吃掉"
+  ],
+  "effects": [
+    "睡眠结算 → 伤势 ±，稳定者 −4"
+  ],
+  "guards": [
+    "伤势不稳定时不要继续外出拾荒"
+  ],
+  "keywords": [
+    "不稳定伤口",
+    "残伤",
+    "wound"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "CLOSED"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/health-and-addiction"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "injury-lockout-threshold",
+    "night-sleep-gate"
+  ],
+  "source": "wiki:/zh/wiki/terms/health-and-addiction",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

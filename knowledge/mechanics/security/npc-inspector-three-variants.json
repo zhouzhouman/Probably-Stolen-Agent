@@ -1,0 +1,60 @@
+{
+  "id": "npc-inspector-three-variants",
+  "title": "盘查员三种变体与两类检查",
+  "category": "security",
+  "summary": "普通/懒惰/可疑盘查员共用制服；例行检查与展柜触发的全面检查是两套对话。",
+  "facts": [
+    "检查工厂的三个名称：治安部盘查员、懒惰的治安部盘查员、可疑的治安部盘查员。",
+    "检查分两类：普通例行对话；以及「有人在展示柜发现可疑物品」引发的全面检查。",
+    "变体差异不能由制服或共享肖像推断执法范围，要按当次对话判定。",
+    "盘查员只管检查货物；伦警官的剧情检查是独立一套，不是同一人物。",
+    "违禁品、赃物、需许可商品是三类不同问题，不能合并判断。",
+    "普通储物舱不是自动免检区；某变体过去没查某处，不代表以后不查。",
+    "预警、治安宽限、证据处理来自不同网络项目，买项目不等于本次检查被规避。"
+  ],
+  "actions": [
+    "被查前先看对话判断是例行还是展柜触发的全面检查",
+    "展柜里不放违禁品，避免触发全面检查",
+    "把敏感货放暗格，不要放普通储物舱"
+  ],
+  "pitfalls": [
+    "拿「懒惰的」当不查：变体差异未量化",
+    "以为买了检查预警，本次盘查就不来了"
+  ],
+  "effects": [
+    "检查通过 → 无扣款；查出违禁/赃物 → 按盘查机制罚款与入账"
+  ],
+  "guards": [
+    "visible_info.rent.shutter_closed 为 true 时不放行检查"
+  ],
+  "keywords": [
+    "治安部盘查员",
+    "懒惰的治安部盘查员",
+    "可疑的治安部盘查员",
+    "展示柜",
+    "储物舱"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-security-inspectors"
+  ],
+  "related": [
+    "inspection-schedule-band",
+    "inspection-severity-ladder",
+    "smuggler-bay-variants",
+    "showcase-contraband-ban"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-security-inspectors",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,50 @@
+{
+  "id": "expedition-location-dumping-grounds",
+  "title": "远征地点只有垃圾倾倒场",
+  "category": "quest",
+  "summary": "本版唯一地点 dumping_grounds：危险 1、人流 5、合法性 5，开局即解锁。",
+  "facts": [
+    "本版只找到 dumping_grounds（垃圾倾倒场）一个店铺远征地点，危险等级 1、人流 5、合法性 5，出厂即解锁。",
+    "可能危险：敌对拾荒者、有毒废料、机械陷阱；可能战利品：废金属、旧电子件、稀有元件。",
+    "危险等级、人流、合法性三个字段的消费方未定位，不能假设它们参与实际判定。",
+    "选点顺序：先排除未解锁 → 读危险 → 看人流/合法性/机会类型 → 最后比战利品。",
+    "地点是派遣目的地，兴趣点是途中遇到的具体机会，同一地点不能用一个固定收益描述。",
+    "2026-11-13 标注：本卡内容全部来自 2026-10-24 Demo 期静态解包/wiki；1.0 正式版未实装远征与雇工（demo-occupations/远征代码仍存在，唯一解锁入口是开局天赋 expedition_organizer，StartingPerkContent.cs:93-96），官方 Roadmap 将 Junker+远征列为 post-launch。",
+    "2026-11-14 命名核对：本卡沿用的 `dumping_grounds`（复数）是 Demo 期远征地点表的名字；1.0 实机 /state 的 locations[] 只有三个 id——`dumping_ground`（单数，垃圾倾倒场）、`commissary`、`dr_jackson`，均 available=true。远征系统未实装，两者的对应关系无法用实机验证，引用地点 id 时以 /state.locations[].id 为准。"
+  ],
+  "actions": [
+    "【post-launch 未实装，勿执行】远征只派垃圾倾倒场，不要等地其他地点",
+    "【post-launch 未实装，勿执行】按兴趣点实际结果记账，不按地点名预判收益"
+  ],
+  "pitfalls": [
+    "以为危险等级 1 就没风险：事故判定根本不看危险等级"
+  ],
+  "effects": [
+    "派遣后雇工状态变为「远征中 1」"
+  ],
+  "guards": [
+    "1.0 正式版未实装远征/雇工系统（官方 Roadmap 列为 post-launch，12 月中旬起）：不要按本卡派遣、招人或备货，本卡仅作战后参考。",
+    "地点未解锁时禁止派遣"
+  ],
+  "keywords": [
+    "dumping_grounds",
+    "垃圾倾倒场",
+    "危险等级"
+  ],
+  "triggers": {},
+  "evidence": [
+    "wiki: /zh/wiki/terms/expedition-locations"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "expedition-poi-ratio",
+    "expedition-run-structure"
+  ],
+  "source": "wiki:/zh/wiki/terms/expedition-locations",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "gated_until": "post-launch",
+  "keyword_only": true
+}

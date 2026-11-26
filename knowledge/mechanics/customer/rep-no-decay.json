@@ -1,0 +1,53 @@
+{
+  "id": "rep-no-decay",
+  "title": "声望没有自然衰减",
+  "category": "customer",
+  "summary": "本次静态检索未发现每日或每周声望衰减，攒下的声望不会自己掉。",
+  "facts": [
+    "本次静态检索未发现每日或每周的声望自然衰减（衰减率 0）。",
+    "声望变化只由交易、举报、特权与事件 4 类显式动作触发。",
+    "声望被钳制在 −200 到 200，超出部分不累计。",
+    "单笔交易声望反馈与区域事件（下层动荡、上层友好度、革命/治安/黑市力量）分别结算。",
+    "区域事件据条件排队行动，不能与单笔声望合并成 1 个固定数。"
+  ],
+  "actions": [
+    "可以长期养声望，不必担心放着掉",
+    "但被打下去也不会自动回升"
+  ],
+  "pitfalls": [
+    "以为声望会回流 → 掉到 −100 后需主动刷回"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "reputation",
+    "衰减",
+    "下层动荡",
+    "势力力量"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.reputations",
+        "op": "truthy"
+      },
+      {
+        "field": "visible_info.table.nego_open",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/faction-standing"
+  ],
+  "confidence": 0.8,
+  "verified_at": "2026-10-24",
+  "related": [
+    "rep-clamp-22-grades",
+    "rep-per-trade-formula"
+  ],
+  "source": "wiki:/zh/wiki/terms/faction-standing",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

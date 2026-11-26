@@ -1,0 +1,54 @@
+{
+  "id": "phone-cooldown-orders",
+  "title": "电话号码簿条件与 4–7 天冷却",
+  "category": "phone",
+  "summary": "须处于正常服务/冷却且拨通过一次才进电话簿；冷却 4/5/7/4/5 天，订单分次日与若干天。",
+  "facts": [
+    "号码进入电话簿的条件：状态为「正常服务」或「冷却」，且此前至少拨通过一次。",
+    "冷却：红魔鬼 4 天、矿业 5 天、药剂 7 天、化学 4 天、革命商人 5 天。",
+    "可订购品类为啤酒、矿石、奥克西莫注射器、梦尘各一套。",
+    "订单档期两档：次日送达，或界面显示若干天后送达；缺货对话会显示下一批还需等待天数。",
+    "首次建立供货关系时，联系人承诺次日送一份免费样品。",
+    "革命商人初始状态为不回应，需先建立联系；戒严期间拒接、被拉黑后别再拨。"
+  ],
+  "actions": [
+    "按冷却排补料：药剂 7 天最慢，提前下单",
+    "新联系人先拨通一次解锁电话簿"
+  ],
+  "pitfalls": [
+    "号码正确就以为能下单：可能不回应/冷却/已在店里",
+    "把「次日送达」当默认：还有若干天档"
+  ],
+  "effects": [
+    "下单 → 次日或若干天后送达；样品首次免费"
+  ],
+  "guards": [
+    "联系人处于冷却或未建立联系时禁止安排当日补料"
+  ],
+  "keywords": [
+    "cooldown",
+    "book_shown",
+    "革命商人",
+    "免费样品"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.phone.open",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/phone-contacts"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "phone-contact-numbers"
+  ],
+  "source": "wiki:/zh/wiki/terms/phone-contacts",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

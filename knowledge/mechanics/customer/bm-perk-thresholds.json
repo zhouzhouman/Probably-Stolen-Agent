@@ -1,0 +1,56 @@
+{
+  "id": "bm-perk-thresholds",
+  "title": "黑市特权 20/40/60 起",
+  "category": "customer",
+  "summary": "黑市正向 20/40/60，负向 −40 黑名单、−60 无法参保；盗亦有道恒定生效。",
+  "facts": [
+    "小牌掮客 BM_SMALL_TIME_BROKER ≥ 20；销赃信誉 BM_RELIABLE ≥ 40；地下网络 BM_NETWORK ≥ 60。",
+    "黑名单 BM_DISTRUSTED ≤ −40；无法参保 BM_UNINSURABLE ≤ −60。",
+    "盗亦有道 BM_HONOR 恒定生效，是 6 个派系中唯一不受当前声望影响的特权。",
+    "盗亦有道的说明与字段记录 1.5，但读取点未定位；黑市负向另在 ModReputation 分支 ×2。",
+    "无法参保是拒保（可用保险数量 0），不等于保险费加价。",
+    "黑名单的清洁费翻倍（×2）来自游戏说明，消费点未定位。"
+  ],
+  "actions": [
+    "把黑市守在 −39 以上，绝不到 −60（否则失去保险兜底）"
+  ],
+  "pitfalls": [
+    "刷到 −60 无法参保，夜间被盗全额自负"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "BM_HONOR",
+    "BM_UNINSURABLE",
+    "销赃信誉",
+    "盗亦有道"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.reputations.value",
+        "op": "gte",
+        "value": 20
+      },
+      {
+        "field": "visible_info.reputations.value",
+        "op": "lte",
+        "value": -20
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/reputation/black-market-perks",
+    "wiki: /zh/wiki/factions/black-market"
+  ],
+  "confidence": 0.92,
+  "verified_at": "2026-10-24",
+  "related": [
+    "insurance-rep-effects",
+    "rep-multipliers"
+  ],
+  "source": "wiki:/zh/wiki/reputation/black-market-perks",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

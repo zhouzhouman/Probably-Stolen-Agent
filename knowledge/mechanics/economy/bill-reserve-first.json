@@ -1,0 +1,56 @@
+{
+  "id": "bill-reserve-first",
+  "title": "账单备用金优先于进货",
+  "category": "economy",
+  "summary": "先扣下次账单的租金/还款/服务费，剩余现金才进货；库存标价不能抵租。",
+  "facts": [
+    "现金分配顺序：先留出账单备用金（租金 + 还款 + 服务费），剩余部分才作为进货预算。",
+    "库存标价不能用于支付租金，账面货物价值不构成支付能力。",
+    "每次大额进货前要重新核对一次现金，而不是只看「还没到缴租日」。"
+  ],
+  "actions": [
+    "预留 rent_due 现金",
+    "大额进货前重看现金"
+  ],
+  "pitfalls": [
+    "把备用金全换成库存 → 到期日现金不足（rent_due 无法支付）。",
+    "用 stock_value 做预算依据 → 现金实际不够。"
+  ],
+  "effects": [
+    "大额进货后现金下降；若低于 rent_due 则交租日只剩『拒付』分支"
+  ],
+  "guards": [
+    "现金 − 下次 rent_due − 服务费 ≤ 0 时禁止进货"
+  ],
+  "keywords": [
+    "rent_due",
+    "stock_value",
+    "账单备用金",
+    "pay_rent"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.rent.day_until_rent",
+        "op": "lte",
+        "value": 3
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/daily-cycle",
+    "wiki: /zh/wiki/terms/shop-strategies"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "close-vs-sleep",
+    "nego-four-directions",
+    "purchase-budget-formula",
+    "rent-increase-rate"
+  ],
+  "source": "wiki:/zh/wiki/terms/daily-cycle",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,60 @@
+{
+  "id": "scavenge-tool-extra-drops",
+  "title": "采集工具与扫描仪的额外掉落",
+  "category": "night",
+  "summary": "三把工具各 10% 独立加一材料；扫描仪初始 15%、每级 +5 个百分点、上限 100%，只生效一台。",
+  "facts": [
+    "螺丝刀 / 剪线钳 / 等离子切割机：成功拾荒时各做一次 10% 独立判定，分别额外给金属螺丝 / 线缆 / 废金属。",
+    "拾荒扫描仪初始 15% 额外抽取，每升一级 +5 个百分点，上限 100%，同时只生效一台，重复购买不叠加。",
+    "扫描仪触发后是从同一张表再抽一件，可能和基础物品相同，也不改变单件概率、不优先抽贵重物。",
+    "额外判定：未拥有挎包（小）时 3% 得挎包；1% 得随机未拥有磁带（损坏），都拥有则随机；1% 得捕鼠夹。",
+    "只有随身携带的自有工具才参与判定，同类工具按是否携带判断，不叠加，也不消耗工具。",
+    "2026-11-14 校正：旧卡用 visible_info.scene eq \"SCAVENGING\" 作触发，但 scene 是 Unity 场景名（实机值 InventoryScene / ShopScene），SCAVENGING 是 current_location 的 Demo 枚举名；正式版 current_location 发 id 字符串（如 dumping_ground，1.0 实机 day1 快照 night.current_location=\"store\"）。触发已改为 night.is_outside + night.current_location 存在。"
+  ],
+  "actions": [
+    "按目标带工具：要螺丝带螺丝刀、要线缆带剪线钳、要废金属带等离子切割机",
+    "扫描仪只买一台并优先升级"
+  ],
+  "pitfalls": [
+    "买两台扫描仪想叠概率：只有一台生效",
+    "把工具放仓库没带在身上：判定不触发"
+  ],
+  "effects": [
+    "带齐三工具后单次成功搜索期望价值从 24.13 升到 28.13"
+  ],
+  "guards": [
+    "升级扫描仪前确认现金够付近期账单"
+  ],
+  "keywords": [
+    "metal_scanner",
+    "welder",
+    "wire_cutter",
+    "screwdriver",
+    "satchel"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.night.is_outside",
+        "op": "truthy"
+      },
+      {
+        "field": "visible_info.night.current_location",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/junkyard-scavenging"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "scavenge-loot-table",
+    "scavenge-expected-value"
+  ],
+  "source": "wiki:/zh/wiki/terms/junkyard-scavenging",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

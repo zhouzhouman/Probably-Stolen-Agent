@@ -1,0 +1,56 @@
+{
+  "id": "cartel-perk-thresholds",
+  "title": "卡特尔特权 25/50/100",
+  "category": "economy",
+  "summary": "卡特尔唯一非整十门槛：津贴 25、可靠化学家 50、金盆洗手 100，−100 强制退休。",
+  "facts": [
+    "增加津贴 CARTEL_INCREASED_STIPEND ≥ 25；可靠化学家 CARTEL_RELIABLE_CHEMIST ≥ 50；金盆洗手 CARTEL_AUTHORIZED_EXIT ≥ 100。",
+    "强制退休 CARTEL_RETIRED ≤ −100。",
+    "25 是全局唯一非整十的特权门槛（其余均为 10 的倍数）。",
+    "可靠化学家把中途向联系人索取额外原料的声望成本从 12 点降至 6 点，描述参数 50 表示 50% 减免。",
+    "可靠化学家不是交货纯度不足时的扣减公式，2 者勿混用。",
+    "声望达标不代表本周货物合格，交货仍受每周配额与纯度 2 项约束。"
+  ],
+  "actions": [
+    "先冲到 25 拿津贴，再考虑 50 的原料减免"
+  ],
+  "pitfalls": [
+    "以为 50 声望就能免纯度惩罚 → 该参数只减额外索取原料的声望成本"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "CARTEL_INCREASED_STIPEND",
+    "CARTEL_RELIABLE_CHEMIST",
+    "津贴",
+    "强制退休"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.reputations.value",
+        "op": "gte",
+        "value": 20
+      },
+      {
+        "field": "visible_info.reputations.value",
+        "op": "lte",
+        "value": -20
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/reputation/cartel-perks",
+    "wiki: /zh/wiki/factions/cartel"
+  ],
+  "confidence": 0.93,
+  "verified_at": "2026-10-24",
+  "related": [
+    "cartel-delivery-quota",
+    "faction-objects-six"
+  ],
+  "source": "wiki:/zh/wiki/reputation/cartel-perks",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

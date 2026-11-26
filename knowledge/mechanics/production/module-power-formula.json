@@ -1,0 +1,50 @@
+{
+  "id": "module-power-formula",
+  "title": "模组效率改耗电公式",
+  "category": "production",
+  "summary": "效率每 +1 就按基础耗电的 1% 省电；负效率反而多耗，装环保模组前先算净账。",
+  "facts": [
+    "通用耗电公式：耗电量 = 基础耗电 − 基础耗电 × 合计效率 ÷ 100。",
+    "基础耗电 100、合计效率 +32 → 实际耗电 68；合计效率 −44 → 实际耗电 144。",
+    "效率为正值降低耗电、负值增加耗电；性能与质量不参与耗电计算。",
+    "实际扣电还受取整与机器自身规则影响，100 只是算例、不是所有机器的基础耗电。",
+    "熔炉说明写明性能无效；解序器与警报器说明写明质量无效——先确认机器是否使用该属性。"
+  ],
+  "actions": [
+    "装模组前用 基础 − 基础×效率/100 估算新耗电",
+    "省电优先给连续过夜运行的机器（熔炉、净水器、RAS）"
+  ],
+  "pitfalls": [
+    "给熔炉堆性能模组：熔炉性能无效，纯浪费槽位",
+    "超频模组 −44 效率会把耗电推高 44%"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "效率模组",
+    "环保模组",
+    "超频模组",
+    "machinery_drawn_power"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.inventory.owned.features",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/machine-modules"
+  ],
+  "confidence": 0.93,
+  "verified_at": "2026-10-24",
+  "related": [
+    "machine-power-slot",
+    "generic-module-stats"
+  ],
+  "source": "wiki:/zh/wiki/terms/machine-modules",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

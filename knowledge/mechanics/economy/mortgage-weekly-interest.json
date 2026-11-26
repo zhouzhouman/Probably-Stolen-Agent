@@ -1,0 +1,49 @@
+{
+  "id": "mortgage-weekly-interest",
+  "title": "周供含本金摊还，余数进位（不是纯周息）",
+  "category": "economy",
+  "summary": "周供 = (贷款＋贷款×年利率/100/52×期数) ÷ 期数，有余数就进位；这是含本金摊还的周供，不是单独的周息。",
+  "facts": [
+    "周供公式（PlayerStore.cs:3934-3944 CalculateWeeklyPayment）：num = 贷款 × 年利率 / 100 / 52 × 期数；num2 = 贷款 + num；num3 = num2 / 期数（整除）；若 num2 % 期数 != 0 则 num3++（向上取整）。",
+    "返回值是每周应付总额（本金摊还＋利息），不是「周息」；不能拿它当纯利息去和年利率对账。",
+    "年利率按难度：cozy 25 / normal 50 / hard 75 / challenge 100（Difficulty.cs 各难度块 mortgageInterestRate）。",
+    "算例（normal：年利率 50、期数 12、贷款 9000）：全部是 int 整除——num = 9000×50/100/52×12 = 450000/100=4500 → 4500/52=86（整除舍去 .53）→ 86×12=1032；num2 = 9000+1032 = 10032；num3 = 10032/12 = 836 且余 0，不再进位 → 周供 836。中间每一步都先整除，不能整体用浮点算完再取整。",
+    "旧卡写的「周息 = 贷款×年利率÷5200 向下取整」是另一套算法，与正式版代码不符。",
+    "2026-11-13 校正：旧结论「周息＝贷款×年利率÷5200 向下取整，9000 时 173」→ 新结论「周供＝(贷款＋利息总额)÷期数、余数进位，含本金摊还」，依据 PlayerStore.cs:3934-3948。"
+  ],
+  "actions": [
+    "按 CalculateWeeklyPayment 算周供：(贷款＋贷款×年利率/100/52×期数)÷期数，有余数就进位（PlayerStore.cs:3934-3944）；不要再用 ×年利率÷5200 的旧「周息」算法"
+  ],
+  "pitfalls": [
+    "把旧卡的「周息 = 贷款×年利率÷5200 向下取整」当成周供：那只是利息项，正式版周供还要摊还本金并按期数进位（贷款 9000、年利率 50、12 期 → 周供 836，PlayerStore.cs:3934-3944）"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "利息",
+    "年利率",
+    "loan",
+    "mortgage"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.mortgage.weekly_payment",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/rent-and-loans"
+  ],
+  "confidence": 0.93,
+  "verified_at": "2026-10-24",
+  "related": [
+    "mortgage-weekly-payment",
+    "loan-amount-day-scaling"
+  ],
+  "source": "wiki:/zh/wiki/terms/rent-and-loans",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false
+}

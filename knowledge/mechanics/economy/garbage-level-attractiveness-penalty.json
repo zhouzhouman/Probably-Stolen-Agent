@@ -1,0 +1,51 @@
+{
+  "id": "garbage-level-attractiveness-penalty",
+  "title": "脏乱 >2 每级扣基础吸引力 5%",
+  "category": "economy",
+  "summary": "漏清洁两晚就丢 20% 基础吸引力，最多丢 50%；这是清洁服务最贵的一项隐形成本。",
+  "facts": [
+    "清洁服务已解锁后，每次未使用则脏乱等级 G＝min(G＋2, 10)；清洁会把 G 清零。",
+    "G 不超过 2 时不扣吸引力；超过 2 时每级扣除基础吸引力的 5%，扣除额截去小数。",
+    "基础吸引力 250、无投影加成时：1 晚 G=2 留 250；2 晚 G=4 降 200；3 晚 G=6 降 175；4 晚 G=8 降 150；5 晚及以上 G=10 降 125。",
+    "投影设备加成另加，不参与这笔扣减；此机制最高扣基础值的 50%。"
+  ],
+  "actions": [
+    "G≥4 的次日必须开清洁",
+    "把清洁费与「少 20% 客流」的损失对比后再决定跳过"
+  ],
+  "pitfalls": [
+    "以为第一晚不扣就一直不扣：第二晚直接扣 20%",
+    "用当前总吸引力而非基础吸引力估算扣减"
+  ],
+  "effects": [
+    "使用清洁：G 归零，吸引力恢复到基础值+其他加成"
+  ],
+  "guards": [],
+  "keywords": [
+    "garbage_level",
+    "attractiveness",
+    "trashcan"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.rent.garbage_level",
+        "op": "gte",
+        "value": 4
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/janitorial-service"
+  ],
+  "confidence": 0.93,
+  "verified_at": "2026-10-24",
+  "related": [
+    "janitorial-fee-formula",
+    "trashcan-permanent-removal"
+  ],
+  "source": "wiki:/zh/wiki/services/janitorial-service",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

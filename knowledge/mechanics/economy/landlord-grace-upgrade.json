@@ -1,0 +1,47 @@
+{
+  "id": "landlord-grace-upgrade",
+  "title": "网络房东宽限 100 信用点",
+  "category": "economy",
+  "summary": "Wilds 网络房东宽限基础费用 100 信用点、冷却 15 天，只延一次不清债。",
+  "facts": [
+    "房东宽限是 Wilds 网络的独立项目，基础费用 100 信用点。",
+    "冷却为 15 天，即约 2 周才能再用 1 次。",
+    "作用是允许把漏付租金与下周一起交，不减免任何本金，也不等于免租。",
+    "它是与租约宽限并列的第 2 个人情，不叠加成 2 次连续拖欠许可。",
+    "当前观测层无对应字段（network 升级状态未暴露），需扩展。"
+  ],
+  "actions": [
+    "在 day_until_rent=1 且现金不足 100+rent_due 时购买房东宽限"
+  ],
+  "pitfalls": [
+    "花 100 信用点买宽限却仍还不上约 2 倍账单 → 钱和店一起没"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "房东宽限",
+    "Wilds",
+    "upgrades"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.mortgage",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-landlord"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "related": [
+    "rent-grace-once",
+    "rent-default-evicted"
+  ],
+  "source": "wiki:/zh/wiki/terms/npc-landlord",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

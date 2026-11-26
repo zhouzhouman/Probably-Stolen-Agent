@@ -1,0 +1,54 @@
+{
+  "id": "showcase-contraband-ban",
+  "title": "展柜禁止放违禁品",
+  "category": "risk",
+  "summary": "展示柜没有藏匿效果，摆违禁品会招致逮捕并触发全面检查分支。",
+  "facts": [
+    "导师笔记明确警告：把违禁品放进展示柜会招致逮捕。",
+    "检查对话包含「看见展示柜内可疑物品后进行全面检查」的分支。",
+    "展示柜不具备走私者暗格的藏匿作用。",
+    "懒散盘查员不会打开展示柜——但这一条不能当稳定规避手段（盘查员类型随机）。",
+    "当前观测层无「展示柜内物品违禁等级」字段，需扩展后才能自动拦截。"
+  ],
+  "actions": [
+    "陈列前逐件核对违禁等级与管制属性",
+    "违禁品一律进暗格，不进展示柜"
+  ],
+  "pitfalls": [
+    "为了吸引「管制药物」买家而把货摆出去：直接换来全面检查"
+  ],
+  "effects": [
+    "展示柜内违禁品被看见后触发全面检查分支"
+  ],
+  "guards": [
+    "持有任何违禁品时禁止上展"
+  ],
+  "keywords": [
+    "展示柜",
+    "全面检查",
+    "smuggler_bay",
+    "懒散盘查员"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk.contraband_crime",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/showcase",
+    "wiki: /zh/wiki/terms/inspections"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "inspection-severity-ladder",
+    "smuggler-bay-variants"
+  ],
+  "source": "wiki:/zh/wiki/terms/showcase",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

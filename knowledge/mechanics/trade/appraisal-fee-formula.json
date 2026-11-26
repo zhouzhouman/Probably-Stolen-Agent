@@ -1,0 +1,54 @@
+{
+  "id": "appraisal-fee-formula",
+  "title": "鉴定费=20+int(E×比例)",
+  "category": "trade",
+  "summary": "基础费固定 20，奖金按 E 而非真实价值算；抬价掉档会让收入从 35 掉到 32/27。",
+  "facts": [
+    "服务费 = 20 信用点基础费 + int(E × 本档奖金比例)，奖金基数用提交估价 E，不用真实价值 V。",
+    "V=100、E=100：奖金 15，总收入 35。",
+    "V=100、E=105：奖金 15（15.75 截去小数），总收入仍 35。",
+    "V=100、E=106：掉到极佳档，奖金 12（12.72 截去），总收入降到 32。",
+    "V=100、E=150：奖金 7（7.5 截去），总收入 27。",
+    "当前观测层没有「鉴定结算」字段，需扩展后才能按条件触发。"
+  ],
+  "actions": [
+    "提交整数估价 E",
+    "接受邀请并支付入会费"
+  ],
+  "pitfalls": [
+    "以为估得越高收费越高 → 掉档后收入反而下降（35 → 32 → 27）。",
+    "把入会费摊进单次服务费算盈亏。"
+  ],
+  "effects": [
+    "提交成功：现金 +（20 + int(E×比例）），档位按 E 与 T 分界线判定。"
+  ],
+  "guards": [],
+  "keywords": [
+    "基础服务费",
+    "奖金比例",
+    "入会费",
+    "submit_appraisal"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.appraisal.rank",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/appraisal-tips"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "appraisal-accept-range",
+    "appraisal-overbid-trick",
+    "npc-appraisal-board-join-fee"
+  ],
+  "source": "wiki:/zh/wiki/terms/appraisal-tips",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

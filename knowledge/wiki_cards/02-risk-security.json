@@ -1,0 +1,1415 @@
+[
+  {
+    "id": "shop-zones-role",
+    "title": "店铺五区职能分工",
+    "category": "store",
+    "summary": "柜台/展柜/储藏区/机器区/暗格各有唯一用途，放错位置等于没放。",
+    "facts": [
+      "议价柜台只负责「准备交易」：拖入物品后仍需完成议价与确认，转移不等于成交。",
+      "展示柜位于卷帘门左侧，用于陈列吸引买家；储藏区只收纳待售货与原料，放这里不等于投入机器。",
+      "机器区放机器后，还必须打开机器把原料与能源放进对应槽位，否则不生产。",
+      "简易储物舱、枪匠储物舱、化学家储物舱的说明明确限制：不能放入其他容器或机器。",
+      "垃圾桶会被清洁服务清空，不能当临时仓库；解锁地下交易所后它才是交货物入口。",
+      "能量方块在店内已供电时，每晚为相邻电池或相邻机器内电池恢复 2 点电量（商用级供电后 4 点），充电器不在该相邻目标内，多个方块可叠加。",
+      "展柜扩建加的是「陈列空间与展示商品吸引的买家」，店铺翻新 I–III 加的是基础吸引力 B，二者不能互换。",
+      "当前观测层无「容器类型/位置」字段，需扩展 inventory 槽位信息。"
+    ],
+    "actions": [
+      "进货前先确认目标容器：待售→储藏区，避检→暗格，加工→机器槽位",
+      "外出前清空柜台附近格位以便接收带回物品"
+    ],
+    "pitfalls": [
+      "把违禁品放储藏区当保险箱：普通储物舱没有藏匿效果",
+      "把原料堆在机器旁边却没打开机器投料，整夜零产出"
+    ],
+    "effects": [
+      "物品放入暗格后，盘查扫描整棵子树只登记「已藏匿」"
+    ],
+    "guards": [
+      "购买储物舱前先确认容器禁止嵌套的限制"
+    ],
+    "keywords": [
+      "smuggler_bay",
+      "storage_bay",
+      "machine_bay",
+      "PowerBloc",
+      "卷帘门",
+      "展柜扩建"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/shop-layout"
+    ],
+    "related": [
+      "smuggler-bay-variants",
+      "showcase-same-day-rule"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/shop-layout"
+  },
+  {
+    "id": "showcase-same-day-rule",
+    "title": "展柜陈列次日生效",
+    "category": "store",
+    "summary": "只在开门前摆好的陈列当天算数，营业中新增的陈列要等次日。",
+    "facts": [
+      "每天开门时按店铺当时状态安排客源；开门后才加入的展示物次日才生效。",
+      "营业中想改客源没有意义，必须在 MORNING 阶段完成陈列调整。",
+      "基础展示柜导师说明为每天吸引 1 位相应买家。",
+      "当日吸引力低于 100 时不会生成展示柜买家；非跳过开场的新档第 1 天也不安排。"
+    ],
+    "actions": [
+      "开门前检查展示柜内容",
+      "营业中不再浪费时间调整陈列"
+    ],
+    "pitfalls": [
+      "开门后才发现卖错品类，当天客源已经锁定，白等一天"
+    ],
+    "effects": [
+      "开门结算后新增陈列的物品次日才进入品类统计"
+    ],
+    "guards": [
+      "吸引力 <100 时先做清洁/翻新，再谈陈列"
+    ],
+    "keywords": [
+      "Clientele",
+      "客源界面",
+      "MORNING",
+      "展柜"
+    ],
+    "triggers": {
+      "all": [
+        {
+          "field": "visible_info.store_state",
+          "op": "eq",
+          "value": "MORNING"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/showcase"
+    ],
+    "related": [
+      "showcase-buyer-slots",
+      "attractiveness-dirt-penalty"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/showcase"
+  },
+  {
+    "id": "showcase-buyer-slots",
+    "title": "展柜买家名额算法",
+    "category": "store",
+    "summary": "名额从 1 起算、最多 4，按品类价值降序取，重复摆同类不加人。",
+    "facts": [
+      "名额从 1 个起算；「正在使用买家介绍」「已解锁展柜 I」「已解锁展柜 II」每满足一项 +1，最多 4 个。",
+      "门面遭破坏时名额直接回到 1，前述加成全部不计入。",
+      "品类价值 = 该品类所有展品价值之和；只统计 11 个主类型（食品/医疗/材料/日用品/管制药物/武器/护甲/工具/模组/弹药/水）。",
+      "多标签物品分别计入各自品类；带「水配给」标签的展品额外再计入水。",
+      "选取规则：品类价值降序，最多取「名额」个，只保留价值 >0 的品类，每个入选品类生成 1 位买家。",
+      "同价值品类按陈列顺序决定先后，不是随机。",
+      "名额是「选取品类上限」，不保证来客数或成交数。"
+    ],
+    "actions": [
+      "集中火力摆一个高价值品类，而不是每类摆一点",
+      "把展柜 I/II 与买家介绍当作「多一个买家位」来算收益"
+    ],
+    "pitfalls": [
+      "摆 10 件同类便宜货想换 10 个买家：只会提高该品类排序，不会增加名额",
+      "门面被破坏后仍按 4 个名额备货"
+    ],
+    "effects": [
+      "每个入选品类生成 1 位买家，并记录吸引它的品类"
+    ],
+    "guards": [
+      "门面遭破坏期间按 1 个名额进货"
+    ],
+    "keywords": [
+      "Clientele",
+      "展柜 I",
+      "展柜 II",
+      "买家介绍",
+      "品类价值",
+      "水配给"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.economy.attractiveness",
+          "op": "gte",
+          "value": 100
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/showcase"
+    ],
+    "related": [
+      "showcase-client-tier",
+      "showcase-same-day-rule"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/showcase"
+  },
+  {
+    "id": "showcase-client-tier",
+    "title": "展柜来客档位门槛",
+    "category": "customer",
+    "summary": "D≥14 且品类价值≥350 才进高价档，否则看 145/吸引力 400 的中价档。",
+    "facts": [
+      "高价档条件：内部日计数 D ≥ 14 且品类价值 ≥ 350（日用品 ≥ 300）。",
+      "中价档条件：未进高价档，且「品类价值 ≥ 145」或「店铺吸引力 ≥ 400」满足其一。",
+      "其余情况进默认档，按品类池等概率抽取。",
+      "武器默认来客与管制药物各档来客都只有一位，结果确定；其余品类默认档等概率。",
+      "水类另有分支：柜内最常见的水类型影响来客，最常见为纯水时直接是囤水者。"
+    ],
+    "actions": [
+      "想卖高价货：把该品类展品价值堆到 350 以上并等到 D≥14",
+      "想稳定高级客源：把吸引力做到 ≥400"
+    ],
+    "pitfalls": [
+      "第 14 天前堆 350 价值也进不了高价档",
+      "按默认档客人的预算去备高价货，成交不了"
+    ],
+    "effects": [
+      "选中品类后按档位查表生成 1 位具体来客"
+    ],
+    "guards": [
+      "吸引力 <100 时连买家都不生成"
+    ],
+    "keywords": [
+      "高价档",
+      "中价档",
+      "默认档",
+      "囤水者",
+      "私人安保承包商",
+      "管制药物"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.economy.attractiveness",
+          "op": "gte",
+          "value": 400
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/showcase"
+    ],
+    "related": [
+      "showcase-buyer-slots"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/showcase"
+  },
+  {
+    "id": "showcase-contraband-ban",
+    "title": "展柜禁止放违禁品",
+    "category": "risk",
+    "summary": "展示柜没有藏匿效果，摆违禁品会招致逮捕并触发全面检查分支。",
+    "facts": [
+      "导师笔记明确警告：把违禁品放进展示柜会招致逮捕。",
+      "检查对话包含「看见展示柜内可疑物品后进行全面检查」的分支。",
+      "展示柜不具备走私者暗格的藏匿作用。",
+      "懒散盘查员不会打开展示柜——但这一条不能当稳定规避手段（盘查员类型随机）。",
+      "当前观测层无「展示柜内物品违禁等级」字段，需扩展后才能自动拦截。"
+    ],
+    "actions": [
+      "陈列前逐件核对违禁等级与管制属性",
+      "违禁品一律进暗格，不进展示柜"
+    ],
+    "pitfalls": [
+      "为了吸引「管制药物」买家而把货摆出去：直接换来全面检查"
+    ],
+    "effects": [
+      "展示柜内违禁品被看见后触发全面检查分支"
+    ],
+    "guards": [
+      "持有任何违禁品时禁止上展"
+    ],
+    "keywords": [
+      "展示柜",
+      "全面检查",
+      "smuggler_bay",
+      "懒散盘查员"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/showcase",
+      "wiki: /zh/wiki/terms/inspections"
+    ],
+    "related": [
+      "inspection-severity-ladder",
+      "smuggler-bay-variants"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/showcase"
+  },
+  {
+    "id": "attractiveness-dirt-penalty",
+    "title": "脏乱扣吸引力公式",
+    "category": "store",
+    "summary": "脏乱 G>2 才扣，扣的是基础吸引力 B 的 5%/级，不是总吸引力打折。",
+    "facts": [
+      "吸引力 = 基础吸引力 B（翻新 I–III 提升）＋ 投影设备加成 P。",
+      "脏乱等级 G ≤ 2 时不扣，吸引力 = B＋P。",
+      "G > 2 时扣「B × G × 5%」，先截去扣减值小数，再加 P。",
+      "扣的是基础值 B，不是把 B＋P 整体打折。",
+      "吸引力 <100 时不会生成展示柜买家——脏乱可以直接把客源清零。"
+    ],
+    "actions": [
+      "G≥3 时先付清洁服务再谈采购",
+      "算吸引力时分开算 B 与 P，别把整体乘 0.9"
+    ],
+    "pitfalls": [
+      "用 (B+P)×(1−5%×G) 估算，会低估/高估实际吸引力"
+    ],
+    "effects": [
+      "清洁服务清零垃圾桶并降低 garbage_level，吸引力随 G 恢复"
+    ],
+    "guards": [
+      "吸引力 <100 时禁止大额进货"
+    ],
+    "keywords": [
+      "attractiveness",
+      "garbage_level",
+      "投影设备",
+      "翻新 I",
+      "清洁服务"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.rent.garbage_level",
+          "op": "gte",
+          "value": 3
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/shop-layout",
+      "wiki: /zh/wiki/terms/showcase"
+    ],
+    "related": [
+      "showcase-same-day-rule",
+      "showcase-buyer-slots"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/shop-layout"
+  },
+  {
+    "id": "night-theft-threshold",
+    "title": "夜间失窃阈值公式",
+    "category": "night",
+    "summary": "未投保夜数 N 每加 1 阈值 +5，基础 33、被针对 66，第 14 晚到 100%。",
+    "facts": [
+      "事件阈值基础 33；下层区「被针对」直接把基础值改为 66；治安贵宾 SEC_VIP 覆盖为 −100000（即不触发）。",
+      "再叠加「5 × N」（N 为累计未投保夜数，含当晚）；治安保护生效再减 16；阈值 <0 按 0%、>100 按 100%。",
+      "首个未投保夜晚 N＝1 时事件率 38%；第 14 晚达到 100%。这只是三步判定中的第 3 步，不是最终丢货率。",
+      "判定顺序：①提前返回（保险未解锁/卡特尔保护/Alert 天赋）→②已投保走追回分支并清零 N→③按 N 掷事件→④警报再掷拦截→⑤随机选一件。",
+      "任一提前返回都不进入失窃掷骰。",
+      "候选筛选排除：文件、容器本体、机器、当前价值 0 的物品、暗格内物品、带重要/锁定/锁后物品/卡住模组标签的物品、父库存同时禁止放入与取出的物品。",
+      "带「强制可抵押」标签的物品会先通过筛选；容器本体被排除不代表内容物受保护。",
+      "算例：首晚 38%、警报显示 50（拦截 51%）、有候选且无特殊分支 → 38% × 49% = 18.62%。"
+    ],
+    "actions": [
+      "关店前把贵重品塞进暗格以脱离候选池",
+      "连续多晚不投保时按 N 递增估算风险，第 14 晚必然事件"
+    ],
+    "pitfalls": [
+      "把 38% 当成最终丢货率：还要过警报那次 49%",
+      "以为容器被排除＝里面东西安全"
+    ],
+    "effects": [
+      "事件通过且未被拦截：从候选随机移除 1 件；无候选则不丢"
+    ],
+    "guards": [
+      "现金不足以承担保险时优先清空候选池（暗格/上锁）"
+    ],
+    "keywords": [
+      "SEC_VIP",
+      "Alert",
+      "被针对",
+      "强制可抵押",
+      "保险未解锁"
+    ],
+    "triggers": {
+      "all": [
+        {
+          "field": "visible_info.store_state",
+          "op": "eq",
+          "value": "CLOSED"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/theft-and-insurance"
+    ],
+    "related": [
+      "alarm-intercept-bonus",
+      "insurance-fee-formula",
+      "smuggler-bay-variants"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/theft-and-insurance"
+  },
+  {
+    "id": "alarm-intercept-bonus",
+    "title": "警报拦截率加一个点",
+    "category": "security",
+    "summary": "警报实际拦截率＝显示值+1pp，显示 99 即全拦，但必须自备独立电源。",
+    "facts": [
+      "警报显示值 = 50 ＋ 当前性能加成，最低显示 0。",
+      "实际拦截概率比显示值多 1 个百分点，最高 100%：显示 50 → 实际 51%；显示 99 已能拦截全部随机结果。",
+      "警报需要自己的独立电源与启用状态，缴纳店铺电费不能替代装电源。",
+      "模组效率对应耗电、性能对应防盗率加成；品质对该模组效果无影响。",
+      "警报只影响普通夜间盗窃这一段，不影响盘查、没收。",
+      "下层区「被针对」会把事件阈值从 33 提到 66，警报仍只拦一次。",
+      "治安部声望 ≤ −40 会启用「应该是风声吧」SEC_ALARM_IGNORED；wiki 只给出状态名与门槛，未给效果参数，实战前必须按面板与日志核对警报是否仍生效。"
+    ],
+    "actions": [
+      "睡前检查警报电源槽电量与启用状态",
+      "把性能模组堆到显示 99 以全拦"
+    ],
+    "pitfalls": [
+      "缴了电费就当警报生效：欠费断电时警报无电",
+      "把警报当保险：它只在事件通过后掷一次拦截"
+    ],
+    "effects": [
+      "拦截成功则该晚不丢货；拦截失败进入候选随机选件"
+    ],
+    "guards": [
+      "储能不足时优先保警报电源，不要拿去跑机器"
+    ],
+    "keywords": [
+      "security_alarm",
+      "防盗率",
+      "性能模组",
+      "is_power_on"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.rent.is_power_on",
+          "op": "falsy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/theft-and-insurance",
+      "wiki: /zh/wiki/services/power-service",
+      "wiki: /zh/wiki/reputation/security-perks"
+    ],
+    "related": [
+      "night-theft-threshold"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/theft-and-insurance"
+  },
+  {
+    "id": "insurance-fee-formula",
+    "title": "保费按总资产计价",
+    "category": "economy",
+    "summary": "保费＝3+⌊总资产/400⌋，被针对×2、困难再×2，最高可翻四倍。",
+    "facts": [
+      "基础保费 3 信用点；游戏估算的总资产 W 每满 400 再加 1（W 含自有物品估值与现金，不是标价）。",
+      "W＝3999 时保费 12；W＝4000 才升到 13。",
+      "结算顺序：①3＋⌊W÷400⌋ →②下层区「被针对」生效则 ×2 →③困难模式启用则再 ×2。",
+      "下层区「被针对」同时提高被小偷盯上的频率，并把基础阈值改为 66。",
+      "黑市「拒保」直接让保险服务不可用——这是与「保费变高」不同的状态。",
+      "保费按晚选择，睡前可加入或退出。",
+      "声望侧两个独立状态：下层区「沦为猎物」LLTARGET 需下层区声望 ≤ −60，保险倍率参数为 2；黑市「无法参保」BM_UNINSURABLE 需黑市声望 ≤ −60，保险直接不可用。",
+      "黑市「黑名单」BM_DISTRUSTED 需黑市声望 ≤ −40，清洁费翻倍（来自游戏说明，消费点未定位），与保险是两回事。",
+      "wiki 未给任何「高声望保费折扣」数值，不要写成声望越高越便宜。"
+    ],
+    "actions": [
+      "睡前按当前 W 重算保费，不要沿用昨天的数字",
+      "困难模式+被针对时，用暗格降风险比买保险更划算"
+    ],
+    "pitfalls": [
+      "用展示柜标价估算 W：W 是总资产（含现金）",
+      "W 跨过 400 的整数倍时保费会跳 1 点，预算要留余量"
+    ],
+    "effects": [
+      "付费成功：现金 −保费，当晚进入受保分支，连续未投保夜数清零"
+    ],
+    "guards": [
+      "现金 < 保费×2 时不要同时开其它夜间服务"
+    ],
+    "keywords": [
+      "insurance_days_without",
+      "Joe Wild",
+      "被针对",
+      "拒保",
+      "总资产"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.economy.insurance_days_without",
+          "op": "gte",
+          "value": 1
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/services/insurance-service",
+      "wiki: /zh/wiki/reputation/lower-level-perks",
+      "wiki: /zh/wiki/reputation/black-market-perks"
+    ],
+    "related": [
+      "day-cycle",
+      "insurance-rep-effects",
+      "insurance-return-items",
+      "insurance-returns-items-not-cash",
+      "night-theft-threshold"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/insurance-service"
+  },
+  {
+    "id": "insurance-return-items",
+    "title": "保险只返还物品",
+    "category": "economy",
+    "summary": "理赔是次晨把被盗物品还回来，没有现金赔款，不能当缴租资金。",
+    "facts": [
+      "支付保险后，当晚被盗的物品会在第二天早晨返还（日志描述 Wild 的人找到小偷带回物品）。",
+      "不存在按标价折算的现金赔款；预计返还物不能当成已到手的租金。",
+      "仅覆盖夜间盗窃，不覆盖检查扣押、垃圾桶清空、生产损耗。",
+      "受保分支把连续未投保计数归零，并有 6% 的追回叙事日志判定；该分支不执行物品移除。",
+      "6% 不是受保后的永久丢货率，也不是现金赔款率。",
+      "「无法参保」是硬关闭（可用保险数 0），不是加价；与「沦为猎物」的 ×2 保费是两种不同状态。"
+    ],
+    "actions": [
+      "次晨先看夜间日志再核库存",
+      "缴租资金只用现金算，不把待返还物计入"
+    ],
+    "pitfalls": [
+      "以为投保就一定有 6% 丢货：该分支不执行物品移除",
+      "把保险当万能兜底，检查扣押的货追不回"
+    ],
+    "effects": [
+      "受保当晚：insurance_days_without 归零"
+    ],
+    "guards": [
+      "租期临近时不要把现金全花在保费上"
+    ],
+    "keywords": [
+      "Wild",
+      "追回日志",
+      "insurance_days_without",
+      "夜间日志"
+    ],
+    "triggers": {
+      "all": [
+        {
+          "field": "visible_info.economy.insurance_days_without",
+          "op": "eq",
+          "value": 0
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/services/insurance-service",
+      "wiki: /zh/wiki/reputation/black-market-perks"
+    ],
+    "related": [
+      "insurance-fee-formula",
+      "night-theft-threshold",
+      "insurance-rep-effects"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/insurance-service"
+  },
+  {
+    "id": "inspection-schedule-band",
+    "title": "盘查排期按犯罪额分档",
+    "category": "security",
+    "summary": "走私+销赃累计≥50 才排期，750 以上 1–2 天一次，藏不住就天天被查。",
+    "facts": [
+      "排期门槛：走私＋销赃累计犯罪额 ≥ 50 信用点；低于 50 不排期。",
+      "间隔分档：<150 → 3–5 天；150–299 → 3–4；300–449 → 3–3；450–599 → 2–3；600–749 → 2–2；≥750 → 1–2。",
+      "三项治安部特权改写间隔：彻底检查更频繁、信任更稀少、贵宾完全不再接受盘查。",
+      "原文对特权的表述为「信任在此基础上上下限各 +2 / +4，彻底检查各 −1，最终下限不低于 1 天、上限不低于 2 天」——哪一端对应 +2/+4 未逐一对应，实施勿硬编码。",
+      "盘查不是固定日程，金额越高间隔越短。",
+      "另有两个独立 1000 门槛：走私+销赃累计 ≥1000 追加一次盘查；四类违禁品贩运记录合计严格 >1000 触发钓鱼执法。",
+      "当前观测层无「累计犯罪额/盘查倒计时」字段，需扩展。",
+      "三项改写间隔的治安部特权已定位门槛：彻底查抄 SEC_THOROUGH_INSPECTION 声望 ≤ −80（更频繁）、值得信赖 SEC_TRUSTED 声望 ≥ 60（更稀少）、贵宾 SEC_VIP 声望 ≥ 100（不再盘查）。",
+      "治安部声望被限制在 −200 到 200 之间；负向特权按「≤ 门槛」启用，正向按「≥ 门槛」启用。"
+    ],
+    "actions": [
+      "把累计犯罪额压在 150 以下以维持 3–5 天间隔",
+      "犯罪额破 750 前必须清案或用摆平者降值"
+    ],
+    "pitfalls": [
+      "把两个 1000 门槛当同一个：一个含赃物用「达到」，一个只算四类违禁品用「严格大于」"
+    ],
+    "effects": [
+      "达到门槛后排入治安官来访队列"
+    ],
+    "guards": [
+      "累计犯罪额 ≥750 时停止收购违禁品"
+    ],
+    "keywords": [
+      "盘查",
+      "钓鱼执法",
+      "彻底检查",
+      "贵宾",
+      "犯罪额"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/inspections",
+      "wiki: /zh/wiki/terms/wanted-and-reporting",
+      "wiki: /zh/wiki/reputation/security-perks"
+    ],
+    "related": [
+      "crime-ledger-entry",
+      "inspection-warning-lead-time"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/inspections"
+  },
+  {
+    "id": "inspection-severity-ladder",
+    "title": "盘查按最高等级处置",
+    "category": "risk",
+    "summary": "处置看查获物里最严重的一件，罚款却按单位价值逐件相加。",
+    "facts": [
+      "处置按「被查获物品中最严重的一件」结算：高危级 → 无宽限时查封店铺并逮捕；有宽限时改走宽限对话并扣声望，但不保证保留查获货物。",
+      "高级 → 没收并罚款；中级 → 没收；只有赃物 → 没收赃物；低级 → 口头警告；什么都没查到 → 治安部声望 +3。",
+      "罚款算法：被查获物品的「单位价值」逐件相加，不是只看最严重那件。",
+      "盘查按容器逐层扫描；带藏匿标签的容器整棵子树只登记「已藏匿」，内部物品不进扣押清单。",
+      "上锁或锁在柜台后的物品同样计入藏匿。",
+      "赃物按热度掷点决定是否被认出（热度越低越可能漏检）；另有幸运判定可能让整次盘查忽略全部违禁品——都不能当稳定方案。",
+      "当前观测层无「盘查事件/查获清单」字段，需扩展。",
+      "治安部声望 ≤ −100 会启用「不择手段」SEC_IMMEDIATE_ARREST（立即逮捕）；「毫不留情」SEC_CONTRABAND_TOLERANCE 在代码中没有门槛定义，不代表效果不存在。"
+    ],
+    "actions": [
+      "高危级货必须进暗格或柜台后上锁",
+      "被查前先算清罚款总额：Σ(单位价值)"
+    ],
+    "pitfalls": [
+      "只藏最严重那件：其余违禁品仍按单位价值累加罚款",
+      "靠幸运判定赌零查获"
+    ],
+    "effects": [
+      "高危级无宽限：店铺查封 + 逮捕；有宽限：走宽限对话"
+    ],
+    "guards": [
+      "持有高危级违禁品时禁止开店营业"
+    ],
+    "keywords": [
+      "宽限",
+      "查封",
+      "没收",
+      "罚款",
+      "藏匿标签"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/inspections",
+      "wiki: /zh/wiki/terms/contraband",
+      "wiki: /zh/wiki/reputation/security-perks"
+    ],
+    "related": [
+      "inspection-reputation-points",
+      "smuggler-bay-variants"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/inspections"
+  },
+  {
+    "id": "inspection-reputation-points",
+    "title": "盘查声望扣分表",
+    "category": "risk",
+    "summary": "每件货按基础1+违禁等级+赃物价值档累计，单次最多扣 25 点。",
+    "facts": [
+      "每件被查获物：基础 1 点；违禁等级 无/低/中/高/高危 = 0/1/2/3/4。",
+      "赃物价值档：非赃物或 <18 → 0；18–49 → 1；50–84 → 2；85–139 → 3；≥140 → 4。",
+      "同一件货同时是违禁品与赃物时，两部分都计入。",
+      "所有被查获物分数相加后，单次最多扣 25 点。",
+      "清白奖励 +3 的例外：本次只要有物品被藏匿，就不再发放。",
+      "藏匿保护物品，不保护声望——即使零查获也拿不到 +3。",
+      "当前观测层无「治安部声望/查获物品等级」字段，需扩展。"
+    ],
+    "actions": [
+      "多件低价赃物一起被查时优先保高价值档那件",
+      "想拿 +3 清白声望就别在本次盘查中启用暗格"
+    ],
+    "pitfalls": [
+      "以为藏匿是纯赚：每次藏匿都放弃 +3",
+      "用单件上限算总扣分：上限是整次 25，不是每件 25"
+    ],
+    "effects": [
+      "扣分后治安部声望下降；清零获 +3"
+    ],
+    "guards": [
+      "声望接近触发「被针对」时停止收赃"
+    ],
+    "keywords": [
+      "治安部声望",
+      "赃物价值档",
+      "清白",
+      "藏匿标签"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/inspections"
+    ],
+    "related": [
+      "inspection-severity-ladder",
+      "smuggler-bay-variants"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/inspections"
+  },
+  {
+    "id": "inspection-bribe-formula",
+    "title": "贿赂金额随声望降低",
+    "category": "risk",
+    "summary": "贿赂＝100+(店铺天数−治安部声望)×2，夹在 40–400，与货物价值无关。",
+    "facts": [
+      "贿赂公式：100 ＋（店铺天数 − 治安部声望）× 2，结果限制在 40–400 信用点。",
+      "贿赂金额与物品价值无关，只跟天数与声望有关。",
+      "天数增加会更贵，治安声望提高会更便宜；低声望存档的贿赂最贵。",
+      "贿赂与藏匿是两条并行路径，不能抵扣罚款。",
+      "当前观测层无「治安部声望/贿赂报价」字段，需扩展。"
+    ],
+    "actions": [
+      "高声望存档被查时优先算贿赂是否比罚款便宜",
+      "低天数阶段贿赂最便宜，早用早省"
+    ],
+    "pitfalls": [
+      "按货物价值估算贿赂：公式里没有货物价值项",
+      "声望很低时还以为贿赂便宜：会顶到 400 上限"
+    ],
+    "effects": [
+      "支付贿赂后本次盘查跳过处置"
+    ],
+    "guards": [
+      "现金 < 400 时不要赌贿赂可用"
+    ],
+    "keywords": [
+      "贿赂",
+      "治安部声望",
+      "店铺天数"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/inspections"
+    ],
+    "related": [
+      "inspection-severity-ladder"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/inspections"
+  },
+  {
+    "id": "inspection-warning-lead-time",
+    "title": "盘查预警倒计时三档",
+    "category": "security",
+    "summary": "预警只在倒计时 3/2/1 各发一条日志，10 信用点，且不覆盖突击检查。",
+    "facts": [
+      "购买盘查预警后，线人在「两天后」「明天」「即将开始」各发一条夜间日志，对应内部倒计时 3/2/1。",
+      "预警只覆盖常规盘查，突击盘查不在其中；贵宾不受盘查，也就没有预警。",
+      "检查预警服务费 10 信用点/晚。",
+      "预警之后要做的是：核对许可、库存、暗格实际位置与既有证据，尤其别把违禁品留在展示柜。",
+      "提前收到消息只是准备时间，不等于免检或免罚。",
+      "当前观测层无「盘查倒计时/预警日志」字段，需扩展。"
+    ],
+    "actions": [
+      "收到「两天后」日志就开始转移违禁品与补许可",
+      "预警当晚不要新增违禁品进货"
+    ],
+    "pitfalls": [
+      "以为有预警就安全：突击检查不预告",
+      "收到日志却只挪货不检查暗格标签是否还在"
+    ],
+    "effects": [
+      "夜间日志新增检查预警条目"
+    ],
+    "guards": [
+      "现金 <10 时预警不可用"
+    ],
+    "keywords": [
+      "检查预警",
+      "Wild's Fixers",
+      "突击检查",
+      "夜间日志"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/services/contact-services",
+      "wiki: /zh/wiki/terms/inspections"
+    ],
+    "related": [
+      "inspection-schedule-band",
+      "showcase-contraband-ban"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/contact-services"
+  },
+  {
+    "id": "smuggler-bay-variants",
+    "title": "三种暗格与容量口径",
+    "category": "store",
+    "summary": "暗格分 300/250/850 三档，容量不在代码里，只能看物品界面。",
+    "facts": [
+      "走私者暗格 smuggler_bay 基础价值 300；迷你走私舱 smuggler_bay_mini 250；走私者暗格（改进）smuggler_bay_mod 850。",
+      "三个变体的容量数值不在代码里，以物品界面显示的可用空间为准。",
+      "判定只认三个标签：藏匿标签（暗格容器）、锁后标签（放柜台后并上锁）、上锁标签（处于上锁状态）。",
+      "盘查遇到藏匿标签容器时整棵子树只登记「已藏匿」，内部违禁品不进扣押清单。",
+      "代码中存在一处摆放回调会移除暗格的藏匿标签，静态证据无法归因到「拆除」还是「移走」；搬运/重摆后必须按实际标签与位置复核。",
+      "暗格内的物品会被普通夜间盗窃候选筛选排除。",
+      "普通储物舱、机器库存、柜台没有暗格效果。",
+      "当前观测层无「暗格标签/暗格可用空间」字段，需扩展。"
+    ],
+    "actions": [
+      "每次整理库存后复核违禁品是否仍在暗格内",
+      "取出原料加工/取出商品议价后立刻放回暗格"
+    ],
+    "pitfalls": [
+      "搬动暗格后不复查：藏匿标签可能已被移除，货等于裸放",
+      "把改进版图标名 smuggler_bay_large 当成另一个物品 id"
+    ],
+    "effects": [
+      "货在暗格内：盘查跳过、夜间不被选为盗窃候选"
+    ],
+    "guards": [
+      "容量以界面显示为准，不要按基础价值推算格数"
+    ],
+    "keywords": [
+      "smuggler_bay",
+      "smuggler_bay_mini",
+      "smuggler_bay_mod",
+      "smuggler_bay_large",
+      "锁后标签",
+      "上锁标签"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/concealing-goods",
+      "wiki: /zh/wiki/terms/shop-layout"
+    ],
+    "related": [
+      "inspection-severity-ladder",
+      "night-theft-threshold"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/concealing-goods"
+  },
+  {
+    "id": "false-report-penalty",
+    "title": "误报代价与诱饵顾客",
+    "category": "risk",
+    "summary": "误报一次声望−8、余额≥100 罚 50，并累计次数直至逮捕警告。",
+    "facts": [
+      "误报：治安部声望 −8；现金余额 ≥100 时罚款 50；并累计误报次数。",
+      "接近上限时依次出现两级警告：「下次再作出不实举报，你将被逮捕」→「继续作出不实举报可能造成严重后果」；上限次数未从静态证据取得。",
+      "诱饵顾客只想来买食物、不带通缉标记；把他当通缉犯举报就是误报。",
+      "只有名单上的顾客才按赏金结算；改造体扫描仪确认的身份与通缉判定无关，扫描结果不能替代核对名单。",
+      "同一名顾客只能被举报一次，重复尝试会被界面拒绝；举报入口是柜台报警器，不是对话选项。",
+      "两个声望池不要相加：误报扣的是「治安部声望」（−8，余额 ≥100 再罚 50）；举报还会扣「被举报顾客所属阵营」的声望，那是另一个计数器。",
+      "−20 的下限只属于阵营侧（原文写在「被举报客户阵营」行），治安部侧条文没有给下限。",
+      "faction-standing「单笔交易换算与倍率」表的原行是「举报顾客 | 首次 −8，之后每次再 −2，下限 −20」——这是给【被举报顾客所属派系】的修正项，只作用于举报成功那一笔；误报不进这套阶梯。",
+      "所以三个数字各归各账：举报成功→目标派系按上述阶梯扣；误报→治安部 −8（另加余额 ≥100 罚 50）；举报通缉犯→治安部 +5。事件不同、账本不同，既不合并也不相加。"
+    ],
+    "actions": [
+      "举报前先对照通缉名单物品逐项核名",
+      "余额 <100 时误报不罚款但仍计次数，别利用这点刷"
+    ],
+    "pitfalls": [
+      "把「误报 −8」与「阵营首次 −8、之后 −2」相加算成 −16：两个池各扣一次，不是同一个计数器累加。",
+      "把 faction-standing 那条当成治安部的执法罚款：它在交易换算表里，扣的是目标派系。"
+    ],
+    "effects": [
+      "误报计数 +1，声望 −8，余额≥100 时现金 −50"
+    ],
+    "guards": [
+      "误报计数接近上限时停止一切举报"
+    ],
+    "keywords": [
+      "误报",
+      "诱饵顾客",
+      "aug_scanner",
+      "wanted_paper",
+      "报警器"
+    ],
+    "triggers": {
+      "all": [
+        {
+          "field": "visible_info.client.is_wanted",
+          "op": "falsy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/wanted-and-reporting",
+      "wiki: /zh/wiki/terms/faction-standing"
+    ],
+    "related": [
+      "wanted-report",
+      "wanted-bounty-table",
+      "report-seller-payout",
+      "rep-report-penalty"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/wanted-and-reporting"
+  },
+  {
+    "id": "wanted-bounty-table",
+    "title": "通缉名单赏金表",
+    "category": "risk",
+    "summary": "9 个可创建通缉对象赏金 75–450，wanted5 无工厂不要按序号补。",
+    "facts": [
+      "赏金表：wanted1 詹姆斯·贝利 300；wanted2 屠夫 450；wanted3 亚瑟·拉弗勒 100；wanted4 奥丁·哈拉尔德森（剧情版）300；wanted4Normal 奥丁·哈拉尔德森 350。",
+      "wanted6 李北文 400；wanted7 胡安 75；wanted8 约翰·史密斯 125；wanted9 勒鲁瓦 300。",
+      "工厂字典列 9 个可创建版本，其中 wanted4Normal 是 4 号的普通变体。",
+      "wanted5 存在于 ID 集合但没有对应工厂，不要按序号补齐名单。",
+      "举报通缉犯：按名单赏金结算，治安部声望固定 +5。",
+      "通缉名单是一件物品（wanted_paper），可在图鉴查看。"
+    ],
+    "actions": [
+      "优先级：屠夫 450 > 李北文 400 > 奥丁普通版 350 > 300 档"
+    ],
+    "pitfalls": [
+      "按 1–9 顺序假设存在 9 个对象：wanted5 无工厂",
+      "把 wanted4 与 wanted4Normal 当同一价"
+    ],
+    "effects": [
+      "举报成功：现金 +赏金，治安部声望 +5"
+    ],
+    "guards": [
+      "举报前确认对方在名单上（避免误报 −8）"
+    ],
+    "keywords": [
+      "wanted1",
+      "wanted2",
+      "wanted3",
+      "wanted4",
+      "wanted4Normal",
+      "wanted5",
+      "wanted6",
+      "wanted9",
+      "wanted_paper"
+    ],
+    "triggers": {
+      "all": [
+        {
+          "field": "visible_info.client.is_wanted",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/wanted-and-reporting"
+    ],
+    "related": [
+      "wanted-report",
+      "false-report-penalty",
+      "report-seller-payout"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/wanted-and-reporting"
+  },
+  {
+    "id": "report-seller-payout",
+    "title": "举报卖家结算与阵营反噬",
+    "category": "risk",
+    "summary": "举报违禁/赃物卖家得底金50+等级奖励+赃物4%，但阵营额外−2。",
+    "facts": [
+      "违禁品等级奖励：低级 0、中级 25、高级 40、高危级 60；另有底金 50。",
+      "赃物折算：成交价 × 4%；计价只统计「未拥有」的物品，即本次交出的那批货。",
+      "声望按交出的最高违禁等级提高；只有赃物、没有违禁等级时这部分声望为 0。",
+      "举报先应用该顾客配置的阵营声望惩罚；若进入违禁品或赃物卖家分支，额外 −2，并以 −20 为下限。",
+      "举报小偷按同一规则结算，但等级奖励为 0。",
+      "伦警官第二次指示：只举报携带中级及以上违禁品的卖家，低级卖家不值得花时间。",
+      "当前观测层无「顾客违禁等级/阵营声望」字段，需扩展。",
+      "该页把阵营扣分写在「被举报客户阵营」行（先扣该客户配置值，卖家分支再额外 −2，下限 −20），与同页「误报 治安部声望 −8」是两个不同的声望池，不能合并计算。",
+      "faction-standing 把「举报顾客 首次 −8、之后每次 −2、下限 −20」列在「单笔交易换算与倍率」表内，属于对目标派系的修正项；它与我这条「卖家分支额外 −2」是否为同一触发条件，静态证据未区分。"
+    ],
+    "actions": [
+      "只举报中级及以上违禁品卖家",
+      "举报前先看该顾客阵营声望惩罚是否已接近 −20"
+    ],
+    "pitfalls": [
+      "举报低级违禁品卖家：等级奖励 0 还白掉阵营声望",
+      "把纯赃物卖家当违禁品卖家：声望增益为 0"
+    ],
+    "effects": [
+      "交出的货被移除，按上述公式结算现金与声望"
+    ],
+    "guards": [
+      "目标阵营声望接近 −20 时停止举报该阵营顾客"
+    ],
+    "keywords": [
+      "违禁品贩子",
+      "赃物卖家",
+      "伦警官",
+      "阵营声望",
+      "底金"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/wanted-and-reporting",
+      "wiki: /zh/wiki/terms/faction-standing"
+    ],
+    "related": [
+      "wanted-report",
+      "false-report-penalty",
+      "contraband-tier-markup"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/wanted-and-reporting"
+  },
+  {
+    "id": "contraband-tier-markup",
+    "title": "违禁品四级加价",
+    "category": "trade",
+    "summary": "低/中/高/高危默认加价 35/70/100/200%，加价可配置不是常量。",
+    "facts": [
+      "默认加价：低级 +35%、中级 +70%、高级 +100%、高危级 +200%；折扣特征默认 −17%/−35%/−50%/−100%。",
+      "四级加价是存档里可配置的数值，不是写死常量；等级内部按 0–4 取值（无、低级、中级、高级、高危级）。",
+      "交易声望的严重违禁品倍率只从中级开始：中级 ×2.0、高级 ×2.5、高危级 ×3.0；低级没有 ×1.5 这一档。",
+      "等级同时决定盘查处置：低级口头警告、中级没收、高级没收并罚款、高危级查封店铺并立即逮捕。",
+      "管制等级与违禁等级是两套标记：物品可以只是管制，也可以同时是违禁品。",
+      "违禁描述管制属性、赃物描述来源，两者可以同时存在。",
+      "当前观测层无「物品违禁等级」字段（item_types 不含等级），需扩展。"
+    ],
+    "actions": [
+      "收违禁品前算「加价 × 能否合法持有 × 有无买家」",
+      "高加价货压库会占用租金/能源/原料现金"
+    ],
+    "pitfalls": [
+      "按 35/70/100/200 硬编码：换版本或存档可能不同",
+      "给低级违禁品算 ×1.5 声望倍率：该档不存在"
+    ],
+    "effects": [
+      "成交后按等级倍率放大交易声望（中/高/高危）"
+    ],
+    "guards": [
+      "现金不足以覆盖下期租金时禁止进高危级货"
+    ],
+    "keywords": [
+      "违禁等级",
+      "管制等级",
+      "折扣特征",
+      "交易声望"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/contraband"
+    ],
+    "related": [
+      "weapon-permit-ceiling",
+      "inspection-severity-ladder"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/contraband"
+  },
+  {
+    "id": "weapon-permit-ceiling",
+    "title": "枪证只覆盖到高级",
+    "category": "risk",
+    "summary": "枪证 I–III 只覆盖低/中/高级违禁枪械，高危级武器永远无法合法化。",
+    "facts": [
+      "枪证三级分别覆盖低级、中级、高级违禁枪械。",
+      "高危级武器没有任何许可可以合法化——只能藏或不出手。",
+      "营业许可是对话授予的一件物品；枪证记录在存档许可表与网络升级状态里，两者互不替代。",
+      "陈列枪械许可证只能吸引买枪顾客，不能替代有效持证条件。",
+      "当前观测层无「持证等级」字段，需扩展。",
+      "枪证的下发声望门槛 30/60/90、吊销线 0/30/60、以及三级售价 300/600/900 归 gun-permit-tiers 与 gun-license-revoke 两张卡，本卡只负责「等级覆盖上限」，不再重复这些数字。",
+      "据 wiki-night 的 gun-permit-tiers（来源 upgrades/weapon-permits）：枪证三级售价 300/600/900，且 Demo 内全部不可购买。若该口径成立，Demo 阶段基本无法合法持有违禁枪械（未由本主题页面复核）。"
+    ],
+    "actions": [
+      "收枪前核对枪证等级 ≥ 该枪违禁等级",
+      "高危级枪械只走暗格，不上架"
+    ],
+    "pitfalls": [
+      "有营业许可就当能卖枪：两套记录分开核对"
+    ],
+    "effects": [
+      "持对应枪证时，盘查不把该等级枪械计为违禁"
+    ],
+    "guards": [
+      "无对应枪证时禁止收购违禁枪械"
+    ],
+    "keywords": [
+      "枪证",
+      "weapon-permits",
+      "营业许可",
+      "business_permit"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/contraband",
+      "wiki: /zh/wiki/reputation/security-perks"
+    ],
+    "related": [
+      "contraband-tier-markup",
+      "gun-license-revoke",
+      "gun-permit-tiers"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/contraband"
+  },
+  {
+    "id": "stolen-heat-discount",
+    "title": "赃物热度与折价",
+    "category": "trade",
+    "summary": "热度≤25 折 10%、>75 折 25%，卖出声望倍率 1.5 到 3.0。",
+    "facts": [
+      "初始热度按基础价值分档：≤17 不标记为赃物；18–49 → 25；50–84 → 50；85–139 → 75；≥140 → 100。",
+      "买入折价按热度：≤25 → −10%；≤50 → −15%；≤75 → −20%；>75 → −25%。",
+      "卖出交易声望倍率：≤25 → ×1.5；≤50 → ×2.0；≤75 → ×2.5；>75 → ×3.0。",
+      "每次热度更新降温：无违禁标签 −18；低/中/高/高危依次 −16/−14/−12/−10；降到 0 移除赃物标记。",
+      "静态证据未定位该更新函数的调用频率，不能写成固定「每天一次」。",
+      "买入是折价不是加价，判断是否合算要用实际报价与买家需求核算。",
+      "当前观测层无「赃物热度」字段，需扩展。"
+    ],
+    "actions": [
+      "优先收 ≤17 基础价值的货（干脆不带赃物标记）",
+      "高热度货按 −25% 折价谈，但按 ×3.0 声望算收益"
+    ],
+    "pitfalls": [
+      "以为放一晚必降一档：降温频率未确认",
+      "对基础价值套固定倍率估价，忽略实际报价"
+    ],
+    "effects": [
+      "热度降到 0 后赃物标记移除"
+    ],
+    "guards": [
+      "热度 >75 的货不要押上全部现金"
+    ],
+    "keywords": [
+      "热度",
+      "赃物标记",
+      "折价特征",
+      "交易声望"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/stolen-goods"
+    ],
+    "related": [
+      "stolen-heat-detection",
+      "black-lamp-success"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/stolen-goods"
+  },
+  {
+    "id": "stolen-heat-detection",
+    "title": "赃物热度即认出率",
+    "category": "risk",
+    "summary": "热度百分比就是盘查认出概率，柜台/展柜被认出直接把热度打到 100。",
+    "facts": [
+      "盘查按热度掷点，热度百分比即认出概率。",
+      "赃物若同时带违禁标记，则不再单独掷这一次点（直接按违禁品处理）。",
+      "「把热度直接设为 100」的调用已在柜台与展示柜治安检查中确认；普通容器扫描是否也走同一重置路径尚未证实。",
+      "热度越高越容易被认出，同时买入折价越大——便宜货与安全货是矛盾的。",
+      "藏匿只处理位置，不清除治安档案里已积累的调查进度。",
+      "当前观测层无「赃物热度/被认出状态」字段，需扩展。"
+    ],
+    "actions": [
+      "高热度货不要放柜台或展示柜",
+      "认出后热度变 100，只能靠降温循环慢慢洗"
+    ],
+    "pitfalls": [
+      "把高热度赃物摆在柜台议价：一被查就锁死 100 热度"
+    ],
+    "effects": [
+      "柜台/展示柜检查认出：该件热度置 100"
+    ],
+    "guards": [
+      "热度 ≥75 的货禁止上柜台/展柜"
+    ],
+    "keywords": [
+      "热度",
+      "认出概率",
+      "柜台",
+      "展示柜",
+      "赃物标记"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/stolen-goods",
+      "wiki: /zh/wiki/terms/inspections"
+    ],
+    "related": [
+      "stolen-heat-discount",
+      "showcase-contraband-ban"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/stolen-goods"
+  },
+  {
+    "id": "black-lamp-success",
+    "title": "暗灯销赃成功率",
+    "category": "trade",
+    "summary": "成功率＝灯数×基础值+黑市声望÷2，夹在 0–95，灯必须真在展柜里。",
+    "facts": [
+      "目标基础成功率：小偷 10、扒手 20、食物窃贼 30、未知目标 15。",
+      "最终成功率 = 灯数 × 对应基础值 ＋ 黑市声望 ÷ 2，限制在 0–95。",
+      "灯必须实际放在展示柜里才计入；放在别处不算。",
+      "黑市声望同时影响卖赃物时的交易声望倍率。",
+      "暗灯不能当「保证替你买走赃物」的招牌，响应是概率。",
+      "当前观测层无「黑市声望/展柜内灯数」字段，需扩展。"
+    ],
+    "actions": [
+      "要清赃物库存：先堆黑市声望，再按目标类型选灯数",
+      "食物窃贼基础值最高（30），优先处理食品类赃物"
+    ],
+    "pitfalls": [
+      "把暗灯放储藏区：灯数不计入成功率",
+      "按 100% 成功率规划现金回笼"
+    ],
+    "effects": [
+      "销赃客来访并可能买走赃物"
+    ],
+    "guards": [
+      "成功率上限 95，永远留 5% 失败"
+    ],
+    "keywords": [
+      "black_lamp",
+      "黑市声望",
+      "食物窃贼",
+      "扒手"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/stolen-goods"
+    ],
+    "related": [
+      "stolen-heat-discount",
+      "showcase-buyer-slots"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/stolen-goods"
+  },
+  {
+    "id": "crime-ledger-entry",
+    "title": "犯罪入账与派系折减",
+    "category": "risk",
+    "summary": "违禁按议定价值入账，赃物按议定价值×热度÷100，再吃派系与天赋修正。",
+    "facts": [
+      "销售带违禁标签物品：以该物品的议定价值计入对应走私罪名。",
+      "销售赃物：先算「议定价值 × 赃物热度 ÷ 100」，取整后计入销赃。",
+      "同一件货同时是赃物与违禁品时，两部分都可能入账。",
+      "派系修正（入账前，舍去小数）：黑市 ÷2；革命军 ÷3；下层区且已解锁「守口如瓶」÷2；卡特尔归零；其它普通分支保留原值。",
+      "天赋修正：「威慑」×约 0.67 取整；「大嘴巴」×约 1.33 取整；同时具备按上述顺序分别取整。",
+      "取整规则：常规取最近整数，恰落半整数取偶数（2.5→2、3.5→4）。",
+      "减免属于记录计算，不改变商品违禁属性或持证要求。",
+      "已定位入账来源只有违禁品走私、赃物销赃、无证经营；脏水/错标水/伪劣化工/贿赂/劣质弹药有独立字段但未确认累计。",
+      "当前观测层无「犯罪总值/罪名分录」字段，需扩展。",
+      "「守口如瓶」LLTIGHTLIPS 需下层区声望 ≥ 80，证据倍率参数为 0.5（与 ÷2 一致）；「盗亦有道」BM_HONOR 恒定生效，字段记录 1.5，但黑市负向变化在 ModReputation 分支里直接翻倍。"
+    ],
+    "actions": [
+      "优先卖卡特尔顾客（归零）或黑市顾客（÷2）",
+      "有「威慑」天赋时把违禁大单放在当晚最后一笔"
+    ],
+    "pitfalls": [
+      "把脏水/伪劣化工算进犯罪总值：字段存在≠实际入账",
+      "把半整数按四舍五入：2.5 应取 2"
+    ],
+    "effects": [
+      "犯罪记录写入治安档案，参与次日调查进度计算"
+    ],
+    "guards": [
+      "守卫按下一档阈值（100/300/850…）反推可卖量"
+    ],
+    "keywords": [
+      "议定价值",
+      "销赃",
+      "守口如瓶",
+      "威慑",
+      "大嘴巴",
+      "银行家舍入"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/crime-and-investigation",
+      "wiki: /zh/wiki/reputation/lower-level-perks",
+      "wiki: /zh/wiki/reputation/black-market-perks"
+    ],
+    "related": [
+      "investigation-daily-growth",
+      "stolen-heat-discount"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/crime-and-investigation"
+  },
+  {
+    "id": "investigation-daily-growth",
+    "title": "调查进度日增长",
+    "category": "risk",
+    "summary": "E<80 时每项犯罪额每日−20，再按档位加 0/2/6/9/12/20/33 点，封顶 100。",
+    "facts": [
+      "新一天结算：若结算前 E < 80，每项当前犯罪额分别 −20（最低 0）；E ≥ 80 时停止这种自然衰减。",
+      "再按衰减后总值取基础增长：0–99 → +0；100–299 → +2；300–849 → +6；850–1199 → +9；1200–1499 → +12；1500–2499 → +20；≥2500 → +33。",
+      "特权修正顺序：①「值得信赖」减半并舍去小数 →②「头号通缉」×1.5 取整（无则「重点盯防」×约 1.2 取整）→③「联名检举」×1.5 取整。",
+      "修正后加入 E，达到 100 封顶；案件未派员且总值 >0 时会排入治安官来访，排队不等于当场判罚。",
+      "算例：结算前 340 与 180、E=30、无特权 → 各减 20 得 320+160=480，落 +6 档，结算后 E=36。",
+      "总值达到 2500 也不会让调查停止增长。",
+      "当前观测层无「调查进度 E」字段，需扩展。",
+      "特权门槛已定位：「重点盯防」SEC_WATCHLIST 声望 ≤ −20（×1.2）、「头号通缉」SEC_PRIORITY 声望 ≤ −60（×1.5）、「值得信赖」SEC_TRUSTED 声望 ≥ 60（增长减半）。"
+    ],
+    "actions": [
+      "E≥80 前把每项犯罪额压到 <100 让增长归零",
+      "有「值得信赖」时大额违法交易更安全（增长减半）"
+    ],
+    "pitfalls": [
+      "以为总值 2500 是上限：增长只是到 +33 档",
+      "忽略「先衰减再取档」顺序，会把档位算高"
+    ],
+    "effects": [
+      "结算后 E 增加并封顶 100；E≥80 后不再自然衰减"
+    ],
+    "guards": [
+      "E≥80 时立刻清案或请摆平者"
+    ],
+    "keywords": [
+      "调查进度",
+      "值得信赖",
+      "头号通缉",
+      "重点盯防",
+      "联名检举",
+      "清案"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/crime-and-investigation",
+      "wiki: /zh/wiki/reputation/security-perks"
+    ],
+    "related": [
+      "crime-ledger-entry",
+      "fixer-crime-reduction",
+      "sentence-threshold",
+      "sec-inspection-multipliers"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/crime-and-investigation"
+  },
+  {
+    "id": "fixer-crime-reduction",
+    "title": "摆平者削减公式",
+    "category": "risk",
+    "summary": "每项犯罪额变成 max(0, n−⌊n×15%⌋−50)，25 克雷迪一晚，必须逐项算。",
+    "facts": [
+      "摆平者（人脉服务）公式：每项当前犯罪额 n → max(0, n − 舍去小数(n × 15%) − 50)。",
+      "必须逐项计算，不能把多项合并后只减一次固定 50。",
+      "算例：两项 400 与 200 → 分别变 290 与 120，总值 600 → 410。",
+      "摆平者不直接扣调查进度，只通过降低犯罪总值影响后续增长与判罚档位。",
+      "基础费用每晚 25 克雷迪；网络解锁与当晚启用另行检查。",
+      "当前观测层无「各项犯罪额/摆平者报价」字段，需扩展。"
+    ],
+    "actions": [
+      "犯罪额破 300（监禁档）时立刻连开摆平者几晚",
+      "优先削减金额最小的一项以更快清零（固定 −50 对小额更有效）"
+    ],
+    "pitfalls": [
+      "把 600 合并算成 600−90−50=460：正确是 290+120=410",
+      "以为摆平者清调查进度：它只降犯罪总值"
+    ],
+    "effects": [
+      "各项犯罪额下降，次日调查进度档位与判罚档位随之下降"
+    ],
+    "guards": [
+      "现金 <25×N 晚时优先保租金"
+    ],
+    "keywords": [
+      "摆平者",
+      "Wild's Fixers",
+      "人脉服务",
+      "清案"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/crime-and-investigation"
+    ],
+    "related": [
+      "investigation-daily-growth",
+      "sentence-threshold"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/crime-and-investigation"
+  },
+  {
+    "id": "sentence-threshold",
+    "title": "刑罚三档阈值",
+    "category": "risk",
+    "summary": "总值 100–299 罚款、300–1499 监禁、1500 及以上处决；<100 不适用。",
+    "facts": [
+      "预计判罚按当前犯罪总值：0–99 不适用；100–299 罚款；300–1499 监禁；≥1500 处决。",
+      "罚款数额等于当前犯罪总值（100–299 区间即 100–299 信用点）。",
+      "无证经营单次犯罪值 50 ＋ 20×(店铺天数 mod 7)，即 50/70/90/110/130/150/170，每 7 天循环。",
+      "拒买营业许可累计两次即可越过 100 进入罚款档；到 300 进监禁档。",
+      "总值 <100 时档案显示「不适用」只是显示条件，不代表以前累积的调查进度清零；正式清案才全归零。",
+      "现场盘查另按查获物品处置，与档案预计判罚是两套结算。",
+      "当前观测层无「犯罪总值/预计判罚」字段，需扩展。"
+    ],
+    "actions": [
+      "总值逼近 300 前必须摆平者或清案",
+      "不想被罚：宁买 1500 营业许可也不要连续拒买"
+    ],
+    "pitfalls": [
+      "看到「不适用」就当已清案：只是显示条件",
+      "把盘查现场处置与档案判罚混成一个结算"
+    ],
+    "effects": [
+      "达到 1500 触发处决，游戏结束"
+    ],
+    "guards": [
+      "犯罪总值 ≥250 时禁止继续任何违法交易"
+    ],
+    "keywords": [
+      "判罚",
+      "罚款",
+      "监禁",
+      "处决",
+      "无证经营",
+      "清案"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/crime-and-investigation",
+      "wiki: /zh/wiki/terms/business-permit"
+    ],
+    "related": [
+      "investigation-daily-growth",
+      "fixer-crime-reduction"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/crime-and-investigation"
+  }
+]

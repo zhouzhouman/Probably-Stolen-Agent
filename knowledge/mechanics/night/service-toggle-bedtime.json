@@ -1,0 +1,52 @@
+{
+  "id": "service-toggle-bedtime",
+  "title": "夜间服务按晚开关，解锁≠生效",
+  "category": "night",
+  "summary": "所有夜间服务在睡前逐项开关，网络解锁只买到资格；漏开一晚，当晚零收益。",
+  "facts": [
+    "Wilds 网络中解锁服务型项目后，仍需支付当晚费用才会提供帮助，睡前可逐项开关。",
+    "服务清单字段含 cost、is_using、mandatory、cooldown，睡前应逐项核对。",
+    "网络购买与拨打名片电话联系供应商是不同入口。",
+    "已解锁但未在睡前启用，当晚不产生效果。"
+  ],
+  "actions": [
+    "睡前过一遍服务清单，确认高价值服务 is_using 为真",
+    "把「解锁」「启用」「付费」当作三个独立状态检查"
+  ],
+  "pitfalls": [
+    "解锁后一直以为在生效",
+    "以为电话联系过就等于服务已开"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "is_using",
+    "mandatory",
+    "cooldown",
+    "night-service-cost"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "CLOSED"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/contact-services",
+    "wiki: /zh/wiki/services"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "night-service-cost",
+    "day-cycle",
+    "cartel-protection-mandatory"
+  ],
+  "source": "wiki:/zh/wiki/services/contact-services",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

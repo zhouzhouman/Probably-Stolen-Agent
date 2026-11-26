@@ -1,0 +1,57 @@
+{
+  "id": "wholesale-batch-deal",
+  "title": "批发=整批全收换折扣",
+  "category": "trade",
+  "summary": "批发必须买下卖家全部货，折扣率不固定，可逐件验货，别把折扣当保真。",
+  "facts": [
+    "批发定义：部分卖家在你买下其全部物品时给折扣；仍可逐件验货。",
+    "wiki 明确「没有适用于所有卖家的固定折扣率」，不能预设固定百分比。",
+    "整批折扣不等于保真：食品券、药品的隐藏状态仍要用鉴定检查，无法使用的货同样占用现金与储位。",
+    "接受批发前要核对三项：整批总价、数量、异常品。",
+    "普通来访供货商每周来访且带溢价，不代表批发或电话单一定更便宜。",
+    "观测快照中 wholesale_cost 显示 62（−18%），属于单次观测，非 wiki 通用折扣率。"
+  ],
+  "actions": [
+    "逐件验货",
+    "接受批发（wholesale）"
+  ],
+  "pitfalls": [
+    "为折扣整批收 → 吃进无法使用的货，现金与储位双损。",
+    "把观测到的 −18% 当所有卖家的固定折扣。"
+  ],
+  "effects": [
+    "接受批发：现金流出 = 整批总价（含折扣），整批货物进入库存。"
+  ],
+  "guards": [
+    "整批总价 > 可用现金 − 下次 rent_due 时不得接受批发"
+  ],
+  "keywords": [
+    "wholesale",
+    "wholesale_cost",
+    "接受批发",
+    "溢价"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.table.nego_buttons.wholesale",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/suppliers-and-wholesale",
+    "实测 观测快照：wholesale_cost=62 (-18%)"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "phone-supplier-orders",
+    "bill-reserve-first",
+    "appraisal-accept-range"
+  ],
+  "source": "wiki:/zh/wiki/terms/suppliers-and-wholesale",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

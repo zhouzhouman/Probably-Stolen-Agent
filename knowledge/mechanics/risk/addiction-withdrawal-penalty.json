@@ -1,0 +1,53 @@
+{
+  "id": "addiction-withdrawal-penalty",
+  "title": "物质成瘾与戒断惩罚",
+  "category": "risk",
+  "summary": "尼古丁/酒精/麻醉品成瘾开局即戒断，单种交易惩罚 8%；哨兵崩溃每周要一支 Immunivax。",
+  "facts": [
+    "尼古丁、酒精、麻醉品三种成瘾可治愈，开局立即处于戒断状态，单种未定期摄入时交易惩罚 8%。",
+    "戒断计数使用 3 次初始化与 20 夜自然治愈线（具体结算见 health-and-addiction）。",
+    "哨兵崩溃综合征不可治愈，每周必须注射 Immunivax 才能存活，否则死亡；开局只附 1 支。",
+    "赌博成瘾不使用 3/20 夜计数，触发条件是「有机会时购买彩票」，会在交易中自动购买刮刮乐与成叠票。",
+    "成瘾惩罚按单种 8% 计，多种成瘾是否叠加、如何叠加，wiki 未给出统一数值。"
+  ],
+  "actions": [
+    "开档前留出每周 Immunivax 的采购预算",
+    "有酒精成瘾时把酒留一瓶自用，别全卖"
+  ],
+  "pitfalls": [
+    "只算进货价不算戒断折扣：8% 交易惩罚会吃掉薄利",
+    "把哨兵崩溃当普通成瘾：不可治愈，断针即死"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "尼古丁成瘾",
+    "酒精成瘾",
+    "麻醉品成瘾",
+    "Immunivax",
+    "戒断",
+    "赌博成瘾"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/perks/starting-perks",
+    "wiki: /zh/wiki/terms/lottery-and-gambling"
+  ],
+  "confidence": 0.88,
+  "verified_at": "2026-10-24",
+  "related": [
+    "starting-perk-numbers",
+    "lottery-odds-and-gambling"
+  ],
+  "source": "wiki:/zh/wiki/perks/starting-perks",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

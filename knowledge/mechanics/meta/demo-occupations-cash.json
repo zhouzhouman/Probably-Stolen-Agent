@@ -1,0 +1,67 @@
+{
+  "id": "demo-occupations-cash",
+  "title": "开局职业与起始现金（1.0 解包核实 600 基数制）",
+  "category": "meta",
+  "summary": "起始现金不是每职业写死，而是统一 600（PlayerStore.cs:821）再加职业扣减：学徒 550、水商 400、拾荒者 400、销赃者 450、农场主 450、化学家 300、枪匠 150、水产养殖 150、养鼠人 600、一无所有 0。",
+  "facts": [
+    "起始现金统一由 PlayerStore.playerCash = 600 起算（PlayerStore.cs:821），再由 NewGameData.SetStartItem() 按 StartType 扣减（NewGameData.cs:127-330）。",
+    "1.0 解包逐职业实算：APPRENTICE 学徒 600−50=550；WATER_MERCHANT 水商 600−200=400；SCAV（junker）拾荒者 600−200=400；FENCE 销赃者 600−150=450；FARMER 农场主 600−150=450；DRUG_DEALER 化学家 600−300=300；GUNSMITH 枪匠 600−450=150；AQUAFARMER 水产养殖 600−450=150；RANCHER 养鼠人无扣减=600；ROCK_BOTTOM 一无所有 playerCash=0（NewGameData.cs:300）。",
+    "本局实测交叉验证：1.0 实机新局 /state cash=150（artifacts/_lead_probe/v5_state_live.json，2026-11-14），与「600−450」（GUNSMITH 枪匠）吻合；同快照 rent_value=250 = startingRent 200+50 也指向枪匠。",
+    "起始租金同样分职业加价：PlayerStore.startingRent 默认 200（PlayerStore.cs:88），FENCE/GUNSMITH 各 +50（NewGameData.cs:183/227）、FARMER/AQUAFARMER 各 +40（:192/329），随后 rentValue = startingRent 覆盖。→ 实机反解：v5_state_live.json 同时出现 cash=150 与 rent_value=250，唯一吻合的组合是 GUNSMITH（600−450=150，200+50=250），该局开局职业应为枪匠（此为该快照的唯一自洽解释，未从 /state 直接读到职业 id）。",
+    "1.0 的开局职业清单在 StartingScenario.Vanilla()（StartingScenario.cs:226-246），共 14 项：apprentice / water_merchant / fence / rock_bottom / hydroponic_farmer / gunsmith / chemist / rancher / aquafarmer / junker / organ_trader / street_food_vendor / moonshiner / pharmacist。",
+    "其中 5 项标 comingSoon=true：junker（对应远征线，官方 Roadmap 为 post-launch）、organ_trader、street_food_vendor、moonshiner（另 hidden=true）、pharmacist（另 hidden=true）——与官方 Roadmap 的 12 月中旬 Junker、2027-01 Organ Trader、2027-04 Street Food Vendor 一一对应。",
+    "其余 9 项 comingSoon=false（含 CreatePending 建的 aquafarmer，未传 comingSoon），是最可能在正式版菜单里可选的职业集合。",
+    "Rock Bottom 初始现金 0，且不发放其他职业共有的 4 张磁带。",
+    "各职业携带的装备差异（老鼠/水净化物资/储藏区等）来自 Demo 期 wiki，未逐项用解包复核。",
+    "2026-11-14 校正：本卡原写「Demo 只放行四种开局、其余 10 个职业不可选」，并把整卡标成 Demo 快照。实测 tools/decompile_full/NewGameData.cs:7-25 有完整 StartType 枚举、StartingScenario.cs:226-246 有完整 14 项清单，且 Demo wiki 的 550/600/400/0 与 1.0 解包 600 基数制逐项吻合 → 起始现金部分改为 1.0.0 解包结论；「哪些职业在正式版菜单可选」仍需实机确认（comingSoon 只是界面标记，未见判定代码）。先前「解包里无 Occupation 源码」的判断有误：当时按文件名搜 *Occup*.cs，真源文件名是 StartingScenario.cs 与 NewGameData.cs。"
+  ],
+  "actions": [
+    "按 600 基数制预算：本局开局现金 = 600 − 职业扣减，不要用固定值",
+    "做首周预算前先读 /state 的 cash，不要假设是 600"
+  ],
+  "pitfalls": [
+    "把起始现金当成每职业独立写死的常量：它是 600 加职业扣减（NewGameData.cs:127-330）",
+    "把「更会攒钱 +150」当成每天收入：那是一次性起始资金（StartingPerkContent.cs:24 playerCash += 150）",
+    "按官方 Roadmap 之外的 comingSoon 职业做长期规划：junker/organ_trader/street_food_vendor/moonshiner/pharmacist 目前是未开放标记"
+  ],
+  "effects": [
+    "开局 → cash 按 600 − 职业扣减落定，startingRent 按职业 +0/+40/+50"
+  ],
+  "guards": [
+    "预算前先读 /state.cash 与 /state.rent_value，不要用本卡的默认值硬编码"
+  ],
+  "keywords": [
+    "WATER_MERCHANT",
+    "Rock Bottom",
+    "学徒",
+    "水商",
+    "养鼠人",
+    "Wilds 网络"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.day",
+        "op": "lte",
+        "value": 3
+      }
+    ]
+  },
+  "evidence": [
+    "decompile: tools/decompile_full/NewGameData.cs:7-25（StartType 枚举）、:127-330（逐职业 playerCash/startingRent 扣减）",
+    "decompile: tools/decompile_full/StartingScenario.cs:226-246（14 项开局清单与 comingSoon/hidden 标记）",
+    "decompile: tools/decompile_full/PlayerStore.cs:821（playerCash = 600）、:88（startingRent = 200）",
+    "live: artifacts/_lead_probe/v5_state_live.json（2026-11-14，cash=150）",
+    "wiki: /zh/wiki/occupations/occupation-apprentice"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-11-14",
+  "related": [
+    "starting-perk-numbers",
+    "game-modes-and-failures"
+  ],
+  "source": "decompile:tools/decompile_full/NewGameData.cs:7-25 + StartingScenario.cs:226-246",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

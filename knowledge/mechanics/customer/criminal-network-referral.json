@@ -1,0 +1,52 @@
+{
+  "id": "criminal-network-referral",
+  "title": "犯罪网络 45/晚，冷却计数 3",
+  "category": "customer",
+  "summary": "每晚 45 介绍高预算违禁品买家并加少量黑市声望，使用后冷却计数重置为 3，且不给许可豁免。",
+  "facts": [
+    "违禁品买家介绍（犯罪网络）基础费用 45 信用点/晚，为全部夜间服务中最高。",
+    "效果：介绍预算较高的违禁品买家，并增加少量黑市声望。",
+    "冷却计数配置为 3，夜间结算使用该服务后重置为 3；能否再次使用仍看当前冷却状态。",
+    "不提供许可豁免；网络端解锁项 CRIMINEL_NETWORK 需 350 信用点（NetworkUpgradeList.cs:785）。该项虽带 lockInDemo=true（:787），但判定函数 NetworkUpgrade.IsLockedInDemo() 零调用者（NetworkUpgrade.cs:654-668），正式版购买判定走 IsReady()（:844-859），故应可购买（待实机确认）。",
+    "2026-11-13 校正：旧结论「CRIMINEL_NETWORK 在 Demo 被锁定、攒够 350 也买不到」→ 新结论「lockInDemo=true 只是数据标记，判定函数零调用者，正式版应可购买（实机未确认）」，依据 tools/decompile_full/NetworkUpgradeList.cs:785/787 + NetworkUpgrade.cs:654-668（IsLockedInDemo 零调用者）/ :844-859（IsReady）。"
+  ],
+  "actions": [
+    "只在手上有高价值违禁品时启用",
+    "启用前确认当前冷却已走完"
+  ],
+  "pitfalls": [
+    "以为 45 能附带许可豁免",
+    "把 CRIMINEL_NETWORK 350 当成「攒够也买不到」：lockInDemo=true 只是数据标记（NetworkUpgradeList.cs:785/787），判定函数 IsLockedInDemo()（NetworkUpgrade.cs:654-668）零调用者，应可购买（实际可购性需实机确认）"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "CRIMINEL_NETWORK",
+    "犯罪网络",
+    "cooldown",
+    "黑市声望"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.phone.contacts",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/contact-services",
+    "wiki: /zh/wiki/upgrades/contacts-network"
+  ],
+  "confidence": 0.88,
+  "verified_at": "2026-11-07",
+  "related": [
+    "network-contacts-table",
+    "contact-buyer-referral"
+  ],
+  "source": "wiki:/zh/wiki/services/contact-services",
+  "review_note": "正式版实机 /state services 核对：CRIMINEL_NETWORK cost=45，与原卡一致（2026-11-07）。",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

@@ -1,0 +1,62 @@
+{
+  "id": "rent-default-evicted",
+  "title": "欠租补齐失败会被驱逐",
+  "category": "risk",
+  "summary": "宽限后仍补不齐租金不是罚款而是驱逐，直接结束本局经营。",
+  "facts": [
+    "未能在宽限账单到期后补齐欠租，会面临驱逐并结束经营，不是扣钱继续。",
+    "驱逐判定发生在第 2 次付款仍不合格时（即宽限后的那期）。",
+    "同期账单至少包含 3 项：本期租金、服务费、补料，可支付现金须覆盖三者之和。",
+    "未卖掉的库存与预期收益按 0 计入可支付现金，不能用来抵租。",
+    "投保生效的夜晚不会失窃（免除判定），没有可期待的「返还物」；缴租现金只看当下持有的钱。",
+    "2026-11-13 校正：旧结论「保险返还的是夜间被盗物品」→ 新结论「投保当晚不失窃、无返还环节」，依据 PlayerStore.cs:2060-2141。"
+  ],
+  "actions": [
+    "到期前 2 天清一批低值杂货换现金",
+    "必要时关闭非 mandatory 服务保租金"
+  ],
+  "pitfalls": [
+    "把库存市值当现金 → 账面够、实际付不出",
+    "指望保险赔付救急"
+  ],
+  "effects": [
+    "现金始终不足：经营结束（被驱逐）"
+  ],
+  "guards": [
+    "现金 < rent_due 时禁止任何进货与非必要服务"
+  ],
+  "keywords": [
+    "insurance",
+    "rent_due",
+    "欠租",
+    "赶走",
+    "驱逐"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.rent.day_until_rent",
+        "op": "lte",
+        "value": 1
+      },
+      {
+        "field": "visible_info.money",
+        "op": "lte",
+        "value": 400
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/rent-and-loans"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "rent-lease",
+    "rent-grace-once"
+  ],
+  "source": "wiki:/zh/wiki/terms/rent-and-loans",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": true
+}

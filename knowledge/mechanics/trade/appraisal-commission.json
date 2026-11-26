@@ -1,0 +1,37 @@
+{
+  "id": "appraisal-commission",
+  "title": "估价委托是无本收入",
+  "category": "trade",
+  "summary": "顾客请你估价时用 appraise，按真实价值提交，报酬 = 20 基础费 + 佣金比例。",
+  "facts": [
+    "appraise 自动完成估价，总是完美精度。",
+    "不占库存、不花现金，是稳定的无本收入。"
+  ],
+  "actions": [
+    "对话出现估价请求 → appraise {identifier}"
+  ],
+  "pitfalls": [
+    "把估价请求当收购，先付钱把顾客物品买下来"
+  ],
+  "keywords": [
+    "appraise",
+    "估价委托"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.appraisal.rank",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "bridge prompt v0.6.0 注释"
+  ],
+  "confidence": 0.8,
+  "verified_at": "2026-10-14",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "source": "bridge:mod/src/BridgeApi.cs:2325 v0.6.0 注释"
+}

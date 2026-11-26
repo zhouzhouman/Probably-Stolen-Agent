@@ -1,0 +1,50 @@
+{
+  "id": "morning-log-audit",
+  "title": "早晨先审计夜间日志",
+  "category": "loop",
+  "summary": "开局先核对四项夜间结果，异常（停电/破坏/伤口）优先处理再谈进货。",
+  "facts": [
+    "夜间日志必核四项：机器产物、失物、服务状态、伤口；四者有任一异常时先处理异常再开门。",
+    "发生停电或店门/设备被破坏时，先修复再接待顾客，否则当天生产与客流都受损。",
+    "取出的成品要并入「今天真正能出售的库存」后再算进货预算。",
+    "新手验证方式：第一轮只观察一台机器，睡前记录投入，次日对比产出与日志。"
+  ],
+  "actions": [
+    "查看夜间日志",
+    "取出机器产物",
+    "检查并恢复供电"
+  ],
+  "pitfalls": [
+    "跳过日志直接进货：停电导致的零产出被误判为需求不足。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "夜间日志",
+    "停电",
+    "失物",
+    "夜间服务"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "MORNING"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/daily-cycle"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "related": [
+    "day-cycle-stages",
+    "faq-machine-no-output"
+  ],
+  "source": "wiki:/zh/wiki/terms/daily-cycle",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,52 @@
+{
+  "id": "sec-inspection-multipliers",
+  "title": "低治安声望放大调查强度",
+  "category": "security",
+  "summary": "重点盯防调查×1.2、头号通缉×1.5；联名检举再让治安负向×2、调查×1.5。",
+  "facts": [
+    "重点盯防 SEC_WATCHLIST（≤−20）的调查倍率为 1.2。",
+    "头号通缉 SEC_PRIORITY（≤−60）的调查倍率为 1.5。",
+    "上层区联名检举 UL_PETITION（≤−60）使治安部负向 ×2、调查倍率 1.5。",
+    "彻底查抄 SEC_THOROUGH_INSPECTION（≤−80）与不择手段 SEC_IMMEDIATE_ARREST（≤−100）会进一步升级处置。",
+    "持枪证后仍需维持声望（≥0/30/60），犯罪证据另行结算、不因许可豁免。"
+  ],
+  "actions": [
+    "治安声望低于 −20 时停止携带违禁品",
+    "被联名检举后立刻清空赃物与违禁库存"
+  ],
+  "pitfalls": [
+    "同时踩到 ≤−60 与联名检举 → 调查倍率叠加到 2.25"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "SEC_WATCHLIST",
+    "SEC_PRIORITY",
+    "UL_PETITION",
+    "调查倍率"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.risk.crime_value",
+        "op": "gte",
+        "value": 1
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/reputation/security-perks",
+    "wiki: /zh/wiki/reputation/upper-level-perks"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "sec-perk-thresholds",
+    "wanted-report",
+    "ul-perk-thresholds"
+  ],
+  "source": "wiki:/zh/wiki/reputation/security-perks",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

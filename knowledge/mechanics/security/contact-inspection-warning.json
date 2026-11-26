@@ -1,0 +1,50 @@
+{
+  "id": "contact-inspection-warning",
+  "title": "检查预警 10/晚，只报常规检查",
+  "category": "security",
+  "summary": "每晚 10 换提前两天/一天的检查提示，但突击检查不预告，预警只买准备时间不免检。",
+  "facts": [
+    "检查预警服务基础费用 10 信用点/晚，内线通知常规治安检查。",
+    "日志有三种提示：提前两天、提前一天、检查将至。",
+    "它不能预告突击检查。",
+    "收到预警只获得准备时间，不等于免检或免罚；应核对许可、库存、暗格位置与既有证据。"
+  ],
+  "actions": [
+    "收到提示后立刻清展示柜里的违禁品",
+    "核对许可与暗格位置，而不是只藏货"
+  ],
+  "pitfalls": [
+    "把预警当免检凭证",
+    "只收预警不做整改：检查照常执行"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "检查预警",
+    "INSPECTION_INFORMANT",
+    "inspections"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.services[]",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/contact-services",
+    "wiki: /zh/wiki/upgrades/security-network"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "wild-fixers-evidence",
+    "network-security-table",
+    "cartel-protection-mandatory"
+  ],
+  "source": "wiki:/zh/wiki/services/contact-services",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

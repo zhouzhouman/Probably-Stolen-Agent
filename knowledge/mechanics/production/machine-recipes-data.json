@@ -1,0 +1,53 @@
+{
+  "id": "machine-recipes-data",
+  "title": "机器配方从哪看：/machines 的 recipes，产出不可静态推断",
+  "category": "production",
+  "summary": "正式版配方挂在机器物品的 recipeManager 上；接口能给出「投入什么」，但「产出什么」由运行时函数算出，接口不提供。",
+  "facts": [
+    "配方不在机器类里写死，而是挂在机器物品自身：GameItem.recipeManager（CraftingRecipeManager.availableRecipes）。",
+    "/machines 每台机器带 recipes[]：name + tools + materials。",
+    "materials/tools 两类过滤器：固定 identifier 集合（ids）或标签集合（tags），自定义过滤器只给显示名。",
+    "产出由 CraftingRecipe.craftFunc 运行时计算，静态读不出来——接口刻意不提供产出字段。",
+    "机器槽位是格子库存，投料同样要占格：连续投同一种料可能因格子占满而放不进。"
+  ],
+  "actions": [
+    "投料前读 /machines[].recipes，按 materials 的 ids/tags 与 amount 备料",
+    "投完用 /machines 的 slots 确认物品真的进了槽位"
+  ],
+  "pitfalls": [
+    "凭机器名字猜配方（正式版机器 49 类，名字相似但配方不同）。",
+    "以为接口能给产出清单，照着不存在的字段做计划。",
+    "把电池/模块当成配方材料——它们不在 recipes 里，投料守卫只会提示不会拦截。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "机器配方",
+    "投料",
+    "recipes",
+    "recipeManager",
+    "生产"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.machines",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "decompile_full/GameItem.cs (recipeManager)",
+    "decompile_full/CraftingRecipe.cs"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-11-08",
+  "related": [
+    "machine-production-loop",
+    "fish-farm"
+  ],
+  "source": "decompile:CraftingRecipe.cs",
+  "game_version": "1.0.0",
+  "verify_basis": "decompile",
+  "needs_verify": false
+}

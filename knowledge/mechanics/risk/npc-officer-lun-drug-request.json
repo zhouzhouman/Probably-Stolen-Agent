@@ -1,0 +1,54 @@
+{
+  "id": "npc-officer-lun-drug-request",
+  "title": "给伦警官供药只认强效止痛药",
+  "category": "risk",
+  "summary": "受伤与复岗后两次求药都指定强效止痛药，其他医疗品和注射器一律无效。",
+  "facts": [
+    "D=12 受伤时对话明确要求强效止痛药。",
+    "D=16 复岗后还会再求一次药。",
+    "提交物必须符合当次接受条件，不能把「医疗标签」当通用凭证。",
+    "任意注射器不等于赛纳普斯，赛纳普斯是独立物品条目。",
+    "D=20 盈余物资分支要求伦的成瘾等级 > 0，说明供药会改变他的成瘾状态。"
+  ],
+  "actions": [
+    "库存里常备至少 1 支强效止痛药，不卖给其他客人",
+    "提交前先 appraise 确认物品身份，别拿同名不同物"
+  ],
+  "pitfalls": [
+    "用低阶止痛药顶替：对话不通过",
+    "把赛纳普斯当普通止痛药卖掉，之后无货可交"
+  ],
+  "effects": [
+    "提交合格止痛药 → 对话推进；伦的成瘾/状态记录更新"
+  ],
+  "guards": [
+    "强效止痛药库存为 0 时不承诺推进伦线"
+  ],
+  "keywords": [
+    "强效止痛药",
+    "赛纳普斯",
+    "black_injector",
+    "成瘾"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-officer-lun"
+  ],
+  "related": [
+    "npc-officer-lun-storyline",
+    "addiction-withdrawal"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-officer-lun",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

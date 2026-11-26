@@ -1,0 +1,56 @@
+{
+  "id": "furnace-smelting-ratio",
+  "title": "熔炉配方：2 废料→1 金属锭",
+  "category": "production",
+  "summary": "熔炉固定 2 份废金属或矿石出 1 块金属锭，需供电过夜；高炉模组可换成 3 进 2 但降纯度。",
+  "facts": [
+    "普通熔炉：共 2 份废金属或金属矿石 → 1 块金属锭，需供电并在夜间处理。",
+    "三类金属原料（废金属、金属矿石）可互相替换，矿石纯度高于废金属。",
+    "高炉模组：3 份材料 → 2 块金属锭，纯度加成少 1 档、最低为 0，效果不可叠加。",
+    "垃圾处理模组让熔炉把垃圾加工成废金属。",
+    "助熔剂是可选纯度处理、不替代金属原料：基础助熔剂使用后消耗，高级助熔剂可重复使用。",
+    "wiki 声明完整配方表取不到（配方由运行时构造），只列已核实路线；不要把本表当全量配方库。"
+  ],
+  "actions": [
+    "按 2 份废金属/矿石 : 1 块金属锭备料后过夜",
+    "拆机器回收金属用等离子切割机，回收线缆用剪线钳"
+  ],
+  "pitfalls": [
+    "照旧攻略找蒸发器：2026-09-15 热修已移除该机器，相关文本只是未清理的残留"
+  ],
+  "effects": [
+    "过夜后机器库存中产出 1 块金属锭（高炉配置为 2 块）"
+  ],
+  "guards": [],
+  "keywords": [
+    "熔炉",
+    "金属锭",
+    "废金属",
+    "金属矿石",
+    "高炉模组",
+    "助熔剂",
+    "等离子切割机",
+    "剪线钳"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.machines",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/production-recipes"
+  ],
+  "confidence": 0.92,
+  "verified_at": "2026-10-24",
+  "related": [
+    "machine-power-slot",
+    "module-power-formula"
+  ],
+  "source": "wiki:/zh/wiki/terms/production-recipes",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

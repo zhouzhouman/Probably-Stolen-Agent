@@ -1,0 +1,48 @@
+{
+  "id": "perfume-trade-bonus",
+  "title": "香水交易增益 15%/25%",
+  "category": "trade",
+  "summary": "两种香水各给当前顾客 15% 或 25% 交易增益，互不叠加，别当全局加价。",
+  "facts": [
+    "「同步」神经活性香水（neuroactive_perfume）对当前顾客提供 15% 交易增益。",
+    "「本源」费洛蒙香水（pheromone_perfume）提供 25% 交易增益，属违禁香水。",
+    "两种效果不可叠加，只对当前顾客生效，不是全天生效。",
+    "香水增益不等于所有物品按基础价值 +15%/+25% 成交；零售加价另有合法性、物品与顾客接受条件。",
+    "当前观测层没有「香水增益状态」字段，需扩展后才能按条件触发。"
+  ],
+  "actions": [
+    "议价前对当前顾客用香水"
+  ],
+  "pitfalls": [
+    "两种香水一起用想叠出 40%：实际不叠加，浪费一瓶。",
+    "把增益当全局售价系数，抬价后被拒。"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "neuroactive_perfume",
+    "pheromone_perfume",
+    "费洛蒙",
+    "违禁香水"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.table.nego_open",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/trading-and-bargaining"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "nego-four-directions"
+  ],
+  "source": "wiki:/zh/wiki/terms/trading-and-bargaining",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

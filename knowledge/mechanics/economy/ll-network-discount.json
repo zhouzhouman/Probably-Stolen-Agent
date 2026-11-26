@@ -1,0 +1,49 @@
+{
+  "id": "ll-network-discount",
+  "title": "下层区传奇网络费 85%",
+  "category": "economy",
+  "summary": "下层区声望到 100 后，Wilds 网络项目按 85% 结算，是最直接的长期省钱项。",
+  "facts": [
+    "下层区传奇 LLPILLAR 门槛为声望 ≥100。",
+    "该特权令网络项目费用按 85% 结算，即省 15%。",
+    "网络项目含房东宽限等付费项，100 信用点项在 85% 下为 85 信用点。",
+    "到 100 需先跨 20/40/60/80 共 4 档，前 4 档特权同时存在。",
+    "声望已进入观察层：`visible_info.reputations`（列表，元素含 id/faction/value）。"
+  ],
+  "actions": [
+    "把下层区声望当长期投资，冲到 100 再买网络升级"
+  ],
+  "pitfalls": [
+    "先买全套网络升级再刷声望 → 白丢 15% 折扣"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "LLPILLAR",
+    "下层区传奇",
+    "85%",
+    "Wilds"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.reputations.value",
+        "op": "gte",
+        "value": 80
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/reputation/lower-level-perks"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "ll-perk-thresholds",
+    "landlord-grace-upgrade"
+  ],
+  "source": "wiki:/zh/wiki/reputation/lower-level-perks",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

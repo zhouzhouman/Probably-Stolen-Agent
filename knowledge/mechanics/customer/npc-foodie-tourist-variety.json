@@ -1,0 +1,56 @@
+{
+  "id": "npc-foodie-tourist-variety",
+  "title": "觅食游客要的是品种不是数量",
+  "category": "customer",
+  "summary": "D=13 初见给 2 天准备，要每种食物饮料各 1 份，品种越多回访出价越高。",
+  "facts": [
+    "需求是「店内每种食物和饮料各一份」，按品类计，同一种堆数量不算。",
+    "首次对话给出两天准备时间，D=13 是普通开店介绍的初见时间。",
+    "回访由专门人物工厂生成，回访对话表示种类足够多时愿意多付钱。",
+    "不可食用材料与空容器不能凭外形当饮料提交，柜台会按当次交互校验。",
+    "原版另有「普通空间站游客」，需求与回访流程不能混用。"
+  ],
+  "actions": [
+    "D=13 后两天内保留至少 2 个不同食品 + 2 个不同饮料品类",
+    "备货期间不要把食品全部投料或交给地下交易所",
+    "回访时逐类上柜，先看接受再报价"
+  ],
+  "pitfalls": [
+    "用 10 份同一种食物充数：品种仍算 1",
+    "把空瓶当饮料上柜"
+  ],
+  "effects": [
+    "按品类交付 → 回访时按品种数给出更高出价"
+  ],
+  "guards": [
+    "库内食品品类 < 2 时不承诺完成觅食订单"
+  ],
+  "keywords": [
+    "觅食游客",
+    "空间站游客",
+    "品种",
+    "两天"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-foodie-tourist"
+  ],
+  "related": [
+    "npc-ordinary-customer-types",
+    "procurement-order-flow",
+    "showcase-buyer-slots"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-foodie-tourist",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

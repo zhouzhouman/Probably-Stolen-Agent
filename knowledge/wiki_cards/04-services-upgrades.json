@@ -1,0 +1,886 @@
+[
+  {
+    "id": "power-service-fee-formula",
+    "title": "电费每晚 5+floor(D/10)",
+    "category": "night",
+    "summary": "电力服务按晚计费，成本随日期线性上涨；困难模式直接翻倍，需按当日 D 重算而非记固定价。",
+    "facts": [
+      "普通电费公式为 5＋floor(D÷10) 信用点；D 为计费时的内部日计数，floor 为向下取整。",
+      "困难模式把该结果乘 2：D＝20 时普通 7、困难 14。",
+      "偷电（POWER_HIJACK）解锁后费用置为 0 并把电力服务置为使用中；停电事件也会把显示费用置为 0。",
+      "服务费用为 0 不能证明当晚有电：断电欠费与停电事件在界面上都表现为 0。"
+    ],
+    "actions": [
+      "睡前按当前 day 重算电费，不要用昨天的报价",
+      "看到费用 0 时去夜间日志确认是偷电还是停电"
+    ],
+    "pitfalls": [
+      "用开局服务初始化价当每晚固定电费：实际按 D 每 10 天涨 1 点",
+      "把 0 费用当成已供电"
+    ],
+    "effects": [
+      "支付成功：当晚照明与电网设备运转，现金 −(5＋floor(D÷10) 或 ×2)"
+    ],
+    "guards": [
+      "现金不足以同时支付电费+清洁+保险时，优先电费（影响机器与警报）"
+    ],
+    "keywords": [
+      "power-service",
+      "is_power_on",
+      "POWER_HIJACK",
+      "floor"
+    ],
+    "triggers": {
+      "all": [
+        {
+          "field": "visible_info.services[].id",
+          "op": "contains",
+          "value": "power"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/services/power-service"
+    ],
+    "related": [
+      "power-off-battery-machines",
+      "commercial-power-upgrade",
+      "janitorial-fee-formula"
+    ],
+    "confidence": 0.92,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/power-service"
+  },
+  {
+    "id": "power-off-battery-machines",
+    "title": "断电时电池机器仍可运行",
+    "category": "production",
+    "summary": "不缴电费只关掉照明与电网设备，装能量电池的机器仍能干活；警报则必须有独立电源。",
+    "facts": [
+      "未付电费时灯光变暗，但使用能量电池供电的机器仍可运行，前提是自身电池有电且满足工作条件。",
+      "警报系统需要自己的独立电源，缴纳店铺电费不能替代安装电源。",
+      "机器、充电器、能量方块三种供能方式需分别检查，不能只看电费是否已付。"
+    ],
+    "actions": [
+      "停工时先看夜间日志区分「欠费断电」和「停电」",
+      "只有一台设备不转就查该设备，多台同时出问题再查服务与停电"
+    ],
+    "pitfalls": [
+      "断电后以为全部机器停工而放弃生产",
+      "以为缴了电费警报就有电"
+    ],
+    "effects": [
+      "未付电费：照明关闭，电池机器照常产出，警报若未装独立电源则失效"
+    ],
+    "guards": [
+      "警报投资前先确认有独立电源与电量"
+    ],
+    "keywords": [
+      "energy_credit",
+      "security_alarm",
+      "is_power_on",
+      "PowerBloc"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.rent.is_power_on",
+          "op": "eq",
+          "value": false
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/services/power-service"
+    ],
+    "related": [
+      "power-service-fee-formula",
+      "recharger-powerbloc-charge-rate"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/power-service"
+  },
+  {
+    "id": "recharger-powerbloc-charge-rate",
+    "title": "充电器 3 点、能量方块 2 点/晚",
+    "category": "production",
+    "summary": "夜间回电速度由设备决定：充电器每块 3 点、PowerBloc 每相邻电池 2 点，商用级升级后翻倍。",
+    "facts": [
+      "充电器（recharger）：店内已供电时，每晚为内部每块电池恢复 3 点电量；商用级供电升级后为 6 点。",
+      "能量方块（PowerBloc）：店内已供电时，每晚给相邻电池或相邻机器内电池恢复 2 点电量；商用级后为 4 点。",
+      "PowerBloc 排除充电器，效果可叠加；充电器与 PowerBloc 是两条独立路径。",
+      "两者都要求店内当晚已供电（已付电费或偷电），断电时不给电。"
+    ],
+    "actions": [
+      "按电池缺口选设备：多块电池用充电器，机器内电池用 PowerBloc",
+      "叠放 PowerBloc 前确认相邻关系"
+    ],
+    "pitfalls": [
+      "断电夜指望充电器补电：不供电就不充",
+      "以为 PowerBloc 能给充电器里的电池加速"
+    ],
+    "keywords": [
+      "recharger",
+      "powerblock",
+      "PowerBloc",
+      "energy_credit"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/services/power-service"
+    ],
+    "related": [
+      "power-service-fee-formula",
+      "commercial-power-upgrade"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/power-service"
+  },
+  {
+    "id": "commercial-power-upgrade",
+    "title": "商用级供电 350 提升充电 100%",
+    "category": "store",
+    "summary": "350 信用点把夜间回电翻倍（3→6、2→4），但不免电费，属于供电紧张期的效率投资。",
+    "facts": [
+      "商用级供电单元（COMMERCIAL_POWER）基础解锁费用 350 信用点，无冷却、无前置，Demo 可用。",
+      "效果是充电量提高 100%：充电器每块电池每晚 3 → 6 点，能量方块 2 → 4 点。",
+      "它不免除电费，仍需满足当晚供电与摆放条件。",
+      "上述充电量与费用于 2026-10-22 对原版 Demo Steam Build 26017150 静态核对，未做游戏内实测。"
+    ],
+    "actions": [
+      "电池经常见底时优先买 350 的商用级供电，而不是加买电池",
+      "买前确认当晚供电稳定，否则升级无效"
+    ],
+    "pitfalls": [
+      "以为买了它就不用交电费",
+      "在经常停电的存档里先买它：断电时充电量为 0"
+    ],
+    "keywords": [
+      "COMMERCIAL_POWER",
+      "commercial_power",
+      "recharger",
+      "powerblock"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/services/power-service",
+      "wiki: /zh/wiki/upgrades/shop-network"
+    ],
+    "related": [
+      "recharger-powerbloc-charge-rate",
+      "network-shop-table",
+      "power-service-fee-formula"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/power-service"
+  },
+  {
+    "id": "janitorial-fee-formula",
+    "title": "清洁费随日涨，破坏后 75 起",
+    "category": "night",
+    "summary": "清洁费白天数缓涨，但店铺被破坏后跳到 75+，黑市不受信任再翻倍，睡前必须按当前报价留钱。",
+    "facts": [
+      "门面未遭破坏：清洁费 3＋floor(D÷10) 信用点，D＝20 时为 5。",
+      "门面遭破坏：75＋floor(D÷10)，D＝20 时为 77。",
+      "Sawyer Crew 天赋未遭破坏为 0；遭破坏为 30＋floor(D÷5)（分母为 5）。",
+      "黑市「不受信任」把上表结果再乘 2，并禁止使用地下交易所。",
+      "该重算分支没有额外的困难模式清洁倍率，不要把开局初始化加价当每晚固定叠加。"
+    ],
+    "actions": [
+      "睡前读当前报价而不是记常数",
+      "店铺被破坏当晚按 ≥75 预留清洁费"
+    ],
+    "pitfalls": [
+      "遭破坏后仍按 5 信用点留钱 → 当晚清洁失败",
+      "把黑市不受信任期间的费用当日程基价"
+    ],
+    "effects": [
+      "支付成功：垃圾桶清空、门面清理、脏乱等级 G 清零"
+    ],
+    "guards": [
+      "现金 < 75 且门面已破坏时，先卖货再睡"
+    ],
+    "keywords": [
+      "janitorial-service",
+      "garbage_level",
+      "Sawyer Crew",
+      "floor"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.rent.garbage_level",
+          "op": "gte",
+          "value": 4
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/services/janitorial-service"
+    ],
+    "related": [
+      "garbage-level-attractiveness-penalty",
+      "trashcan-permanent-removal",
+      "power-service-fee-formula"
+    ],
+    "confidence": 0.93,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/janitorial-service"
+  },
+  {
+    "id": "garbage-level-attractiveness-penalty",
+    "title": "脏乱 >2 每级扣基础吸引力 5%",
+    "category": "economy",
+    "summary": "漏清洁两晚就丢 20% 基础吸引力，最多丢 50%；这是清洁服务最贵的一项隐形成本。",
+    "facts": [
+      "清洁服务已解锁后，每次未使用则脏乱等级 G＝min(G＋2, 10)；清洁会把 G 清零。",
+      "G 不超过 2 时不扣吸引力；超过 2 时每级扣除基础吸引力的 5%，扣除额截去小数。",
+      "基础吸引力 250、无投影加成时：1 晚 G=2 留 250；2 晚 G=4 降 200；3 晚 G=6 降 175；4 晚 G=8 降 150；5 晚及以上 G=10 降 125。",
+      "投影设备加成另加，不参与这笔扣减；此机制最高扣基础值的 50%。"
+    ],
+    "actions": [
+      "G≥4 的次日必须开清洁",
+      "把清洁费与「少 20% 客流」的损失对比后再决定跳过"
+    ],
+    "pitfalls": [
+      "以为第一晚不扣就一直不扣：第二晚直接扣 20%",
+      "用当前总吸引力而非基础吸引力估算扣减"
+    ],
+    "effects": [
+      "使用清洁：G 归零，吸引力恢复到基础值+其他加成"
+    ],
+    "keywords": [
+      "garbage_level",
+      "attractiveness",
+      "trashcan"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.rent.garbage_level",
+          "op": "gte",
+          "value": 4
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/services/janitorial-service"
+    ],
+    "related": [
+      "janitorial-fee-formula",
+      "trashcan-permanent-removal"
+    ],
+    "confidence": 0.93,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/janitorial-service"
+  },
+  {
+    "id": "trashcan-permanent-removal",
+    "title": "清洁会永久删除垃圾桶内物品",
+    "category": "night",
+    "summary": "垃圾桶不是仓库：付清洁费即永久移除桶内容物；只有已解锁地下交易所时才能按清单换物。",
+    "facts": [
+      "垃圾桶说明明确：支付清洁服务后，桶内物品会在夜间被永久移除。",
+      "地下交易所换物需三步：看当前交换清单（部分每隔几天变化）→ 把清单要求物品放入垃圾桶 → 当晚使用清洁服务，次晨检查换回物品。",
+      "该交换不会被治安部追踪，但不使店内其他违禁品或既有证据失效。",
+      "未取得交易所资格时，普通丢弃不保证有回报；已开放交易所时先处理交换再清空垃圾。"
+    ],
+    "actions": [
+      "睡前把工具、商品、原料从垃圾桶取回",
+      "换物前先截图/记录清单要求，避免投错"
+    ],
+    "pitfalls": [
+      "把垃圾桶当免费储物格 → 夜间永久丢货",
+      "没解锁交易所就按攻略投物换货"
+    ],
+    "keywords": [
+      "trashcan",
+      "地下交易所",
+      "janitorial-service"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/services/janitorial-service"
+    ],
+    "related": [
+      "janitorial-fee-formula",
+      "garbage-level-attractiveness-penalty"
+    ],
+    "confidence": 0.92,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/janitorial-service"
+  },
+  {
+    "id": "insurance-returns-items-not-cash",
+    "title": "保险返还物品，不发现金",
+    "category": "risk",
+    "summary": "被盗物次晨返还，没有按标价折算的现金赔款；这笔返还物不能当缴租现金用。",
+    "facts": [
+      "支付保险后，当晚被盗的物品会在第二天早晨返还，日志描述 Wild 的人找到小偷并带回物品。",
+      "不要按商品标价估算现金赔款，也不要把预计返还物当成已经到手的缴租资金。",
+      "该说明只针对夜间盗窃，不能延伸成检查扣押、垃圾桶清空、生产损耗或任何失物都能追回。",
+      "受保分支把连续未投保计数归零，并有 6% 的追回叙事日志判定；该分支不执行普通未投保路径的物品移除。",
+      "6% 不是受保后永久丢货率，也不是现金赔款率。"
+    ],
+    "actions": [
+      "缴租资金只按现金计算，不把待返还物折价计入",
+      "次晨核对被盗条目、追回记录与实际库存"
+    ],
+    "pitfalls": [
+      "用保险「赔款」补租金缺口",
+      "以为买了保险就不会被偷：保险只做次日追回"
+    ],
+    "effects": [
+      "受保且发生盗窃：次晨物品回到库存，现金不变"
+    ],
+    "keywords": [
+      "insurance_days_without",
+      "Joe Wild",
+      "追回"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.economy.insurance_days_without",
+          "op": "gte",
+          "value": 1
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/services/insurance-service",
+      "wiki: /zh/wiki/terms/theft-and-insurance"
+    ],
+    "related": [
+      "insurance-fee-formula",
+      "night-theft-threshold",
+      "rent-increase-rate"
+    ],
+    "confidence": 0.93,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/insurance-service"
+  },
+  {
+    "id": "cartel-protection-mandatory",
+    "title": "卡特尔保护是强制服务，初始费用 0",
+    "category": "security",
+    "summary": "卡特尔保护在服务清单里标记为 mandatory，初始费用配置 0，启用即跳过普通夜间盗窃分支。",
+    "facts": [
+      "卡特尔保护的初始费用配置为 0，并标记为强制服务（mandatory）。",
+      "已确认它启用时会跳过普通夜间盗窃分支。",
+      "它的解锁状态会影响普通保险可用性。",
+      "跳过盗窃不等于免除治安检查、没收或所有其他损失。"
+    ],
+    "actions": [
+      "把卡特尔保护当成默认开启的兜底，而不是可选消费",
+      "别因它跳过盗窃就省掉检查前的准备"
+    ],
+    "pitfalls": [
+      "以为保护费 0 就没有代价：保险被影响，检查与没收照旧",
+      "因为「已保护」而在展示柜放违禁品"
+    ],
+    "keywords": [
+      "mandatory",
+      "卡特尔",
+      "cartel"
+    ],
+    "triggers": {
+      "all": [
+        {
+          "field": "visible_info.services[].mandatory",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/services/contact-services",
+      "wiki: /zh/wiki/terms/theft-and-insurance"
+    ],
+    "related": [
+      "insurance-fee-formula",
+      "contact-inspection-warning",
+      "service-toggle-bedtime"
+    ],
+    "confidence": 0.88,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/contact-services"
+  },
+  {
+    "id": "contact-buyer-referral",
+    "title": "买家介绍 10/晚，次日带客",
+    "category": "customer",
+    "summary": "每晚 10 信用点换次日一批买家，更多顾客会被展示柜商品吸引；前提是先备好能卖的货。",
+    "facts": [
+      "买家介绍服务的基础费用为 10 信用点/晚，睡前启用、次日生效，夜间日志会记录介绍结果。",
+      "普通商品争取买家名额时从 1 个名额起算；正在使用买家介绍、已解锁展柜 I、已解锁展柜 II，每满足一项再加 1，最多 4 个。",
+      "门面遭破坏时名额直接回到 1 个，前述加成都不计入；当日吸引力低于 100 时不会有展示柜买家。",
+      "需先准备能卖的货，否则介绍来的客流无处转化。",
+      "网络端需先买买家推荐服务（BUY_REFERAL，200 信用点，Demo 可用）才解锁该服务。"
+    ],
+    "actions": [
+      "启用当晚先把展示柜补满想卖的品类",
+      "次日开门前核对日志确认介绍是否生效"
+    ],
+    "pitfalls": [
+      "空柜启用买家介绍：客流来了没有对应货",
+      "只算 200 解锁费，忘了每晚 10"
+    ],
+    "keywords": [
+      "BUY_REFERAL",
+      "买家介绍",
+      "买家名额",
+      "showcase"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/services/contact-services",
+      "wiki: /zh/wiki/terms/showcase",
+      "wiki: /zh/wiki/upgrades/contacts-network"
+    ],
+    "related": [
+      "contact-seller-referral",
+      "network-contacts-table",
+      "showcase-buyer-slots"
+    ],
+    "confidence": 0.92,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/contact-services"
+  },
+  {
+    "id": "contact-seller-referral",
+    "title": "卖家介绍 10/晚，需留现金空间",
+    "category": "trade",
+    "summary": "每晚 10 换次日一个卖家，但不保证给到你要的原料；启用前必须预留收购现金和储物空间。",
+    "facts": [
+      "卖家介绍服务基础费用 10 信用点/晚，次日介绍卖家。",
+      "需要预留收购现金与储物空间，且不保证一定提供你想要的原料。",
+      "网络端解锁项为卖家推荐服务 SELL_REFERAL，200 信用点，Demo 可用，无前置无冷却。",
+      "解锁购买与按晚启用是两个状态，未在睡前开启则当晚无效。"
+    ],
+    "actions": [
+      "启用当晚把现金留到能吃得下一批货的水平",
+      "清空一格储物再睡"
+    ],
+    "pitfalls": [
+      "现金全压在库存上 → 卖家来了收不了",
+      "期待指定原料：wiki 明确不保证"
+    ],
+    "keywords": [
+      "SELL_REFERAL",
+      "卖家介绍",
+      "wholesale_cost"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/services/contact-services",
+      "wiki: /zh/wiki/upgrades/contacts-network"
+    ],
+    "related": [
+      "contact-buyer-referral",
+      "network-contacts-table",
+      "wholesale-batch-deal"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/contact-services"
+  },
+  {
+    "id": "contact-inspection-warning",
+    "title": "检查预警 10/晚，只报常规检查",
+    "category": "security",
+    "summary": "每晚 10 换提前两天/一天的检查提示，但突击检查不预告，预警只买准备时间不免检。",
+    "facts": [
+      "检查预警服务基础费用 10 信用点/晚，内线通知常规治安检查。",
+      "日志有三种提示：提前两天、提前一天、检查将至。",
+      "它不能预告突击检查。",
+      "收到预警只获得准备时间，不等于免检或免罚；应核对许可、库存、暗格位置与既有证据。"
+    ],
+    "actions": [
+      "收到提示后立刻清展示柜里的违禁品",
+      "核对许可与暗格位置，而不是只藏货"
+    ],
+    "pitfalls": [
+      "把预警当免检凭证",
+      "只收预警不做整改：检查照常执行"
+    ],
+    "keywords": [
+      "检查预警",
+      "INSPECTION_INFORMANT",
+      "inspections"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/services/contact-services",
+      "wiki: /zh/wiki/upgrades/security-network"
+    ],
+    "related": [
+      "wild-fixers-evidence",
+      "network-security-table",
+      "cartel-protection-mandatory"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/contact-services"
+  },
+  {
+    "id": "wild-fixers-evidence",
+    "title": "善后人 25/晚清未收证据",
+    "category": "security",
+    "summary": "每晚 25 让善后人清理治安部尚未收集的证据、处理目击者并加快嫌疑下降，但不清零已收集证据。",
+    "facts": [
+      "Wild's Fixers 基础费用 25 信用点/晚。",
+      "作用：清理治安部尚未收集的证据、处理目击者、加快犯罪嫌疑下降。",
+      "不能据此推定已被收集的证据或处罚全部清零。",
+      "它不是修理机器或普通供货服务，不要按旧译名「修理工／销赃人」判断用途。"
+    ],
+    "actions": [
+      "嫌疑刚起、证据还没被收走时启用最划算",
+      "证据已被收走后不要指望它翻盘"
+    ],
+    "pitfalls": [
+      "把它当机器维修服务",
+      "已立案后仍只靠它降嫌疑"
+    ],
+    "keywords": [
+      "WILD_FIXER",
+      "Wild's Fixers",
+      "证据"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/services/contact-services",
+      "wiki: /zh/wiki/upgrades/contacts-network"
+    ],
+    "related": [
+      "contact-inspection-warning",
+      "network-security-table",
+      "fixer-crime-reduction"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/contact-services"
+  },
+  {
+    "id": "criminal-network-referral",
+    "title": "犯罪网络 45/晚，冷却计数 3",
+    "category": "customer",
+    "summary": "每晚 45 介绍高预算违禁品买家并加少量黑市声望，使用后冷却计数重置为 3，且不给许可豁免。",
+    "facts": [
+      "违禁品买家介绍（犯罪网络）基础费用 45 信用点/晚，为全部夜间服务中最高。",
+      "效果：介绍预算较高的违禁品买家，并增加少量黑市声望。",
+      "冷却计数配置为 3，夜间结算使用该服务后重置为 3；能否再次使用仍看当前冷却状态。",
+      "不提供许可豁免；网络端解锁项 CRIMINEL_NETWORK 需 350 信用点，但 Demo 不可购买。"
+    ],
+    "actions": [
+      "只在手上有高价值违禁品时启用",
+      "启用前确认当前冷却已走完"
+    ],
+    "pitfalls": [
+      "以为 45 能附带许可豁免",
+      "Demo 里攒 350 想买 CRIMINEL_NETWORK：该项锁定"
+    ],
+    "keywords": [
+      "CRIMINEL_NETWORK",
+      "犯罪网络",
+      "cooldown",
+      "黑市声望"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/services/contact-services",
+      "wiki: /zh/wiki/upgrades/contacts-network"
+    ],
+    "related": [
+      "network-contacts-table",
+      "contact-buyer-referral"
+    ],
+    "confidence": 0.88,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/contact-services"
+  },
+  {
+    "id": "service-toggle-bedtime",
+    "title": "夜间服务按晚开关，解锁≠生效",
+    "category": "night",
+    "summary": "所有夜间服务在睡前逐项开关，网络解锁只买到资格；漏开一晚，当晚零收益。",
+    "facts": [
+      "Wilds 网络中解锁服务型项目后，仍需支付当晚费用才会提供帮助，睡前可逐项开关。",
+      "服务清单字段含 cost、is_using、mandatory、cooldown，睡前应逐项核对。",
+      "网络购买与拨打名片电话联系供应商是不同入口。",
+      "已解锁但未在睡前启用，当晚不产生效果。"
+    ],
+    "actions": [
+      "睡前过一遍服务清单，确认高价值服务 is_using 为真",
+      "把「解锁」「启用」「付费」当作三个独立状态检查"
+    ],
+    "pitfalls": [
+      "解锁后一直以为在生效",
+      "以为电话联系过就等于服务已开"
+    ],
+    "keywords": [
+      "is_using",
+      "mandatory",
+      "cooldown",
+      "night-service-cost"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.services[].is_using",
+          "op": "falsy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/services/contact-services",
+      "wiki: /zh/wiki/services"
+    ],
+    "related": [
+      "power-service-fee-formula",
+      "day-cycle-stages",
+      "cartel-protection-mandatory"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/services/contact-services"
+  },
+  {
+    "id": "network-upgrade-demo-lock",
+    "title": "Demo 锁定项攒钱也买不到",
+    "category": "store",
+    "summary": "标「不可购买」的网络项目在当前试玩版即使费用足够也不会开放，规划升级路线前必须先看这一列。",
+    "facts": [
+      "标为「不可购买」的项目在当前试玩版中无法取得，即使费用足够也不会开放。",
+      "前置未满足时游戏会列出缺失条件；冷却只出现在个别项目上。",
+      "费用只是投入的一部分：关联设备仍要补料、服务可能继续收费、许可可能要求持续声望。",
+      "下层区特权「下层区传奇」解锁后，全部网络项目费用按基础费用的 85% 结算。"
+    ],
+    "actions": [
+      "买前逐项核对「试玩版」列",
+      "把 85% 折扣算进预算再决定买哪条链"
+    ],
+    "pitfalls": [
+      "攒满 1000 想买 RETIRED_CHEMIST：Demo 锁定",
+      "只按价格排序规划路线，忽略前置链"
+    ],
+    "keywords": [
+      "Wilds Network",
+      "下层区传奇",
+      "前置"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/upgrades",
+      "wiki: /zh/wiki/upgrades/industry-network"
+    ],
+    "related": [
+      "lower-legend-85-discount",
+      "network-shop-table",
+      "network-industry-table"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/upgrades"
+  },
+  {
+    "id": "lower-legend-85-discount",
+    "title": "下层区传奇：全部网络项目 85 折",
+    "category": "economy",
+    "summary": "解锁下层区传奇后所有 Wilds 网络项目按基础费用 85% 结算，大额升级应等折扣再买。",
+    "facts": [
+      "下层区特权「下层区传奇」解锁后，全部网络项目费用按基础费用的 85% 结算。",
+      "该规则在产业、店铺、安全、人脉四组升级页中重复出现，适用于该组全部项目。",
+      "示例换算：1000 的项目折后 850，500 的项目折后 425。"
+    ],
+    "actions": [
+      "大额升级（≥500）尽量等到特权解锁后再买",
+      "按 85% 重算预算表"
+    ],
+    "pitfalls": [
+      "特权解锁前买 1000 的项目，多付 150"
+    ],
+    "keywords": [
+      "下层区传奇",
+      "Wilds Network"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/upgrades/shop-network",
+      "wiki: /zh/wiki/upgrades/security-network"
+    ],
+    "related": [
+      "network-upgrade-demo-lock"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/upgrades"
+  },
+  {
+    "id": "network-industry-table",
+    "title": "产业供货 12 项全价目表",
+    "category": "production",
+    "summary": "产业网络 12 个基础项目 200–1000，全部无冷却；唯一硬前置链是沟渠水→铁锈水与水资源→水产养殖。",
+    "facts": [
+      "BREWER 200 可用；CHEMIST 250 不可购买；PHARMA 300 不可购买；MINER 250 可用。",
+      "GUTTERFLOW_TAP 250 可用；RUSTWATER_TAP 350 前置沟渠水直供、可用；WATER_TRADER 300 可用。",
+      "WINEMAKER 200 可用；RETIRED_FARMER 350 不可购买；RETIRED_GUNSMITH 650 不可购买；RETIRED_CHEMIST 1000 不可购买；RETIRED_RANCHER 750 可用。",
+      "本组全部项目冷却为「无」。",
+      "水产养殖 400（前置水资源交易，给入门设备+退休水产养殖户每周来访）；水产养殖 II 1,200（前置水产养殖，给两条幼年鳗鱼+商人增加大型鱼种）。",
+      "水产养殖前置须依次满足，400 不含此前购买水资源交易的 300。"
+    ],
+    "actions": [
+      "要产酒先买 BREWER 200，要矿石先买 MINER 250",
+      "想做水产按 300→400→1200 三段预算"
+    ],
+    "pitfalls": [
+      "直接买 400 水产养殖而没买 300 水资源交易",
+      "攒钱等 CHEMIST/PHARMA：Demo 锁定"
+    ],
+    "keywords": [
+      "BREWER",
+      "MINER",
+      "GUTTERFLOW_TAP",
+      "RUSTWATER_TAP",
+      "WATER_TRADER",
+      "WINEMAKER",
+      "RETIRED_RANCHER",
+      "水产养殖"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/upgrades/industry-network"
+    ],
+    "related": [
+      "network-upgrade-demo-lock",
+      "fish-species-table",
+      "brewing-ferment-aging"
+    ],
+    "confidence": 0.93,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/upgrades/industry-network"
+  },
+  {
+    "id": "network-shop-table",
+    "title": "店铺升级 10 项价目与前置",
+    "category": "store",
+    "summary": "店铺网络 10 项：供电 300/350、展示柜 200→500、投资 400→650、翻新 500→1000。",
+    "facts": [
+      "POWER_HIJACK 300 可用；COMMERCIAL_POWER 350 可用（均无前置）。",
+      "SHOWCASE_I 200 可用；SHOWCASE_II 500 前置 I 但 Demo 不可购买。",
+      "JACKSON1 400 可用；JACKSON2 650 前置 I 但 Demo 不可购买。",
+      "RENOVATION1 500 可用；RENOVATION2 750 前置 I 且可用；RENOVATION3 1000 前置 II 但 Demo 不可购买。",
+      "RUINED_MACHINE_UNLOCK 300 无前置但 Demo 不可购买。",
+      "本组全部项目冷却为「无」；指南未给出杰克逊投资的收益，不能据名称推算固定回报。"
+    ],
+    "actions": [
+      "电费压力大先买 300 偷接私电；充电慢买 350 商用级",
+      "展示柜扩容只到 I（200），II 在 Demo 锁死"
+    ],
+    "pitfalls": [
+      "把杰克逊投资当固定收益率产品",
+      "计划买 RENOVATION3/ SHOWCASE_II：Demo 不可购买"
+    ],
+    "keywords": [
+      "POWER_HIJACK",
+      "COMMERCIAL_POWER",
+      "SHOWCASE_I",
+      "JACKSON1",
+      "RENOVATION2",
+      "RUINED_MACHINE_UNLOCK"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/upgrades/shop-network"
+    ],
+    "related": [
+      "commercial-power-upgrade",
+      "network-upgrade-demo-lock"
+    ],
+    "confidence": 0.93,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/upgrades/shop-network"
+  },
+  {
+    "id": "network-security-table",
+    "title": "安全升级 7 项价目与冷却",
+    "category": "security",
+    "summary": "安全组 7 项，两个带冷却（租金宽限 15 天 100、清除证据 14 天 500），三级枪证 Demo 全锁。",
+    "facts": [
+      "LANDLORD_GRACE 100，冷却 15 天，Demo 可用；EVIDENCE_REMOVAL 500，冷却 14 天，Demo 可用。",
+      "SEC_GRACE 250 可用；INSPECTION_INFORMANT 300 可用（均无前置、无冷却）。",
+      "GUN_PERMIT_I 300 / II 600 / III 900，链式前置，三者 Demo 均不可购买。",
+      "枪证下发声望是 30/60/90，持有后吊销线是低于 0/30/60，判定由上门警官在对话结束时执行。",
+      "已取得某项不代表当前库存和历史证据都失去风险。"
+    ],
+    "actions": [
+      "租金紧张的存档优先 100 的 15 天宽限",
+      "证据压力大再买 500 清除证据，用完等 14 天"
+    ],
+    "pitfalls": [
+      "把 30/60/90 当吊销线（那是下发要求）",
+      "Demo 里攒 900 买 3 级枪证"
+    ],
+    "keywords": [
+      "LANDLORD_GRACE",
+      "SEC_GRACE",
+      "INSPECTION_INFORMANT",
+      "EVIDENCE_REMOVAL",
+      "GUN_PERMIT_I"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/upgrades/security-network"
+    ],
+    "related": [
+      "network-upgrade-demo-lock",
+      "contact-inspection-warning",
+      "rent-grace-once"
+    ],
+    "confidence": 0.92,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/upgrades/security-network"
+  },
+  {
+    "id": "network-contacts-table",
+    "title": "人脉升级 5 项：解锁费+每晚费",
+    "category": "customer",
+    "summary": "人脉组 5 项全 200–350 无冷却，但只是买解锁权；真实成本要叠加每晚 10/25/45 的服务费。",
+    "facts": [
+      "WILD_FIXER 350 可用；BUY_REFERAL 200 可用；SELL_REFERAL 200 可用；均无前置无冷却。",
+      "CRIMINEL_NETWORK 350 不可购买；MARKETPLACE_REQUESTS 250 不可购买。",
+      "解锁后每晚仍需付费启用：买家/卖家介绍各 10、犯罪网络 45、Wild's Fixers 25。",
+      "标识原文为 BUY_REFERAL / SELL_REFERAL（单 R）、CRIMINEL_NETWORK，按原文匹配不要改写。"
+    ],
+    "actions": [
+      "按需求买：要客源买 BUY_REFERAL，要货源买 SELL_REFERAL",
+      "预算按解锁费+首晚服务费合并计算"
+    ],
+    "pitfalls": [
+      "只算 200 解锁费忽略每晚 10",
+      "Demo 内计划买 CRIMINEL_NETWORK 或 MARKETPLACE_REQUESTS"
+    ],
+    "keywords": [
+      "WILD_FIXER",
+      "BUY_REFERAL",
+      "SELL_REFERAL",
+      "CRIMINEL_NETWORK",
+      "MARKETPLACE_REQUESTS"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/upgrades/contacts-network"
+    ],
+    "related": [
+      "contact-buyer-referral",
+      "contact-seller-referral",
+      "wild-fixers-evidence",
+      "criminal-network-referral"
+    ],
+    "confidence": 0.92,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/upgrades/contacts-network"
+  }
+]

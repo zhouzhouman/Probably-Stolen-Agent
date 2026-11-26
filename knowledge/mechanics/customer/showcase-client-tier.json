@@ -1,0 +1,55 @@
+{
+  "id": "showcase-client-tier",
+  "title": "展柜来客档位门槛",
+  "category": "customer",
+  "summary": "D≥14 且品类价值≥350 才进高价档，否则看 145/吸引力 400 的中价档。",
+  "facts": [
+    "高价档条件：内部日计数 D ≥ 14 且品类价值 ≥ 350（日用品 ≥ 300）。",
+    "中价档条件：未进高价档，且「品类价值 ≥ 145」或「店铺吸引力 ≥ 400」满足其一。",
+    "其余情况进默认档，按品类池等概率抽取。",
+    "武器默认来客与管制药物各档来客都只有一位，结果确定；其余品类默认档等概率。",
+    "水类另有分支：柜内最常见的水类型影响来客，最常见为纯水时直接是囤水者。"
+  ],
+  "actions": [
+    "想卖高价货：把该品类展品价值堆到 350 以上并等到 D≥14",
+    "想稳定高级客源：把吸引力做到 ≥400"
+  ],
+  "pitfalls": [
+    "第 14 天前堆 350 价值也进不了高价档",
+    "按默认档客人的预算去备高价货，成交不了"
+  ],
+  "effects": [
+    "选中品类后按档位查表生成 1 位具体来客"
+  ],
+  "guards": [
+    "吸引力 <100 时连买家都不生成"
+  ],
+  "keywords": [
+    "高价档",
+    "中价档",
+    "默认档",
+    "囤水者",
+    "私人安保承包商",
+    "管制药物"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/showcase"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "showcase-buyer-slots"
+  ],
+  "source": "wiki:/zh/wiki/terms/showcase",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

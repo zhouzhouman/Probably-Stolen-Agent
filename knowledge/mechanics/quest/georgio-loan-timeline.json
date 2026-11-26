@@ -1,0 +1,49 @@
+{
+  "id": "georgio-loan-timeline",
+  "title": "乔治奥 D=27 才开口借钱",
+  "category": "quest",
+  "summary": "乔治奥按 D=6/9/12/16/21/27 逐次来访，D=27 请求飞船借款，还款读借款日与租金周期。",
+  "facts": [
+    "借款有不同金额选择与对应交付，后续还款检查读取已借金额、借款日与租金周期 3 项。",
+    "借款还款节点与租金周期耦合，可能在同一周叠加 2 笔支出。"
+  ],
+  "actions": [
+    "D=27 前预留借款还款金，避免与租金同周撞车",
+    "和他交易前先验货"
+  ],
+  "pitfalls": [
+    "信他的验货承诺 → 假货；把借款当免费资金 → 还款日与租金叠加"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "乔治奥",
+    "D=27",
+    "飞船借款",
+    "核废料",
+    "告密者"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.client",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-georgio"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "related": [
+    "appraisal-commission",
+    "npc-georgio-schedule",
+    "rent-lease",
+    "wanted-report"
+  ],
+  "source": "wiki:/zh/wiki/terms/npc-georgio",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,56 @@
+{
+  "id": "ul-perk-thresholds",
+  "title": "上层区特权小费 20 到好评 100",
+  "category": "customer",
+  "summary": "上层区正向 20/40/60/80/100，负向 −40/−60；小费参数 15、家喻户晓 20%。",
+  "facts": [
+    "小费 UL_TIPS ≥ 20；上层区施舍 UL_CHARITY ≥ 40；打听八卦 UL_GOSSIP ≥ 60；家喻户晓 UL_HOUSEHOLD_NAME ≥ 80；好评如潮 UL_TOP_REVIEW ≥ 100。",
+    "旅游陷阱 UL_TOURISTTRAP ≤ −40；联名检举 UL_PETITION ≤ −60。",
+    "小费参数 15；家喻户晓参数 20%／1 名顾客；好评如潮参数 25。",
+    "联名检举的声望损失为 2、调查倍率为 1.5，2 个消费点均已定位。",
+    "雇佣杀手 UL_HITMAN 代码中无门槛（0 个数值定义），派发链未定位。",
+    "上层区交易声望倍率 1.2，是 6 个派系中最高的正向基数。",
+    "好评如潮 UL_TOP_REVIEW（≥100）使顾客预算 +25% B；可靠供应商（治安部 ≥80）另加 +50% B，两项分别取整后相加。"
+  ],
+  "actions": [
+    "优先把上层区推到 20 拿小费，再冲 80/100 拿预算加成"
+  ],
+  "pitfalls": [
+    "掉到 −40 触发旅游陷阱，正向上层顾客质量下降"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "UL_TIPS",
+    "UL_HOUSEHOLD_NAME",
+    "UL_PETITION",
+    "小费",
+    "旅游陷阱"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.reputations.value",
+        "op": "gte",
+        "value": 20
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/reputation/upper-level-perks",
+    "wiki: /zh/wiki/factions/upper-levels"
+  ],
+  "confidence": 0.92,
+  "verified_at": "2026-10-24",
+  "related": [
+    "budget-formula",
+    "budget-perk-unlocks",
+    "rep-per-trade-formula",
+    "sec-inspection-multipliers",
+    "ul-perk-thresholds"
+  ],
+  "source": "wiki:/zh/wiki/reputation/upper-level-perks",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

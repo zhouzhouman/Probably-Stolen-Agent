@@ -1,0 +1,56 @@
+{
+  "id": "night-sleep-gate",
+  "title": "打烊与睡觉是两个步骤",
+  "category": "night",
+  "summary": "营业中不能睡觉；必须打烊后用睡袋，睡觉才推进一天并自动存档。",
+  "facts": [
+    "当天阶段顺序固定为：早晨整理 → 开门接客 → 打烊准备 → 睡觉结算。",
+    "营业状态（OPEN）下不能睡觉，必须先关店再用睡袋。",
+    "睡觉会推进一天并自动存档；夜间生产、服务、事件的结果在次日核对。",
+    "打烊后可选择外出，先确认携带物品、带回空间与次日安排，再决定是否睡觉。",
+    "睡眠同时结算伤口、成瘾戒断与哨兵疾病。"
+  ],
+  "actions": [
+    "打烊后先处理伤口与投料，再睡",
+    "睡前确认警报已启用且有独立电源",
+    "外出与睡觉二选一，先看次日安排"
+  ],
+  "pitfalls": [
+    "营业中试图睡觉：流程不成立",
+    "睡前不处理伤口，睡眠时直接走 10%/50% 恶化分支"
+  ],
+  "effects": [
+    "睡觉 → day +1、自动存档、夜间结算全部生效"
+  ],
+  "guards": [
+    "store_state 必须为 CLOSED 才能睡"
+  ],
+  "keywords": [
+    "store_state",
+    "CLOSED",
+    "睡袋",
+    "自动存档"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.store_state",
+        "op": "eq",
+        "value": "CLOSED"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/daily-cycle"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-10-24",
+  "related": [
+    "night-out-cost",
+    "wound-night-settlement"
+  ],
+  "source": "wiki:/zh/wiki/terms/daily-cycle",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

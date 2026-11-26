@@ -1,0 +1,56 @@
+{
+  "id": "scavenge-stow",
+  "title": "拾荒：装背包 → 多次拾取 → 收纳 → 离场",
+  "category": "night",
+  "summary": "战利品留在地面会消失；必须收进背包/口袋才能带回，出门前要先装背包。",
+  "facts": [
+    "出门前 equip_backpack；只有两口袋时战利品装不下就会丢。",
+    "scavenge 可在 visit_left 次数内反复执行，每次都可能出新货。",
+    "地面物品必须 stow_loot / take_ground_items 收进背包；直接 leave_outside 等于白跑。",
+    "重伤（seriously_wounded）当夜不能再外出。"
+  ],
+  "actions": [
+    "equip_backpack → open_map → go_out scavenging",
+    "scavenge ×N → stow_loot",
+    "leave_outside 回店"
+  ],
+  "pitfalls": [
+    "空手出门（没装背包）",
+    "捡完不收纳直接离场",
+    "口袋满还继续 scavenge：新货堆地面，回店全丢"
+  ],
+  "effects": [
+    "leave_outside 后战利品进入 owned"
+  ],
+  "keywords": [
+    "scavenge",
+    "stow_loot",
+    "equip_backpack",
+    "leave_outside"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.night.is_outside",
+        "op": "truthy"
+      },
+      {
+        "field": "visible_info.night.map_open",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "用户 10-20 实测铁律",
+    "r97 scav_final 实盘"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-20",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true,
+  "source": "来源待核实：仅 r97 scav_final 实盘记录，无 wiki 页面或源码可引，禁止据此断言正式版成立",
+  "guards": [
+    "本卡数值未经 1.0 核对（source 已标「来源待核实」，仅 r97 单次实盘）：不要把任何数量/次数当成硬上限，一切以 /state 的 visit_left 与背包实际容量为准。"
+  ]
+}

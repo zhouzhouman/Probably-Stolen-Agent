@@ -1,0 +1,57 @@
+{
+  "id": "npc-appraisal-board-join-fee",
+  "title": "鉴定委员会入会费 85/170",
+  "category": "trade",
+  "summary": "D=8 受邀入会，普通 85、困难 170，入会后有培训材料并被派客。",
+  "facts": [
+    "普通开店介绍在 D=8 安排初次邀请，另有回访对话。",
+    "入会费：普通模式 85 信用点，困难模式 170 信用点，接受邀请时扣除。",
+    "三个分支：付费入会 / 请他稍后再来 / 不加入。",
+    "接受后对话提供培训材料，并说明委员会会把顾客派来。",
+    "只是听过介绍或持有一本鉴定指南，都不等于已入会。",
+    "顾客付费鉴定（你提交估值）与日常收购自验货是两种不同收入，误差处理也不同。"
+  ],
+  "actions": [
+    "D=8 前备好 85（普通）/170（困难）现金",
+    "入会后按各货物自己的指南检查部位，不套通用清单",
+    "需要放大细节时先备放大镜"
+  ],
+  "pitfalls": [
+    "有鉴定指南就以为已入会：仍需付费",
+    "把「鉴定正确」当成「必定高价卖出」"
+  ],
+  "effects": [
+    "付费入会 → 现金 −85/−170，培训材料入库，委员会开始派鉴定客"
+  ],
+  "guards": [
+    "现金 < 170 时不承诺困难模式入会"
+  ],
+  "keywords": [
+    "鉴定委员会",
+    "入会费",
+    "培训材料",
+    "放大镜",
+    "鉴定委员会成员"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.appraisal.rank",
+        "op": "exists"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/npc-appraisal-board-member"
+  ],
+  "related": [
+    "appraisal-fee-formula",
+    "appraisal-accept-range"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "source": "wiki:/zh/wiki/terms/npc-appraisal-board-member",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

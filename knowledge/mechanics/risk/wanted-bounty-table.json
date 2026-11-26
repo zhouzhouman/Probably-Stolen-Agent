@@ -1,0 +1,60 @@
+{
+  "id": "wanted-bounty-table",
+  "title": "通缉名单赏金表",
+  "category": "risk",
+  "summary": "9 个可创建通缉对象赏金 75–450，wanted5 无工厂不要按序号补。",
+  "facts": [
+    "赏金表：wanted1 詹姆斯·贝利 300；wanted2 屠夫 450；wanted3 亚瑟·拉弗勒 100；wanted4 奥丁·哈拉尔德森（剧情版）300；wanted4Normal 奥丁·哈拉尔德森 350。",
+    "wanted6 李北文 400；wanted7 胡安 75；wanted8 约翰·史密斯 125；wanted9 勒鲁瓦 300。",
+    "工厂字典列 9 个可创建版本，其中 wanted4Normal 是 4 号的普通变体。",
+    "wanted5 存在于 ID 集合但没有对应工厂，不要按序号补齐名单。",
+    "举报通缉犯：按名单赏金结算，治安部声望固定 +5。",
+    "通缉名单是一件物品（wanted_paper），可在图鉴查看。"
+  ],
+  "actions": [
+    "优先级：屠夫 450 > 李北文 400 > 奥丁普通版 350 > 300 档"
+  ],
+  "pitfalls": [
+    "按 1–9 顺序假设存在 9 个对象：wanted5 无工厂",
+    "把 wanted4 与 wanted4Normal 当同一价"
+  ],
+  "effects": [
+    "举报成功：现金 +赏金，治安部声望 +5"
+  ],
+  "guards": [
+    "举报前确认对方在名单上（避免误报 −8）"
+  ],
+  "keywords": [
+    "wanted1",
+    "wanted2",
+    "wanted3",
+    "wanted4",
+    "wanted4Normal",
+    "wanted5",
+    "wanted6",
+    "wanted9",
+    "wanted_paper"
+  ],
+  "triggers": {
+    "all": [
+      {
+        "field": "visible_info.client.is_wanted",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/terms/wanted-and-reporting"
+  ],
+  "confidence": 0.95,
+  "verified_at": "2026-10-24",
+  "related": [
+    "wanted-report",
+    "false-report-penalty",
+    "report-seller-payout"
+  ],
+  "source": "wiki:/zh/wiki/terms/wanted-and-reporting",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,1222 @@
+[
+  {
+    "id": "rent-increase-rate",
+    "title": "租金每期涨 5%/10% 并截断",
+    "category": "economy",
+    "summary": "租金 7 天一期，下期只按本期租金乘 1.05（困难 1.10）后截去小数，欠租不进基数。",
+    "facts": [
+      "租金周期为 7 天，每期结算一次。",
+      "下期租金 = 本期租金 × 1.05（普通模式）或 × 1.10（困难模式），结果截去小数。",
+      "算例：本期租金 205 → 普通模式 215，困难模式 225（截断，非四舍五入）。",
+      "临时欠租只影响本次付款：下期租金仍按本期 rent_value 的 1.05/1.10 计算，不叠加欠款。",
+      "困难模式除涨租为 10% 外，部分服务费用也更高。"
+    ],
+    "actions": [
+      "每期交租后立刻按 ×1.05 预估下期 rent_due",
+      "把预算按困难模式 ×1.10 做上限"
+    ],
+    "pitfalls": [
+      "把开局租金当成全程固定支出，实际每 7 天按 5% 递增"
+    ],
+    "effects": [
+      "pay_rent 成功：租期重置为 7 天，下期租金按 1.05/1.10 上浮并截断"
+    ],
+    "guards": [
+      "现金 < 下期租金预估 ×3 时禁止大额进货"
+    ],
+    "keywords": [
+      "rent_value",
+      "rent_due",
+      "pay_rent",
+      "涨租",
+      "day_until_rent"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.rent.day_until_rent",
+          "op": "lte",
+          "value": 2
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/rent-and-loans"
+    ],
+    "related": [
+      "rent-lease",
+      "rent-grace-once",
+      "purchase-budget-formula"
+    ],
+    "confidence": 0.95,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/rent-and-loans"
+  },
+  {
+    "id": "rent-grace-once",
+    "title": "宽限只有一次且不是免租",
+    "category": "economy",
+    "summary": "标准租约仅 1 次宽限，未付租金并入下周，下期要付本周+上周欠租；困难模式 0 次。",
+    "facts": [
+      "标准租约只写有 1 次宽限，本次未付租金加到下周账单。",
+      "宽限后下次需付「本周租金 + 上周欠租」，即约为单期租金的 2 倍。",
+      "困难模式开局宽限次数为 0，当周不付即进入驱逐流程。",
+      "Wilds 的「房东宽限」是另 1 次一次性人情，不能与租约宽限叠加成 2 次拖欠许可。",
+      "连续拖欠不在设计内：原文要求先确认存档中实际剩余且尚可使用的宽限次数。"
+    ],
+    "actions": [
+      "把本期宽限当作最后手段，只在现金 < rent_due 时使用",
+      "用宽限后立刻停掉所有非必要服务"
+    ],
+    "pitfalls": [
+      "以为每周都能拖 → 下期账单约 2 倍，直接触驱逐",
+      "把网络房东宽限当成永久免租"
+    ],
+    "effects": [
+      "使用宽限：本期不扣款，欠租累加进下期 rent_due"
+    ],
+    "keywords": [
+      "rent_due",
+      "宽限",
+      "landlord",
+      "驱逐"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.rent.day_until_rent",
+          "op": "lte",
+          "value": 1
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/rent-and-loans",
+      "wiki: /zh/wiki/terms/npc-landlord"
+    ],
+    "related": [
+      "rent-lease",
+      "rent-increase-rate",
+      "rent-default-evicted"
+    ],
+    "confidence": 0.92,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/rent-and-loans"
+  },
+  {
+    "id": "rent-default-evicted",
+    "title": "欠租补齐失败会被驱逐",
+    "category": "risk",
+    "summary": "宽限后仍补不齐租金不是罚款而是驱逐，直接结束本局经营。",
+    "facts": [
+      "未能在宽限账单到期后补齐欠租，会面临驱逐并结束经营，不是扣钱继续。",
+      "驱逐判定发生在第 2 次付款仍不合格时（即宽限后的那期）。",
+      "同期账单至少包含 3 项：本期租金、服务费、补料，可支付现金须覆盖三者之和。",
+      "未卖掉的库存与预期收益按 0 计入可支付现金，不能用来抵租。",
+      "保险返还的是夜间被盗物品，不能先当作缴租现金。"
+    ],
+    "actions": [
+      "到期前 2 天清一批低值杂货换现金",
+      "必要时关闭非 mandatory 服务保租金"
+    ],
+    "pitfalls": [
+      "把库存市值当现金 → 账面够、实际付不出",
+      "指望保险赔付救急"
+    ],
+    "guards": [
+      "现金 < rent_due 时禁止任何进货与非必要服务"
+    ],
+    "keywords": [
+      "rent_due",
+      "驱逐",
+      "现金",
+      "insurance"
+    ],
+    "triggers": {
+      "all": [
+        {
+          "field": "visible_info.rent.day_until_rent",
+          "op": "lte",
+          "value": 1
+        },
+        {
+          "field": "visible_info.money",
+          "op": "lte",
+          "value": 400
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/rent-and-loans"
+    ],
+    "related": [
+      "rent-lease",
+      "rent-grace-once"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/rent-and-loans"
+  },
+  {
+    "id": "landlord-grace-upgrade",
+    "title": "网络房东宽限 100 信用点",
+    "category": "economy",
+    "summary": "Wilds 网络房东宽限基础费用 100 信用点、冷却 15 天，只延一次不清债。",
+    "facts": [
+      "房东宽限是 Wilds 网络的独立项目，基础费用 100 信用点。",
+      "冷却为 15 天，即约 2 周才能再用 1 次。",
+      "作用是允许把漏付租金与下周一起交，不减免任何本金，也不等于免租。",
+      "它是与租约宽限并列的第 2 个人情，不叠加成 2 次连续拖欠许可。",
+      "当前观测层无对应字段（network 升级状态未暴露），需扩展。"
+    ],
+    "actions": [
+      "在 day_until_rent=1 且现金不足 100+rent_due 时购买房东宽限"
+    ],
+    "pitfalls": [
+      "花 100 信用点买宽限却仍还不上约 2 倍账单 → 钱和店一起没"
+    ],
+    "keywords": [
+      "房东宽限",
+      "Wilds",
+      "upgrades"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-landlord"
+    ],
+    "related": [
+      "rent-grace-once",
+      "rent-default-evicted"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-landlord"
+  },
+  {
+    "id": "mortgage-down-payment",
+    "title": "买店首付 3000 加 14 期",
+    "category": "economy",
+    "summary": "高利贷者买店报价要立即付 3000 首付，之后固定 14 期周供，首付不冲抵贷款额。",
+    "facts": [
+      "接受买店报价需立即支付 3000 信用点首付。",
+      "后续固定 14 期，首付不会再从贷款金额里扣一次（贷款额不因首付减少）。",
+      "介绍对话提到拥有 5000 信用点后在周日回访，属 NPC 自述条件。",
+      "对话只给 3 个选项：同意并付首付、请 1 周后再来、拒绝并自行攒钱购买。",
+      "已全款买下房产时有对应对话，不会重复放贷。"
+    ],
+    "actions": [
+      "接受前先算 3000 + 14×周供 是否挤占 14 周进货预算"
+    ],
+    "pitfalls": [
+      "只看 3000 首付 → 后续周供把进货资金抽干"
+    ],
+    "guards": [
+      "现金 < 3000 + 2 期周供 时不要接受报价"
+    ],
+    "keywords": [
+      "首付",
+      "高利贷者",
+      "mortgage",
+      "loan_shark"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.money",
+          "op": "gte",
+          "value": 5000
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/rent-and-loans",
+      "wiki: /zh/wiki/terms/npc-loan-shark"
+    ],
+    "related": [
+      "mortgage-weekly-payment",
+      "mortgage-default-seizure"
+    ],
+    "confidence": 0.93,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/rent-and-loans"
+  },
+  {
+    "id": "loan-amount-day-scaling",
+    "title": "拖得越久贷款额越高",
+    "category": "economy",
+    "summary": "买店贷款基础 9000，内部日计数 D>50 后每天 +50、最多 +5000，总额上限 14000。",
+    "facts": [
+      "买店报价的贷款金额基础值为 9000。",
+      "内部日计数 D 超过 50 后，每多 1 天加 50，增量上限 5000。",
+      "因此贷款金额最高为 14000（= 9000 + 5000），对应 D ≥ 150。",
+      "D 是计费时的游戏内部日计数，其与界面日期的偏移 wiki 标注为未核实。",
+      "贷款额每 +50，周息按 ÷5200 增加不足 1 点，但周供分摊后仍会抬高固定支出。"
+    ],
+    "actions": [
+      "决定买店就尽早接受报价，不要拖到 D>50 之后"
+    ],
+    "pitfalls": [
+      "攒钱攒到很晚才买 → 贷款额已顶到 14000，周供显著上升"
+    ],
+    "keywords": [
+      "D",
+      "loan",
+      "mortgage",
+      "日计数"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/rent-and-loans"
+    ],
+    "related": [
+      "mortgage-down-payment",
+      "mortgage-weekly-payment"
+    ],
+    "confidence": 0.88,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/rent-and-loans"
+  },
+  {
+    "id": "mortgage-weekly-interest",
+    "title": "周息=贷款×年利率÷5200",
+    "category": "economy",
+    "summary": "周息按贷款额×年利率÷5200 再向下取整；该报价年利率 100%，9000 时周息 173。",
+    "facts": [
+      "每周利息 = 贷款金额 × 年利率 ÷ 5200，结果向下取整。",
+      "该买店报价的年利率为 100%。",
+      "算例：贷款金额 9000 时，每周利息算成 173（9000×100/5200=173.07 → 173）。",
+      "必须先取整利息再进入周供计算，不能拿 173.07 这类未取整中间值代入。",
+      "该公式只适用于正常非负数值，且是静态核对结果。"
+    ],
+    "actions": [
+      "先用 floor(loan×100/5200) 求周息，再算周供"
+    ],
+    "pitfalls": [
+      "用 9000×100/5200=173.07 直接乘 14 → 周供多算 1 点"
+    ],
+    "keywords": [
+      "利息",
+      "年利率",
+      "loan",
+      "mortgage"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/rent-and-loans"
+    ],
+    "related": [
+      "mortgage-weekly-payment",
+      "loan-amount-day-scaling"
+    ],
+    "confidence": 0.93,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/rent-and-loans"
+  },
+  {
+    "id": "mortgage-weekly-payment",
+    "title": "周供=(贷款+周息×14)÷14",
+    "category": "economy",
+    "summary": "周供是把贷款加 14 期周息后平摊 14 期再向上取整，固定不递减；9000 时为 816。",
+    "facts": [
+      "每周付款 =（贷款金额 + 每周利息 × 14）÷ 14，结果向上取整。",
+      "算例：贷款 9000、周息 173 → 周供 816 信用点。",
+      "周供固定不变，不按剩余本金递减，14 期每期都扣满 816。",
+      "14 期总额 816×14=11424，比 9000+173×14=11422 多 2（向上取整造成）。",
+      "贷款额与周息变化时须重算；按 3000 首付比例反推周供会算错。"
+    ],
+    "actions": [
+      "每周预留 ≥816 再安排进货",
+      "把周供当固定成本而非弹性支出"
+    ],
+    "pitfalls": [
+      "按递减还款做现金流表 → 实际每期都扣满额"
+    ],
+    "guards": [
+      "周供 + 租金 + 服务费 > 周均营收时不要买店"
+    ],
+    "keywords": [
+      "周供",
+      "loan_value",
+      "loan_days",
+      "mortgage"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.economy.loan_days",
+          "op": "lte",
+          "value": 2
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/rent-and-loans"
+    ],
+    "related": [
+      "mortgage-weekly-interest",
+      "mortgage-default-seizure"
+    ],
+    "confidence": 0.93,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/rent-and-loans"
+  },
+  {
+    "id": "mortgage-default-seizure",
+    "title": "断供先收物品再收店铺",
+    "category": "risk",
+    "summary": "断供会先取走物品抵偿，财物不足时直接收走店铺；只有付清 14 期才解除风险。",
+    "facts": [
+      "断供后第 1 步是取走物品抵偿（并非立即收店）。",
+      "可收取财物不足时第 2 步收走店铺，经营终止。",
+      "被抵走库存不等于免付，剩余期数仍然存在。",
+      "只有付清全部 14 期才解除相应的房产债务风险。",
+      "催款来访提供「还款 / 不还款」2 个选择，后果按当前债务状态处理。"
+    ],
+    "actions": [
+      "还款日优先保周供，宁可卖库存也不要不还款",
+      "不要在断供期囤高值库存（会被直接抵走）"
+    ],
+    "pitfalls": [
+      "以为被抄一次库存就两清 → 下期照扣，最后照样收店"
+    ],
+    "guards": [
+      "现金 < 周供 时提前卖货，不要等催款来访"
+    ],
+    "keywords": [
+      "断供",
+      "收店",
+      "催款",
+      "loan_shark"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.economy.loan_days",
+          "op": "lte",
+          "value": 1
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/rent-and-loans"
+    ],
+    "related": [
+      "mortgage-weekly-payment",
+      "rent-default-evicted"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/rent-and-loans"
+  },
+  {
+    "id": "purchase-budget-formula",
+    "title": "进货预算=现金−账单−预留",
+    "category": "economy",
+    "summary": "可进货资金等于现金减近期到期账单再减服务与补料预留，库存和预期收益算 0。",
+    "facts": [
+      "可安排进货资金 = 当前现金 − 下次回款前到期的账单 − 必要服务和补料预留。",
+      "算例：现金 600、账单 200、预留 100 → 可安排 300 进货。",
+      "未卖掉的库存与预期收益按 0 计入，不计为可支付现金。",
+      "保险返还的是夜间被盗物品，不能先当作缴租现金。",
+      "该公式是记账口径，原文注明 600/200/100 只是示例而非保证值。",
+      "单笔成交额参考上限：B=240、吸引力 600、已解锁好评如潮（≥100）时单个顾客预算 420；这是单客的钱，不是每日进货总额（customer-budgets 页口径）。"
+    ],
+    "actions": [
+      "每天开张前用该公式重算可进货额",
+      "把下期 rent_due 与周供都算进「近期账单」",
+      "备货量按「当日预计来客数 × 客单价」估，不要拿 420 当进货上限"
+    ],
+    "pitfalls": [
+      "把库存市值算进现金 → 超买后付不出租金",
+      "把 420 当每日进货总额 → 只够 1 位客人，放走第 2~4 位（展示柜最多 4 个名额）"
+    ],
+    "guards": [
+      "现金 − rent_due − 周供 < 0 时禁止进货"
+    ],
+    "keywords": [
+      "预算",
+      "rent_due",
+      "stock_value",
+      "现金"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/rent-and-loans",
+      "wiki: /zh/wiki/terms/customer-budgets（经 wiki-trade 抓取）"
+    ],
+    "related": [
+      "budget-formula",
+      "bill-reserve-first",
+      "rent-increase-rate",
+      "mortgage-weekly-payment",
+      "rent-lease"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/rent-and-loans"
+  },
+  {
+    "id": "rep-clamp-22-grades",
+    "title": "声望钳制 −200~200 共 22 档",
+    "category": "customer",
+    "summary": "每个派系声望独立，钳制在 −200 到 200，按 10 点一档分 22 级，两端另加一档。",
+    "facts": [
+      "声望取值范围被钳制在 −200 到 200 之间，超出不累计。",
+      "等级共 22 档，以 10 点为一档，两端各加一档。",
+      "正向档位示例：20–29 小有名气、60–69 值得信赖、100–200 声威赫赫。",
+      "负向档位示例：−19–−10 褒贬不一、−99–−90 避之不及、−200–−150 黑名单。",
+      "6 个派系各自独立记录，不是 1 条全局好感度，也不是势力力量条。",
+      "当前观测层无对应字段（visible_info 未暴露任何 reputation 值），需扩展。"
+    ],
+    "actions": [
+      "按档位而非精确分值做决策：跨 20/40/60/80/100 才有质变"
+    ],
+    "pitfalls": [
+      "以为声望是全局值 → 讨好上层区不会提升下层区"
+    ],
+    "keywords": [
+      "reputation",
+      "声望等级",
+      "派系"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/faction-standing"
+    ],
+    "related": [
+      "rep-per-trade-formula",
+      "faction-objects-six"
+    ],
+    "confidence": 0.93,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/faction-standing"
+  },
+  {
+    "id": "rep-per-trade-formula",
+    "title": "单笔声望=点数÷400×倍率",
+    "category": "customer",
+    "summary": "声望基础换算是整数点数÷400，下层区再乘 0.66、上层区乘 1.2。",
+    "facts": [
+      "单笔交易声望基础换算为：整数点数 ÷ 400。",
+      "下层区顾客派系倍率为 0.66。",
+      "上层区顾客派系倍率为 1.2，约为下层区的 1.82 倍。",
+      "基础整数点数还会再经顾客交易倍率，不能从物品标价直接反推最终声望。",
+      "本次静态检索未发现每日或每周的声望自然衰减（衰减率 = 0）。"
+    ],
+    "actions": [
+      "想刷声望优先做上层区交易（×1.2），下层区效率只有其 55%"
+    ],
+    "pitfalls": [
+      "按成交额估算声望涨幅 → 实际要除以 400 再打折"
+    ],
+    "keywords": [
+      "reputation",
+      "0.66",
+      "1.2",
+      "派系倍率"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/faction-standing"
+    ],
+    "related": [
+      "rep-clamp-22-grades",
+      "rep-multipliers"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/faction-standing"
+  },
+  {
+    "id": "rep-multipliers",
+    "title": "声望增减的七种倍率",
+    "category": "customer",
+    "summary": "舌灿莲花×1.33、严重违禁品×(违禁等级×0.5+1)、黑市负向×2、大嘴巴×0.5。",
+    "facts": [
+      "起始特权「舌灿莲花」使正向点数 ×1.33。",
+      "严重违禁品倍率为 ×（违禁等级 × 0.5 + 1），违禁等级 1 时即 ×1.5。",
+      "黑市负向在 ModReputation 分支硬编码 ×2，且不检查黑市特权。",
+      "起始特权「大嘴巴」使黑市与革命军的正向收益 ×0.5。",
+      "上层区特权 UL_PETITION 使治安部负向 ×2。",
+      "黑市另有 1.5 常量与 1.5 字段初值的 2 个来源，但读取点未定位，净倍率需运行验证。"
+    ],
+    "actions": [
+      "卖严重违禁品前先扣掉 ×2 的黑市惩罚再算收益"
+    ],
+    "pitfalls": [
+      "带大嘴巴特质还去刷黑市/革命军 → 正向只拿 50%"
+    ],
+    "keywords": [
+      "舌灿莲花",
+      "大嘴巴",
+      "UL_PETITION",
+      "ModReputation",
+      "违禁等级"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/faction-standing"
+    ],
+    "related": [
+      "rep-per-trade-formula",
+      "bm-perk-thresholds"
+    ],
+    "confidence": 0.88,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/faction-standing"
+  },
+  {
+    "id": "rep-report-penalty",
+    "title": "举报顾客的阵营声望代价",
+    "category": "security",
+    "summary": "举报顾客扣目标阵营声望：首次 −8、之后每次 −2、下限 −20，与治安部误报 −8 是两个池。",
+    "facts": [
+      "faction-standing 页「单笔交易换算与倍率」表原文：举报顾客首次 −8，之后每次再 −2，下限 −20，记在被举报顾客所属阵营。",
+      "该 −20 是「阵营池」这个动作的累计扣分下限，不是声望下限；声望本身钳制 −200 到 200。",
+      "治安部误报固定 −8（余额 ≥100 时另罚款 50）属另一个计数器，两池各扣一次、不合并计算。",
+      "「之后每次 −2」与卖家分支的「额外 −2」是否同一触发条件，wiki 未区分。",
+      "每次交易只结算 1 个对应派系的声望，两侧分别记账。",
+      "当前观测层无对应 reputation 字段，需扩展。"
+    ],
+    "actions": [
+      "反复举报同一顾客时预期每次只再掉 2 点阵营声望",
+      "举报前先看目标属于哪个阵营，别把治安部账算进阵营账"
+    ],
+    "pitfalls": [
+      "把阵营 −8 与治安部误报 −8 相加算成 −16 → 实际是两个池各扣一次",
+      "把「下限 −20」当成声望下限 → 声望真正下限是 −200"
+    ],
+    "keywords": [
+      "举报",
+      "wanted",
+      "reputation",
+      "阵营池",
+      "误报"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.client.is_wanted",
+          "op": "truthy"
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/faction-standing",
+      "wiki: /zh/wiki/terms/wanted-and-reporting（经 wiki-risk 核对）"
+    ],
+    "related": [
+      "wanted-report",
+      "false-report-penalty",
+      "report-seller-payout",
+      "rep-clamp-22-grades"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/faction-standing"
+  },
+  {
+    "id": "faction-objects-six",
+    "title": "只有 6 个派系有独立声望",
+    "category": "customer",
+    "summary": "下层区/上层区/治安部/黑市/革命军/卡特尔共 6 个有声望对象，中层区与游客为 0。",
+    "facts": [
+      "有独立声望对象的派系共 6 个：下层区、上层区、治安部、黑市、革命军、13 区卡特尔。",
+      "中层区与游客对应的声望对象数量为 0。",
+      "指南另提到 6 类顾客派系（含中层、游客），但不等同于 6 个声望对象。",
+      "革命、教会、卡特尔 3 类声望在分析记录中出现，不能据此当成同一种顾客分组。",
+      "每次交易只结算 1 个对应派系的声望，不跨派系共享。"
+    ],
+    "actions": [
+      "做声望规划时只针对这 6 个对象，不要在游客/中层身上做无效投入"
+    ],
+    "pitfalls": [
+      "以为讨好游客能提升任何声望 → 游客无声望对象"
+    ],
+    "keywords": [
+      "派系",
+      "中层区",
+      "游客",
+      "卡特尔",
+      "革命军"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/faction-standing",
+      "wiki: /zh/wiki/factions"
+    ],
+    "related": [
+      "rep-clamp-22-grades",
+      "cartel-perk-thresholds"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/faction-standing"
+  },
+  {
+    "id": "ll-perk-thresholds",
+    "title": "下层区特权 20 起每 20 一档",
+    "category": "customer",
+    "summary": "下层区正向 20/40/60/80/100，负向 −20 到 −100；100 档让网络费用按 85% 结算。",
+    "facts": [
+      "有口皆碑 LLREFERAL ≥ 20；稀有货物 LLRAREGOOD ≥ 40；市井传言 LLTIPS ≥ 60；守口如瓶 LLTIGHTLIPS ≥ 80；下层区传奇 LLPILLAR ≥ 100。",
+      "差评 LLPOORREVIEWS ≤ −20；遭到猜疑 LLDISTRUSTED ≤ −40；沦为猎物 LLTARGET ≤ −60；狗嫌人厌 LLAVOIDED ≤ −80；暴民私刑 LLLYNCH ≤ −100。",
+      "守口如瓶的证据倍率为 0.5；沦为猎物的保险倍率为 2（效果参数，非门槛）。",
+      "有口皆碑与差评的描述参数为 100% 概率、1 名顾客，消费点未定位。",
+      "下层区传奇使网络项目费用按 85% 结算。",
+      "正向 5 档要求 ≥、负向 5 档要求 ≤，均为「达到即启用」的开门线。"
+    ],
+    "actions": [
+      "刷到 20 拿有口皆碑，冲 100 拿网络 85 折",
+      "死守 > −20，避免差评"
+    ],
+    "pitfalls": [
+      "掉到 −20 及以下触发差评，评价与来客同时变差"
+    ],
+    "keywords": [
+      "LLREFERAL",
+      "LLPILLAR",
+      "LLTARGET",
+      "下层区传奇",
+      "85%"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/reputation/lower-level-perks",
+      "wiki: /zh/wiki/factions/lower-levels"
+    ],
+    "related": [
+      "rep-clamp-22-grades",
+      "ll-network-discount",
+      "insurance-rep-effects"
+    ],
+    "confidence": 0.93,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/reputation/lower-level-perks"
+  },
+  {
+    "id": "ul-perk-thresholds",
+    "title": "上层区特权小费 20 到好评 100",
+    "category": "customer",
+    "summary": "上层区正向 20/40/60/80/100，负向 −40/−60；小费参数 15、家喻户晓 20%。",
+    "facts": [
+      "小费 UL_TIPS ≥ 20；上层区施舍 UL_CHARITY ≥ 40；打听八卦 UL_GOSSIP ≥ 60；家喻户晓 UL_HOUSEHOLD_NAME ≥ 80；好评如潮 UL_TOP_REVIEW ≥ 100。",
+      "旅游陷阱 UL_TOURISTTRAP ≤ −40；联名检举 UL_PETITION ≤ −60。",
+      "小费参数 15；家喻户晓参数 20%／1 名顾客；好评如潮参数 25。",
+      "联名检举的声望损失为 2、调查倍率为 1.5，2 个消费点均已定位。",
+      "雇佣杀手 UL_HITMAN 代码中无门槛（0 个数值定义），派发链未定位。",
+      "上层区交易声望倍率 1.2，是 6 个派系中最高的正向基数。"
+    ],
+    "actions": [
+      "优先把上层区推到 20 拿小费，再冲 80/100 拿预算加成"
+    ],
+    "pitfalls": [
+      "掉到 −40 触发旅游陷阱，正向上层顾客质量下降"
+    ],
+    "keywords": [
+      "UL_TIPS",
+      "UL_HOUSEHOLD_NAME",
+      "UL_PETITION",
+      "小费",
+      "旅游陷阱"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/reputation/upper-level-perks",
+      "wiki: /zh/wiki/factions/upper-levels"
+    ],
+    "related": [
+      "ul-tips-and-budget",
+      "rep-per-trade-formula",
+      "sec-inspection-multipliers"
+    ],
+    "confidence": 0.92,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/reputation/upper-level-perks"
+  },
+  {
+    "id": "sec-perk-thresholds",
+    "title": "治安部特权 0 到 100 六档",
+    "category": "security",
+    "summary": "治安正向 0/20/40/60/80/100，负向 −20 到 −100；盯防调查×1.2、通缉×1.5。",
+    "facts": [
+      "征用令 SEC_REQUISITION ≥ 0；治安部盈余 SEC_SURPLUS ≥ 20；治安部庇护 SEC_PROTECTION ≥ 40；值得信赖 SEC_TRUSTED ≥ 60；可靠供应商 SEC_RELIABLE_VENDOR ≥ 80；VIP SEC_VIP ≥ 100。",
+      "重点盯防 SEC_WATCHLIST ≤ −20；应该是风声吧 SEC_ALARM_IGNORED ≤ −40；头号通缉 SEC_PRIORITY ≤ −60；彻底查抄 SEC_THOROUGH_INSPECTION ≤ −80；不择手段 SEC_IMMEDIATE_ARREST ≤ −100。",
+      "重点盯防调查倍率 1.2，头号通缉调查倍率 1.5。",
+      "毫不留情 SEC_CONTRABAND_TOLERANCE 代码中无门槛（无特权工厂）。",
+      "枪证下发线与吊销线是 2 套不同数字，下发门槛高于吊销线；具体数值统一见 gun-permit-tiers，本卡不重复。",
+      "可靠供应商（治安 ≥80）的描述参数 50 表示顾客预算 +50% B；好评如潮（上层 ≥100）为 +25% B，2 项分别取整后相加，不是连乘。",
+      "值得信赖 SEC_TRUSTED（≥60）使盘查强度减半（crime-and-investigation 口径，wiki-risk 核对）。"
+    ],
+    "actions": [
+      "把治安稳在 0 以上吃征用令，40 以上吃庇护",
+      "绝不低于 −20，否则调查频率上升"
+    ],
+    "pitfalls": [
+      "持枪证后声望跌破 30/0 → 许可被吊销，货还在但没法合法卖",
+      "把 +50% 与 +25% 连乘当 +87.5% → 实际分别取整后相加"
+    ],
+    "keywords": [
+      "SEC_WATCHLIST",
+      "SEC_PROTECTION",
+      "SEC_VIP",
+      "枪证",
+      "调查倍率"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/reputation/security-perks",
+      "wiki: /zh/wiki/factions/security"
+    ],
+    "related": [
+      "gun-license-revoke",
+      "sec-inspection-multipliers",
+      "budget-perk-unlocks",
+      "wanted-report"
+    ],
+    "confidence": 0.93,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/reputation/security-perks"
+  },
+  {
+    "id": "bm-perk-thresholds",
+    "title": "黑市特权 20/40/60 起",
+    "category": "customer",
+    "summary": "黑市正向 20/40/60，负向 −40 黑名单、−60 无法参保；盗亦有道恒定生效。",
+    "facts": [
+      "小牌掮客 BM_SMALL_TIME_BROKER ≥ 20；销赃信誉 BM_RELIABLE ≥ 40；地下网络 BM_NETWORK ≥ 60。",
+      "黑名单 BM_DISTRUSTED ≤ −40；无法参保 BM_UNINSURABLE ≤ −60。",
+      "盗亦有道 BM_HONOR 恒定生效，是 6 个派系中唯一不受当前声望影响的特权。",
+      "盗亦有道的说明与字段记录 1.5，但读取点未定位；黑市负向另在 ModReputation 分支 ×2。",
+      "无法参保是拒保（可用保险数量 0），不等于保险费加价。",
+      "黑名单的清洁费翻倍（×2）来自游戏说明，消费点未定位。"
+    ],
+    "actions": [
+      "把黑市守在 −39 以上，绝不到 −60（否则失去保险兜底）"
+    ],
+    "pitfalls": [
+      "刷到 −60 无法参保，夜间被盗全额自负"
+    ],
+    "keywords": [
+      "BM_HONOR",
+      "BM_UNINSURABLE",
+      "销赃信誉",
+      "盗亦有道"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/reputation/black-market-perks",
+      "wiki: /zh/wiki/factions/black-market"
+    ],
+    "related": [
+      "insurance-rep-effects",
+      "rep-multipliers"
+    ],
+    "confidence": 0.92,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/reputation/black-market-perks"
+  },
+  {
+    "id": "rev-perk-thresholds",
+    "title": "革命军特权 20/40/60/80",
+    "category": "customer",
+    "summary": "革命军正向 20/40/60/80，负向不对称：−40 黑名单、−100 暗杀名单。",
+    "facts": [
+      "革命军市场委托 REV_REQUEST ≥ 20；革命军军需官 REV_QUARTERMASTER ≥ 40；革命军之友 REV_FRIEND ≥ 60；突袭所得 REV_RAID_LOOT ≥ 80。",
+      "黑名单 REV_BLACKLISTED ≤ −40；暗杀名单 REV_HIT ≤ −100。",
+      "负向阈值不对称：−40 到 −99 之间有 0 个额外档位。",
+      "暗杀名单的处决小队实现尚未定位，区域革命行动另由事件系统处理。",
+      "革命军声望与空间站革命军力量、下层动荡是 3 个不同数值。",
+      "带大嘴巴特质时革命军正向收益 ×0.5。"
+    ],
+    "actions": [
+      "把革命军守在 ≥20 拿市场委托，80 前不要接会掉声望的委托"
+    ],
+    "pitfalls": [
+      "以为革命军声望能推动新闻里的革命力量 → 两套数值"
+    ],
+    "keywords": [
+      "REV_REQUEST",
+      "REV_HIT",
+      "革命军之友",
+      "突袭所得"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/reputation/revolution-perks",
+      "wiki: /zh/wiki/factions/revolution"
+    ],
+    "related": [
+      "faction-request",
+      "rep-multipliers",
+      "faction-objects-six"
+    ],
+    "confidence": 0.92,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/reputation/revolution-perks"
+  },
+  {
+    "id": "cartel-perk-thresholds",
+    "title": "卡特尔特权 25/50/100",
+    "category": "economy",
+    "summary": "卡特尔唯一非整十门槛：津贴 25、可靠化学家 50、金盆洗手 100，−100 强制退休。",
+    "facts": [
+      "增加津贴 CARTEL_INCREASED_STIPEND ≥ 25；可靠化学家 CARTEL_RELIABLE_CHEMIST ≥ 50；金盆洗手 CARTEL_AUTHORIZED_EXIT ≥ 100。",
+      "强制退休 CARTEL_RETIRED ≤ −100。",
+      "25 是全局唯一非整十的特权门槛（其余均为 10 的倍数）。",
+      "可靠化学家把中途向联系人索取额外原料的声望成本从 12 点降至 6 点，描述参数 50 表示 50% 减免。",
+      "可靠化学家不是交货纯度不足时的扣减公式，2 者勿混用。",
+      "声望达标不代表本周货物合格，交货仍受每周配额与纯度 2 项约束。"
+    ],
+    "actions": [
+      "先冲到 25 拿津贴，再考虑 50 的原料减免"
+    ],
+    "pitfalls": [
+      "以为 50 声望就能免纯度惩罚 → 该参数只减额外索取原料的声望成本"
+    ],
+    "keywords": [
+      "CARTEL_INCREASED_STIPEND",
+      "CARTEL_RELIABLE_CHEMIST",
+      "津贴",
+      "强制退休"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/reputation/cartel-perks",
+      "wiki: /zh/wiki/factions/cartel"
+    ],
+    "related": [
+      "cartel-delivery-quota",
+      "faction-objects-six"
+    ],
+    "confidence": 0.93,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/reputation/cartel-perks"
+  },
+  {
+    "id": "cartel-delivery-quota",
+    "title": "卡特尔交货要过配额与纯度",
+    "category": "quest",
+    "summary": "卡特尔定期化学品交货同时受每周配额与纯度 2 项约束，声望高也不能豁免。",
+    "facts": [
+      "卡特尔关系由 3 件事构成：定期化学品交货、津贴、退出条件。",
+      "交货受每周配额约束，须达到本周规定数量。",
+      "交货同时受纯度要求约束，合格与否独立判定。",
+      "声望达标不等于本周货物自动合格，2 个条件分开检查。",
+      "相关化学供货与退休化学家购买入口在 Demo 未开放（0 个可用入口）。",
+      "金盆洗手（声望 ≥100）是授权退出条件。"
+    ],
+    "actions": [
+      "接单前先确认本周配额与所需纯度",
+      "预留额外原料以应对纯度不足"
+    ],
+    "pitfalls": [
+      "只看声望不看纯度 → 声望够仍然交货失败"
+    ],
+    "keywords": [
+      "卡特尔",
+      "纯度",
+      "配额",
+      "化学品交货"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/factions/cartel",
+      "wiki: /zh/wiki/reputation/cartel-perks"
+    ],
+    "related": [
+      "cartel-perk-thresholds"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/factions/cartel"
+  },
+  {
+    "id": "sec-inspection-multipliers",
+    "title": "低治安声望放大调查强度",
+    "category": "security",
+    "summary": "重点盯防调查×1.2、头号通缉×1.5；联名检举再让治安负向×2、调查×1.5。",
+    "facts": [
+      "重点盯防 SEC_WATCHLIST（≤−20）的调查倍率为 1.2。",
+      "头号通缉 SEC_PRIORITY（≤−60）的调查倍率为 1.5。",
+      "上层区联名检举 UL_PETITION（≤−60）使治安部负向 ×2、调查倍率 1.5。",
+      "彻底查抄 SEC_THOROUGH_INSPECTION（≤−80）与不择手段 SEC_IMMEDIATE_ARREST（≤−100）会进一步升级处置。",
+      "持枪证后仍需维持声望，各档吊销线见 gun-permit-tiers；犯罪证据另行结算、不因许可豁免。"
+    ],
+    "actions": [
+      "治安声望低于 −20 时停止携带违禁品",
+      "被联名检举后立刻清空赃物与违禁库存"
+    ],
+    "pitfalls": [
+      "同时踩到 ≤−60 与联名检举 → 调查倍率叠加到 2.25"
+    ],
+    "keywords": [
+      "SEC_WATCHLIST",
+      "SEC_PRIORITY",
+      "UL_PETITION",
+      "调查倍率"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/reputation/security-perks",
+      "wiki: /zh/wiki/reputation/upper-level-perks"
+    ],
+    "related": [
+      "sec-perk-thresholds",
+      "wanted-report",
+      "ul-perk-thresholds"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/reputation/security-perks"
+  },
+  {
+    "id": "ul-tips-and-budget",
+    "title": "上层区小费与预算加成",
+    "category": "economy",
+    "summary": "上层区 20 给小费（参数 15），80 家喻户晓 20%/1 名顾客，100 好评如潮参数 25。",
+    "facts": [
+      "小费 UL_TIPS 门槛 ≥20，参数 15。",
+      "家喻户晓 UL_HOUSEHOLD_NAME 门槛 ≥80，参数 20%／1 名顾客。",
+      "好评如潮 UL_TOP_REVIEW 门槛 ≥100，参数 25 表示顾客预算 +25% B。",
+      "上述 3 项是游戏说明参数，相关消费点未全部定位。",
+      "上层区施舍 UL_CHARITY 门槛 ≥40；打听八卦 UL_GOSSIP 门槛 ≥60。",
+      "上层区顾客交易声望倍率 1.2，收益与声望同步最快。"
+    ],
+    "actions": [
+      "把上层区稳在 ≥20 吃小费，≥80 后优先接上层区大单"
+    ],
+    "pitfalls": [
+      "把参数 15 当成固定必得小费 → 消费点未全部定位，触发条件待验证",
+      "把 +25% 当成直接加 25 信用点 → 是 B×25% 后取整"
+    ],
+    "keywords": [
+      "UL_TIPS",
+      "UL_HOUSEHOLD_NAME",
+      "UL_TOP_REVIEW",
+      "小费"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/reputation/upper-level-perks"
+    ],
+    "related": [
+      "ul-perk-thresholds",
+      "budget-perk-unlocks",
+      "budget-attractiveness-tiers",
+      "rep-per-trade-formula"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/reputation/upper-level-perks"
+  },
+  {
+    "id": "ll-network-discount",
+    "title": "下层区传奇网络费 85%",
+    "category": "economy",
+    "summary": "下层区声望到 100 后，Wilds 网络项目按 85% 结算，是最直接的长期省钱项。",
+    "facts": [
+      "下层区传奇 LLPILLAR 门槛为声望 ≥100。",
+      "该特权令网络项目费用按 85% 结算，即省 15%。",
+      "网络项目含房东宽限等付费项，100 信用点项在 85% 下为 85 信用点。",
+      "到 100 需先跨 20/40/60/80 共 4 档，前 4 档特权同时存在。",
+      "当前观测层无 reputation 字段，无法自动判定是否已解锁，需扩展。"
+    ],
+    "actions": [
+      "把下层区声望当长期投资，冲到 100 再买网络升级"
+    ],
+    "pitfalls": [
+      "先买全套网络升级再刷声望 → 白丢 15% 折扣"
+    ],
+    "keywords": [
+      "LLPILLAR",
+      "下层区传奇",
+      "85%",
+      "Wilds"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/reputation/lower-level-perks"
+    ],
+    "related": [
+      "ll-perk-thresholds",
+      "landlord-grace-upgrade"
+    ],
+    "confidence": 0.9,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/reputation/lower-level-perks"
+  },
+  {
+    "id": "insurance-rep-effects",
+    "title": "声望直接改保险与证据倍率",
+    "category": "risk",
+    "summary": "沦为猎物保险倍率 2、无法参保直接拒保、守口如瓶证据倍率 0.5。",
+    "facts": [
+      "下层区沦为猎物 LLTARGET（≤−60）的保险倍率为 2，即保费翻倍。",
+      "黑市无法参保 BM_UNINSURABLE（≤−60）是拒保，可用保险数量为 0，不是加价。",
+      "下层区守口如瓶 LLTIGHTLIPS（≥80）的证据倍率为 0.5，即证据减半。",
+      "黑名单 BM_DISTRUSTED（≤−40）的清洁费翻倍（×2，消费点未定位）。",
+      "以上 4 项均为效果参数而非解锁门槛，须看面板实际启用项。"
+    ],
+    "actions": [
+      "保险成本上升时先查是否踩了 ≤−60 的沦为猎物",
+      "有保险前不要囤高值货过夜"
+    ],
+    "pitfalls": [
+      "同时踩下层 −60 与黑市 −60 → 保费翻倍且可能直接拒保"
+    ],
+    "keywords": [
+      "LLTARGET",
+      "BM_UNINSURABLE",
+      "LLTIGHTLIPS",
+      "保险倍率"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.economy.insurance_days_without",
+          "op": "gte",
+          "value": 7
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/reputation/lower-level-perks",
+      "wiki: /zh/wiki/reputation/black-market-perks"
+    ],
+    "related": [
+      "ll-perk-thresholds",
+      "bm-perk-thresholds",
+      "night-service-cost"
+    ],
+    "confidence": 0.88,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/reputation/black-market-perks"
+  },
+  {
+    "id": "rep-no-decay",
+    "title": "声望没有自然衰减",
+    "category": "customer",
+    "summary": "本次静态检索未发现每日或每周声望衰减，攒下的声望不会自己掉。",
+    "facts": [
+      "本次静态检索未发现每日或每周的声望自然衰减（衰减率 0）。",
+      "声望变化只由交易、举报、特权与事件 4 类显式动作触发。",
+      "声望被钳制在 −200 到 200，超出部分不累计。",
+      "单笔交易声望反馈与区域事件（下层动荡、上层友好度、革命/治安/黑市力量）分别结算。",
+      "区域事件据条件排队行动，不能与单笔声望合并成 1 个固定数。"
+    ],
+    "actions": [
+      "可以长期养声望，不必担心放着掉",
+      "但被打下去也不会自动回升"
+    ],
+    "pitfalls": [
+      "以为声望会回流 → 掉到 −100 后需主动刷回"
+    ],
+    "keywords": [
+      "reputation",
+      "衰减",
+      "下层动荡",
+      "势力力量"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/faction-standing"
+    ],
+    "related": [
+      "rep-clamp-22-grades",
+      "rep-per-trade-formula"
+    ],
+    "confidence": 0.8,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/faction-standing"
+  },
+  {
+    "id": "gun-license-revoke",
+    "title": "持证不等于豁免",
+    "category": "security",
+    "summary": "枪证数字见 gun-permit-tiers；本卡只讲持证仍要维持声望、犯罪证据单独结算。",
+    "facts": [
+      "持证不等于豁免：持有许可后仍需维持要求的声望，吊销由上门警官在对话结束时判定。",
+      "犯罪证据单独结算，不因持有许可而豁免；每件被查获物按 inspection-reputation-points 计分。",
+      "枪证只覆盖低／中／高 3 级违禁枪械，高危级无任何许可可合法化（等级上限见 weapon-permit-ceiling）。",
+      "下发线与吊销线是 2 套不同数字，且下发门槛高于吊销线；具体数值统一见 gun-permit-tiers，本卡不重复。"
+    ],
+    "actions": [
+      "拿证后把治安声望守在吊销线之上，别按「有证就安全」行事",
+      "带枪时仍按无证标准清证据，许可不减免犯罪证据"
+    ],
+    "pitfalls": [
+      "以为拿到证就永久有效 → 声望回落触发吊销",
+      "持证后照常带高危级武器 → 高危级无任何许可可合法化"
+    ],
+    "keywords": [
+      "枪证",
+      "SEC_TRUSTED",
+      "吊销",
+      "许可",
+      "高危级"
+    ],
+    "triggers": {},
+    "evidence": [
+      "wiki: /zh/wiki/terms/faction-standing",
+      "wiki: /zh/wiki/factions/security"
+    ],
+    "related": [
+      "gun-permit-tiers",
+      "weapon-permit-ceiling",
+      "sec-perk-thresholds",
+      "inspection-reputation-points"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/factions/security"
+  },
+  {
+    "id": "georgio-loan-timeline",
+    "title": "乔治奥 D=27 才开口借钱",
+    "category": "quest",
+    "summary": "乔治奥按 D=6/9/12/16/21/27 逐次来访，D=27 请求飞船借款，还款读借款日与租金周期。",
+    "facts": [
+      "角色线 6 个节点：D=6 初见、D=9 介绍新发明、D=12 出售香烟、D=16 带来上层区货物、D=21 再次出售特殊货物、D=27 请求飞船借款。",
+      "借款有不同金额选择与对应交付，后续还款检查读取已借金额、借款日与租金周期 3 项。",
+      "他称商品为外星遗物、「未来之水」或保真海明威香烟，属销售说辞，且有专门假货设置。",
+      "加入来客列表时还会经过已知告密者检查。",
+      "核废料返还条件为 D≥3、曾丢弃核废料、且该次来访未触发过。",
+      "借款还款节点与租金周期耦合，可能在同一周叠加 2 笔支出。"
+    ],
+    "actions": [
+      "D=27 前预留借款还款金，避免与租金同周撞车",
+      "和他交易前先验货"
+    ],
+    "pitfalls": [
+      "信他的验货承诺 → 假货；把借款当免费资金 → 还款日与租金叠加"
+    ],
+    "keywords": [
+      "乔治奥",
+      "D=27",
+      "飞船借款",
+      "核废料",
+      "告密者"
+    ],
+    "triggers": {
+      "any": [
+        {
+          "field": "visible_info.day",
+          "op": "gte",
+          "value": 27
+        }
+      ]
+    },
+    "evidence": [
+      "wiki: /zh/wiki/terms/npc-georgio"
+    ],
+    "related": [
+      "rent-lease",
+      "appraisal-commission",
+      "wanted-report"
+    ],
+    "confidence": 0.85,
+    "verified_at": "2026-10-24",
+    "source": "wiki:/zh/wiki/terms/npc-georgio"
+  }
+]

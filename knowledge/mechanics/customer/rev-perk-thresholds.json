@@ -1,0 +1,57 @@
+{
+  "id": "rev-perk-thresholds",
+  "title": "革命军特权 20/40/60/80",
+  "category": "customer",
+  "summary": "革命军正向 20/40/60/80，负向不对称：−40 黑名单、−100 暗杀名单。",
+  "facts": [
+    "革命军市场委托 REV_REQUEST ≥ 20；革命军军需官 REV_QUARTERMASTER ≥ 40；革命军之友 REV_FRIEND ≥ 60；突袭所得 REV_RAID_LOOT ≥ 80。",
+    "黑名单 REV_BLACKLISTED ≤ −40；暗杀名单 REV_HIT ≤ −100。",
+    "负向阈值不对称：−40 到 −99 之间有 0 个额外档位。",
+    "暗杀名单的处决小队实现尚未定位，区域革命行动另由事件系统处理。",
+    "革命军声望与空间站革命军力量、下层动荡是 3 个不同数值。",
+    "带大嘴巴特质时革命军正向收益 ×0.5。"
+  ],
+  "actions": [
+    "把革命军守在 ≥20 拿市场委托，80 前不要接会掉声望的委托"
+  ],
+  "pitfalls": [
+    "以为革命军声望能推动新闻里的革命力量 → 两套数值"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "REV_REQUEST",
+    "REV_HIT",
+    "革命军之友",
+    "突袭所得"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.reputations.value",
+        "op": "gte",
+        "value": 20
+      },
+      {
+        "field": "visible_info.reputations.value",
+        "op": "lte",
+        "value": -20
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/reputation/revolution-perks",
+    "wiki: /zh/wiki/factions/revolution"
+  ],
+  "confidence": 0.92,
+  "verified_at": "2026-10-24",
+  "related": [
+    "faction-request",
+    "rep-multipliers",
+    "faction-objects-six"
+  ],
+  "source": "wiki:/zh/wiki/reputation/revolution-perks",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

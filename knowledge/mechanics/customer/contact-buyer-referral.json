@@ -1,0 +1,50 @@
+{
+  "id": "contact-buyer-referral",
+  "title": "买家介绍 10/晚，次日带客",
+  "category": "customer",
+  "summary": "每晚 10 信用点换次日一批买家，更多顾客会被展示柜商品吸引；前提是先备好能卖的货。",
+  "facts": [
+    "买家介绍服务的基础费用为 10 信用点/晚，睡前启用、次日生效。",
+    "效果是次日介绍买家，并使更多顾客受展示商品吸引；夜间日志会记录介绍结果。",
+    "需先准备能卖的货，否则介绍来的客流无处转化。",
+    "网络端需先买买家推荐服务（BUY_REFERAL，200 信用点，Demo 可用）才解锁该服务。"
+  ],
+  "actions": [
+    "启用当晚先把展示柜补满想卖的品类",
+    "次日开门前核对日志确认介绍是否生效"
+  ],
+  "pitfalls": [
+    "空柜启用买家介绍：客流来了没有对应货",
+    "只算 200 解锁费，忘了每晚 10"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "BUY_REFERAL",
+    "买家介绍",
+    "showcase"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.phone.contacts",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/services/contact-services",
+    "wiki: /zh/wiki/upgrades/contacts-network"
+  ],
+  "confidence": 0.9,
+  "verified_at": "2026-11-07",
+  "related": [
+    "contact-seller-referral",
+    "network-contacts-table"
+  ],
+  "source": "wiki:/zh/wiki/services/contact-services",
+  "review_note": "正式版实机 /state services 核对：BUY_REFERAL cost=10，与原卡一致（2026-11-07）。",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}

@@ -1,0 +1,50 @@
+{
+  "id": "cartel-delivery-quota",
+  "title": "卡特尔交货要过配额与纯度",
+  "category": "quest",
+  "summary": "卡特尔定期化学品交货同时受每周配额与纯度 2 项约束，声望高也不能豁免。",
+  "facts": [
+    "卡特尔关系由 3 件事构成：定期化学品交货、津贴、退出条件。",
+    "交货受每周配额约束，须达到本周规定数量。",
+    "交货同时受纯度要求约束，合格与否独立判定。",
+    "声望达标不等于本周货物自动合格，2 个条件分开检查。",
+    "相关化学供货与退休化学家购买入口在 Demo 未开放（0 个可用入口）。",
+    "金盆洗手（声望 ≥100）是授权退出条件。"
+  ],
+  "actions": [
+    "接单前先确认本周配额与所需纯度",
+    "预留额外原料以应对纯度不足"
+  ],
+  "pitfalls": [
+    "只看声望不看纯度 → 声望够仍然交货失败"
+  ],
+  "effects": [],
+  "guards": [],
+  "keywords": [
+    "卡特尔",
+    "纯度",
+    "配额",
+    "化学品交货"
+  ],
+  "triggers": {
+    "any": [
+      {
+        "field": "visible_info.requests",
+        "op": "truthy"
+      }
+    ]
+  },
+  "evidence": [
+    "wiki: /zh/wiki/factions/cartel",
+    "wiki: /zh/wiki/reputation/cartel-perks"
+  ],
+  "confidence": 0.85,
+  "verified_at": "2026-10-24",
+  "related": [
+    "cartel-perk-thresholds"
+  ],
+  "source": "wiki:/zh/wiki/factions/cartel",
+  "game_version": "",
+  "verify_basis": "",
+  "needs_verify": true
+}
