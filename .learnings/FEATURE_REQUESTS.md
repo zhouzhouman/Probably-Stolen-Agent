@@ -10,7 +10,7 @@
 **Area**: frontend
 
 ### Requested Capability
-用户要求把游戏内 AI 决策浮层做得更好看。
+需求：把游戏内决策浮层做得更易读。
 
 ### User Context
 现版浮层为朴素的深色方块+三行文本，观感一般。用户希望更有设计感。

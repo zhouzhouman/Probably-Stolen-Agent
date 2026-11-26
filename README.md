@@ -57,10 +57,8 @@ python -m game_agent.cli knowledge --validate         # 校验机制知识卡
 python -m pytest -q tests                             # 全量测试（当前 874 passed）
 ```
 
-启动游戏：`steam://rungameid/4348910`（直接跑 exe 会退出码 53）。必须**窗口化/无边框**运行。
-关闭：`taskkill`（关闭后 DLL 才可覆盖部署）。
-
-> 项目已获用户授权：可自行启动/关闭游戏做测试。
+启动游戏：`steam://rungameid/4348910`（直接跑 exe 会退出码 53）。必须**窗口化/无边框**运行，
+否则截图与输入都会被系统拦截。关闭：`taskkill`（关闭后 DLL 才可覆盖部署）。
 
 ## MCP 工具服务
 
@@ -77,7 +75,8 @@ python -m pytest -q tests                             # 全量测试（当前 87
 - `game_action`：执行单个原子动作（56 个模型可控动作），带 `scene` 陈旧守卫与执行后回读。
 
 工具 schema 由 `python -m game_agent.contracts --export-mcp` 导出，不另写副本。
-设计取舍（为什么不放在 C# mod 侧）见 `docs/28-简历向MCP融合方案.md`。
+设计取舍（为什么不放在 C# mod 侧）：mod 侧只暴露游戏原子能力，协议适配与鉴权放在 Python 层，
+便于替换客户端与独立测试。
 
 ## 商业目标（30 天内现金净增 3000）
 
@@ -103,11 +102,10 @@ python scripts/gen_knowledge_doc.py --check        # 总纲同步检查
 
 来源与版本：`knowledge/wiki_raw/`（原始摘要，含 Demo 期快照）→ `knowledge/mechanics/`
 （正式版 1.0 校正后的卡片）→ `docs/13-维基机制知识总纲.md`（自动生成）。
-Demo 期数值冲突的校正表见 `docs/25` §0.3。
 
 ## 接口方法论
 
-AI 的每个动作都对应**玩家在游戏里能做的操作**，三级并如实标注：
+每个动作都对应**玩家在游戏里能做的操作**，三级并如实标注：
 UI 级（点按钮/选对话/拖拽）> 库存 API 级（容器间搬运，走游戏接受校验）> 字段级（仅标记）。
 
 自绘 PixelWindow 没有 Button 组件，因此补了通用输入层：`/ui/objects`（全量可点击对象）、
@@ -151,12 +149,7 @@ API Key 放项目根 `.env`。游戏内 Ctrl+F9 面板可直接改模型配置�
 
 ## 文档索引（按主题）
 
-- 架构与改造：`docs/24-架构评估与可优化项.md`、`docs/27-改造执行台账.md`
-- 全机制接口：`docs/25-全机制接口设计与实现建议.md`
-- 多智能体协作提示词：`docs/26-多智能体协作修改提示词.md`
-- 简历向 MCP 融合：`docs/28-简历向MCP融合方案.md`
 - 机制知识：`docs/12-AI机制知识体系设计.md`、`docs/13-维基机制知识总纲.md`
-- 多 Agent 架构：`docs/08-多Agent协作架构.md`
 - 实盘报告：`docs/10` / `docs/11`（旧目标）、`docs/17` / `docs/18`（新档与 Bug 台账）
 - 正式版迁移：`docs/19` / `docs/20`
 

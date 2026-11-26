@@ -149,7 +149,7 @@ def _derive_available_actions(state: dict[str, Any]) -> list[str]:
     queue = queue if isinstance(queue, dict) else {}
 
     # —— 未关闭界面优先（v0.8.2：谈判面板开着时，关闭面板必须是第一个候选）——
-    # v2.0 修正：v0.9.4 已按用户指令取消 close_negociation（「面板是交易操作台，禁止关闭」），
+    # v2.0 修正：v0.9.4 已取消 close_negociation（面板是交易操作台，不允许关闭），
     # 但这里仍在提示「关闭谈判面板」——模型据此幻觉出一个白名单里不存在的动作，白丢一步。
     # 现在改为提示面板内的真实成交手段（批发 / 接受报价）。
     # 2026-11-15：去掉「接受多个」——正式版谈判面板只有 primaryButton /

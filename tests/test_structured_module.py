@@ -546,7 +546,7 @@ class TestBuildObservation:
         assert "查看库存" in actions
 
     def test_actions_queue_empty_goes_night(self):
-        """v0.8.1：队列空且无顾客 → 提示打烊进夜晚流程，不再提示叫号（用户反馈的空转修复）。"""
+        """v0.8.1：队列空且无顾客 → 提示打烊进夜晚流程，不再提示叫号（实盘空转的修复）。"""
         state = {**OPEN_STATE, "queue": {"can_next": False, "has_client": False, "count": 0}}
         actions = build_observation(state, source=CHANNEL_BRIDGE)["available_actions"]
         assert "打烊进入夜晚流程" in actions
@@ -2060,9 +2060,9 @@ NEGO_PANEL_CLOSED_STATE: dict[str, Any] = {
 class TestNegotiationPanelObservation:
     """v0.8.2：谈判面板开闭态进入观察契约（actions/objects/visible_info/signature）。
 
-    v2.0 变更：v0.9.4 按用户指令取消了 close_negociation（「面板是交易操作台，
+    v2.0 变更：v0.9.4 已取消 close_negociation（「面板是交易操作台，
     禁止主动关闭」），因此「关闭谈判面板」不再是候选动作——改为提示面板内成交。
-    原断言（关闭优先）编码的是已被用户指令废止的旧行为。
+    原断言（关闭优先）编码的是已被废止的旧行为。
     """
 
     def test_actions_hint_trade_when_panel_open(self):
@@ -2136,7 +2136,7 @@ class TestNegotiationPanelObservation:
 
 
 class TestCloseNegociationAction:
-    """v0.9.4：close_negociation 已按用户指令取消（白名单 / 校验层 / 提示词三类出口）。"""
+    """v0.9.4：close_negociation 已取消（白名单 / 校验层 / 提示词三类出口）。"""
 
     def test_not_in_whitelist(self):
         """白名单与 Python 客户端动作表都不再包含 close_negociation。"""

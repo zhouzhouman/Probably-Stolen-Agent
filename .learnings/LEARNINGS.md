@@ -80,7 +80,7 @@ prompt.py 拾荒铁律第①条改为「出门时必须选择背包」；夜晚�
 **Area**: backend
 
 ### Summary
-用户指令（附截图）：次日早晨的「日历/夜间报告/状态」结算面板（右上角 ×）出现时必须立刻叉掉。
+实盘问题（附截图）：次日早晨的「日历/夜间报告/状态」结算面板（右上角 ×）出现时必须立刻叉掉。
 
 ### Details
 该面板为 CanvasPaperUI/_AdvCalendar，关闭按钮 CloseButton 与谈判面板的同名（_NegociationPanel/CloseButton）——按 name 盲点有歧义。面板不关会挡住开店接待（截图里游戏提示「开店迟到，错过一名顾客」）。

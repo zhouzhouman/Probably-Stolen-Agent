@@ -730,7 +730,7 @@ def scan_sources(report: Report) -> None:
 # --------------------------------------------------------------------------- #
 
 def _owner_hint(rel_file: str) -> str:
-    """把已知的、属其他智能体独占范围的文件标注出来，避免重复劳动。"""
+    """把已知的、属其他模块独占范围的文件标注出来，避免改动冲突。"""
     if rel_file in ("mod/src/GameAccess.cs", "mod/src/BridgeApi.cs"):
         return "（属 R2 独占范围；已提变更请求 CR-T01-2）"
     if rel_file in ("mod/src/ModelConfigPanel.cs",):

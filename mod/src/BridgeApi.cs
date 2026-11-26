@@ -2943,7 +2943,7 @@ namespace DeepSpaceBridge
                     }
                     catch { }
 
-                    // —— v0.5.0 纯变量路线（按用户要求：不模拟鼠标，直接控制游戏状态）——
+                    // —— v0.5.0 纯变量路线（设计约束：不模拟鼠标，直接控制游戏状态）——
                     // 根因链（2026-10-14 全天实测）：UI 的 CTRL+点击/拖拽最终就是把
                     // PlayerStore.currentNegociatedItem（0xE0）与 NegociationUIManager.
                     // currentNegociatedItem（0x58）指向目标物品，之后 accept_offer/sell_table
